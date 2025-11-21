@@ -3,8 +3,7 @@
   <Itf Name="ILwordAssertions" Id="{88acf04a-5175-4282-87d8-792e4fc69917}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This interface provides assert statements for long words  
 
 .. <legal notes>
@@ -19,8 +18,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
@@ -29,8 +27,7 @@ INTERFACE ILwordAssertions EXTENDS __SYSTEM.IQueryInterface
     <Method Name="andMaskIsEqualTo" Id="{ae22ef2c-b533-41d9-8905-9ae2e04fdc35}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the result current value bitwise ``AND`` mask is equal to the expected value
 
 .. <legal notes>
@@ -45,8 +42,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -66,8 +62,7 @@ END_VAR
     <Method Name="andMaskIsNotEqualTo" Id="{859f70cd-00d0-4997-8d66-9e5f774f36a6}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the result current value bitwise ``AND`` mask
 is not equal to the unexpected value
 
@@ -83,8 +78,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -104,8 +98,7 @@ END_VAR
     <Method Name="bitXIsEqualTo" Id="{b732b3c9-730a-43a5-b036-de85dc30102e}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the selected bit of current value
 is equal to the expected value
 
@@ -121,8 +114,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -142,8 +134,7 @@ END_VAR
     <Method Name="bitXIsNotEqualTo" Id="{3abae3be-a7af-4668-867d-322ec8351972}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the selected bit of current value
 is not equal to the unexpected value
 
@@ -159,8 +150,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -180,8 +170,7 @@ END_VAR
     <Method Name="bitXIsSet" Id="{158a11f8-d37a-4a27-bb72-1075af18c945}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the selected bit of current value
 is set
 
@@ -197,8 +186,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -216,8 +204,7 @@ END_VAR
     <Method Name="bitXIsUnset" Id="{a6c4fa3e-cf0d-4e6a-8a74-932dbf7e6c87}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the selected bit of current value
 is unset
 
@@ -233,8 +220,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -252,8 +238,7 @@ END_VAR
     <Method Name="lsbIsEqualTo" Id="{9fee415d-dcd1-4a0a-a264-300b370b2635}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the least significant bit of current value
 is equal to the expected value
 
@@ -269,8 +254,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -288,8 +272,7 @@ END_VAR
     <Method Name="lsbIsNotEqualTo" Id="{9eeb7b99-7453-4904-904e-f6fdfcd0ba1b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the least significant bit of current value
 is not equal to the unexpected value
 
@@ -305,8 +288,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -324,8 +306,7 @@ END_VAR
     <Method Name="lsbIsSet" Id="{5784fa93-9627-4937-a4ec-8d1d497ae8a3}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the least significant bit of current value
 is set
 
@@ -341,8 +322,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -358,8 +338,7 @@ END_VAR
     <Method Name="lsbIsUnset" Id="{ba6ececd-d164-4343-a883-447485ba0995}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the least significant bit of current value
 is unset
 
@@ -375,8 +354,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -392,8 +370,7 @@ END_VAR
     <Method Name="msbIsEqualTo" Id="{ea0097f5-e12a-4e36-bc41-d2199e50b0df}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the most significant bit of current value
 is equal to the expected value
 
@@ -409,8 +386,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -428,8 +404,7 @@ END_VAR
     <Method Name="msbIsNotEqualTo" Id="{1e326fad-febc-4ff1-a70f-786b8971dac5}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the most significant bit of current value
 is not equal to the unexpected value
 
@@ -445,8 +420,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -464,8 +438,7 @@ END_VAR
     <Method Name="msbIsSet" Id="{59bf6d91-6e19-42d0-ae66-307dd1b5c875}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the most significant bit of current value
 is set
 
@@ -481,8 +454,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -498,8 +470,7 @@ END_VAR
     <Method Name="msbIsUnset" Id="{91a2a595-dc50-44e0-8a3c-fd5dfb0d1a74}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the most significant bit of current value
 is unset
 
@@ -515,8 +486,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -532,8 +502,7 @@ END_VAR
     <Method Name="orMaskIsEqualTo" Id="{fdac44ef-c17e-4f08-8b5f-d14bd0150353}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the result current value bitwise ``OR`` mask is equal to the expected value
 
 .. <legal notes>
@@ -548,8 +517,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -569,8 +537,7 @@ END_VAR
     <Method Name="orMaskIsNotEqualTo" Id="{c96d8b96-2da3-49a7-be80-8881a198f733}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the result current value bitwise ``OR`` mask 
 is not equal to the unexpected value
 
@@ -586,8 +553,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -607,8 +573,7 @@ END_VAR
     <Method Name="valueIsEqualTo" Id="{269c5f2e-b6ed-48d9-91fc-553689791243}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is equal to the expected value
 
 .. <legal notes>
@@ -623,8 +588,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -642,8 +606,7 @@ END_VAR
     <Method Name="valueIsGreaterThan" Id="{c1e71aaa-b53b-493b-9ba8-1c727a21edbd}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than the less value
 
 .. <legal notes>
@@ -658,8 +621,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -677,11 +639,10 @@ END_VAR
     <Method Name="valueIsInRangeOf" Id="{23a1b1ae-95b0-40d6-9d03-649856d9f7c6}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is inside a limit
 
-.. attention:: 
+**Attention:** 
 	limits are included: ``valueIsInRangeOf(3, 3, 3)`` is a true assertion
 
 .. <legal notes>
@@ -696,8 +657,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -717,8 +677,7 @@ END_VAR
     <Method Name="valueIsLessThan" Id="{8e51c1c8-3315-4520-8b86-7f2529f7884c}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is less than the greater value
 
 .. <legal notes>
@@ -733,8 +692,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -752,8 +710,7 @@ END_VAR
     <Method Name="valueIsMax" Id="{f67625a9-9599-424b-b783-2e0764e4a776}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is less than or equal to the maximum value
 
 .. <legal notes>
@@ -768,8 +725,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -787,8 +743,7 @@ END_VAR
     <Method Name="valueIsMin" Id="{bfadc82f-fa92-4809-a450-5aa7a865b208}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than or equal to the minimum value
 
 .. <legal notes>
@@ -803,8 +758,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -822,8 +776,7 @@ END_VAR
     <Method Name="valueIsNotEqualTo" Id="{bbe4fbb0-6421-429a-8c64-4803a595b92d}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is not equal to the unexpected value
 
 .. <legal notes>
@@ -838,8 +791,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -857,8 +809,7 @@ END_VAR
     <Method Name="xorMaskIsEqualTo" Id="{3154c41a-d688-44fe-8978-21ccc5dc9e9c}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the result current value bitwise ``XOR`` mask is equal to the expected value
 
 .. <legal notes>
@@ -873,8 +824,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -894,8 +844,7 @@ END_VAR
     <Method Name="xorMaskIsNotEqualTo" Id="{1353df18-70a6-41fb-bdc2-d0f012aecf90}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the result current value bitwise ``XOR`` mask 
 is not equal to the unexpected value
 
@@ -911,8 +860,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 

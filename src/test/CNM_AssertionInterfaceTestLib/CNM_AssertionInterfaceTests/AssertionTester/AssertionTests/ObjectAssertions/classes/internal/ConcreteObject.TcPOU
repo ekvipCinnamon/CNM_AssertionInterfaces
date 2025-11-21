@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+  <POU Name="ConcreteObject" Id="{20f9064c-2171-411b-b432-04a00d1b75bd}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+==================
+Wraper Class for Object to make ´´isObjectValid()´´ calls possible
+needed because ´´AbstractAssertorTest´´ already extends ´´FB_TestSuite´´
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+FUNCTION_BLOCK ConcreteObject EXTENDS CNM_AbstractObject.Object
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="className" Id="{721cf338-9432-4dea-b59f-1ba6d5f6f1f0}">
+      <Declaration><![CDATA[(*
+
+short summary
+=================
+This abstract property returns the class name of the concrete object, 
+which is useful to check the class name for ``__DELETE``.
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+PROPERTY className : CNM_AbstractObject.ClassName]]></Declaration>
+      <Get Name="Get" Id="{b2665a7a-96e1-4ffe-9d70-7ece8ba70a39}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[className := 'ConcreteObject_Internal';]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="ConcreteObject">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="ConcreteObject.className.Get">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

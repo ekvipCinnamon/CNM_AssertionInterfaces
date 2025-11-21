@@ -1,14 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="TimeAssertions" Id="{164df83b-0998-4ca6-b185-f8e9cd49b12a}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-This class implements the interface :ref:`ITimeAssertions`.
+## Short summary
+This class implements the interface `ITimeAssertions`.
 It provides assertions for time data types
-For ``LTIME`` assertions use :ref:`TimeAssertions.long`.
-For ``TIME`` assertions use :ref:`TimeAssertions.simple`.
+For ``LTIME`` assertions use `TimeAssertions.long`.
+For ``TIME`` assertions use `TimeAssertions.simple`.
 
 
 .. <legal notes>
@@ -23,8 +22,7 @@ legal notes
 
 .. </legal notes>
 
-methods and properties
-=========================
+==
 
 *)
 
@@ -43,8 +41,7 @@ END_VAR
     <Property Name="className" Id="{9d682bac-12f5-406f-914f-ad365fe3995a}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This abstract property returns the class name of the concrete object, 
 It's for debugging purpose
 
@@ -62,13 +59,13 @@ legal notes
 
 *)
 
-PROPERTY className :ClassName]]></Declaration>
+PROPERTY className :CNM_AbstractObject.ClassName]]></Declaration>
       <Get Name="Get" Id="{e66ace24-f634-4dda-acbf-bb6b4db21ff5}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[className := 'CNM_AssertionInterfaceLib.TimeAssertions';
+          <ST><![CDATA[className := 'CNM_Assertor.TimeAssertions';
 ]]></ST>
         </Implementation>
       </Get>
@@ -76,9 +73,8 @@ END_VAR
     <Property Name="long" Id="{914c8e93-2c51-4d7c-9564-d6f63cf044de}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns an interface (:ref:`I64BitTimeAssertions`)
+## Short summary
+Returns an interface (`I64BitTimeAssertions`)
 with assert statements for 64 bit times 
 
 .. <legal notes>
@@ -109,8 +105,7 @@ END_VAR
     <Method Name="setCallBack" Id="{f14334c6-b353-4a5b-87a2-2d0caa44fa8a}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This methods is the setter for the callback class if an assertion was false
 
 .. <legal notes>
@@ -125,15 +120,14 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
 METHOD setCallBack
 VAR_INPUT
 	(* the class that must be informed if an assertion is false *)
-	callBack	:IAssertCallback;  
+	callBack	:IAssertCallBack;  
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -145,9 +139,8 @@ THIS^.longTimeAssertions.setCallBack(callBack);
     <Property Name="simple" Id="{4b4a5132-ebc8-41a2-8a7b-3dc0ee7364cf}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns an interface (:ref:`I32BitTimeAssertions`)
+## Short summary
+Returns an interface (`I32BitTimeAssertions`)
 with assert statements for 32 bit times 
 
 .. <legal notes>

@@ -3,15 +3,15 @@
   <DUT Name="BitNumberDWord" Id="{eb6e3bc7-22ed-4da1-a0b5-306c2ca258ef}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| BitNumberDWord is an alias of ``USINT(0..31)``.
-| This data type exists so that no one can provoke an overflow of the bit numbers.
-| It's used as parameter of 
-| :ref:`IDwordAssertions.bitXIsEqualTo` 
-| :ref:`IDwordAssertions.bitXIsNotEqualTo` 
-| :ref:`IDwordAssertions.bitXIsSet` 
-| :ref:`IDwordAssertions.bitXIsUnset` 
+## Short summary
+
+ BitNumberDWord is an alias of ``USINT(0..31)``.
+ This data type exists so that no one can provoke an overflow of the bit numbers.
+ It's used as parameter of 
+ `IDwordAssertions.bitXIsEqualTo` 
+ `IDwordAssertions.bitXIsNotEqualTo` 
+ `IDwordAssertions.bitXIsSet` 
+ `IDwordAssertions.bitXIsUnset` 
 
 .. <legal notes>
 

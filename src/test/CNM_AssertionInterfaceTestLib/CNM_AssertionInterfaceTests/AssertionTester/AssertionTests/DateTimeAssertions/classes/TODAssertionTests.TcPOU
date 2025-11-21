@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.13">
   <POU Name="TODAssertionTests" Id="{038eb524-70d0-4f88-9b18-1b5ef887ec20}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
@@ -140,7 +140,7 @@ END_VAR
 short summary
 ==================
 This test method tests ``assert.dateAndTime.simple.timeOfDay.valueIsEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -204,7 +204,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.dateAndTime.simple.timeOfDay.valueIsGreaterThan``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -283,7 +283,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.dateAndTime.simple.timeOfDay.valueIsInRangeOf``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -389,7 +389,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.dateAndTime.simple.timeOfDay.valueIsLessThan``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -468,7 +468,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.dateAndTime.simple.timeOfDay.valueIsMax``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -547,7 +547,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.dateAndTime.simple.timeOfDay.valueIsMin``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -626,7 +626,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.dateAndTime.simple.timeOfDay.valueIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -690,7 +690,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.dateAndTime.simple.timeOfDay.valueIsEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -753,7 +753,7 @@ THIS^.assertorContainer.assertor.assert.dateAndTime.simple.timeOfDay.valueIsEqua
 	currentValue	:= valueToTest,
 	expectedValue	:= expected,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -769,7 +769,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.dateAndTime.simple.timeOfDay.valueIsGreaterThan``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -832,7 +832,7 @@ THIS^.assertorContainer.assertor.assert.dateAndTime.simple.timeOfDay.valueIsGrea
 	currentValue	:= valueToTest,
 	lessValue		:= lessValue,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -848,7 +848,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.dateAndTime.simple.timeOfDay.valueIsInRangeOf``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -918,7 +918,7 @@ THIS^.assertorContainer.assertor.assert.dateAndTime.simple.timeOfDay.valueIsInRa
 	currentValue	:= valueToTest,
 	upperLimit		:= upperLimit,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -934,7 +934,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.dateAndTime.simple.timeOfDay.valueIsLessThan``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -997,7 +997,7 @@ THIS^.assertorContainer.assertor.assert.dateAndTime.simple.timeOfDay.valueIsLess
 	currentValue	:= valueToTest,
 	greaterValue	:= greaterValue,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -1013,7 +1013,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.dateAndTime.simple.timeOfDay.valueIsMax``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -1076,7 +1076,7 @@ THIS^.assertorContainer.assertor.assert.dateAndTime.simple.timeOfDay.valueIsMax(
 	currentValue	:= valueToTest,
 	maximumValue	:= maximumValue,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -1092,7 +1092,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.dateAndTime.simple.timeOfDay.valueIsMin``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -1155,7 +1155,7 @@ THIS^.assertorContainer.assertor.assert.dateAndTime.simple.timeOfDay.valueIsMin(
 	currentValue	:= valueToTest,
 	minimumValue	:= minimumValue,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -1171,7 +1171,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.dateAndTime.simple.timeOfDay.valueIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -1234,7 +1234,7 @@ THIS^.assertorContainer.assertor.assert.dateAndTime.simple.timeOfDay.valueIsNotE
 	currentValue	:= valueToTest,
 	unexpectedValue	:= unexpectedValue,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,

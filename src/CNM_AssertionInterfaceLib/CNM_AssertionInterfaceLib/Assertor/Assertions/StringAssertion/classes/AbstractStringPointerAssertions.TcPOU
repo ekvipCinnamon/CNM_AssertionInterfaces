@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <POU Name="AbstractStringPointerAssertions" Id="{73587475-8030-4737-8f70-a83d620223f8}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+## Short summary
+Abstract class that provides methods for checking if an assert statement with contains or contains not,
+makes sense based on the string lengths.
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+{attribute 'reflection'}
+FUNCTION_BLOCK INTERNAL ABSTRACT AbstractStringPointerAssertions EXTENDS AbstractAssertion 
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="internal" Id="{c451058f-d9b9-438b-8307-927362331567}" />
+    <Property Name="className" Id="{cf97fa21-8e43-48df-9ecf-37ce2970f5f9}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This abstract property returns the class name of the concrete object, 
+It's for debugging purpose
+
+**Attention:** 
+	For derivations: **It is necessary that this property is overridden by the concrete class**
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+PROPERTY ABSTRACT className :CNM_AbstractObject.ClassName]]></Declaration>
+      <Get Name="Get" Id="{a330781f-8d64-4655-90e9-e64ffaad041c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="isContainsCheckNecessary" Id="{76bdc379-d11a-4a4c-ad02-1c3eb9f2e9aa}" FolderPath="internal\">
+      <Declaration><![CDATA[(*
+
+## Short summary
+Methods for checking if an assert statement with contains or contains not,
+makes sense based on the string lengths.
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+=
+:return: ``FLASE`` means it's not necessary 
+to check the string content, ``TRUE`` means
+it's necessary to check the string content
+to know if the assertion is true or false
+
+*)
+
+METHOD PROTECTED isContainsCheckNecessary :BOOL
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:POINTER TO BYTE;
+	(* string must be found in ``stringToCheck`` *)
+	searchString		:POINTER TO BYTE;
+	(* length of current string to check *)
+	lengthStringToCheck	:UDINT;
+	(* length of ``searchString`` *)
+	lengthSearchString	:UDINT;
+	(* just additional text if assert is false *)	
+	additionalText		:Tc2_System.T_MaxString;
+	(* message if the assertion is false *)
+	message				:AssertMessage;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[isContainsCheckNecessary := FALSE;
+IF	((
+		lengthSearchString > lengthStringToCheck
+	) OR_ELSE (
+		(stringToCheck = 0) XOR (searchString = 0)
+	)
+) THEN
+	THIS^.assertionWasWrong(message, additionalText);
+	RETURN;
+ELSIF	((
+		(stringToCheck = 0) AND_THEN (searchString = 0)
+	) OR_ELSE (
+		(lengthSearchString = 0)
+	) 
+) THEN
+	RETURN; //assert is true
+END_IF
+isContainsCheckNecessary := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="isContainsNoCheckNecessary" Id="{4ae9b0d6-ddf7-427c-bb77-c358d7afa704}" FolderPath="internal\">
+      <Declaration><![CDATA[(*
+
+## Short summary
+Methods for checking if an assert statement with contains or contains not, 
+makes sense based on the string lengths
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+=
+:return: ``FLASE`` means it's not necessary 
+to check the string content, ``TRUE`` means
+it's necessary to check the string content
+to know if the assertion is true or false
+
+*)
+
+METHOD PROTECTED isContainsNoCheckNecessary :BOOL
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck		:POINTER TO BYTE;
+	(* string must be found in ``stringToCheck`` *)
+	searchString		:POINTER TO BYTE;
+	(* length of current string to check *)
+	lengthStringToCheck	:UDINT;
+	(* length of ``searchString`` *)
+	lengthSearchString	:UDINT;
+	(* just additional text if assert is false *)	
+	additionalText		:Tc2_System.T_MaxString;
+	(* message if the assertion is false *)
+	message				:AssertMessage;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[isContainsNoCheckNecessary := FALSE;
+IF ((
+		lengthSearchString > lengthStringToCheck
+	) OR_ELSE (
+		(stringToCheck = 0) XOR (searchString = 0)
+	)
+) THEN
+	RETURN; //assert is true
+ELSIF ((
+		(stringToCheck = 0) AND_THEN (searchString = 0)
+	) OR_ELSE (	
+		lengthSearchString = 0
+	)
+) THEN
+	THIS^.assertionWasWrong(message, additionalText);
+	RETURN;
+END_IF
+isContainsNoCheckNecessary := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="AbstractStringPointerAssertions">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="AbstractStringPointerAssertions.className.Get">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="AbstractStringPointerAssertions.isContainsCheckNecessary">
+      <LineId Id="1" Count="18" />
+    </LineIds>
+    <LineIds Name="AbstractStringPointerAssertions.isContainsNoCheckNecessary">
+      <LineId Id="1" Count="18" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

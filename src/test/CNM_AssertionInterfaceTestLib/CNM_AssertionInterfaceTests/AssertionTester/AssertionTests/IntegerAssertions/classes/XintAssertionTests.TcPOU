@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.13">
   <POU Name="XintAssertionTests" Id="{a1e1e542-9410-478f-9227-7f03178f770e}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
@@ -40,7 +40,9 @@ VAR CONSTANT
 	{attribute 'hide'}
 	INIT_VALUE_MULTIPLICAND	:__XWORD := 16#1111_1111;
 	(* multiplicand for the ``multiplier`` *)
+	{warning disable C0196}
 	MULTIPLICAND			:__XINT := (ROR(INIT_VALUE_MULTIPLICAND, 32) OR INIT_VALUE_MULTIPLICAND);
+	{warning enable C0196}
 	(* first of all multipliers the test iterates *)
 	FIRST_MULTIPLIER		:__XINT := 0;
 	(* first of all multipliers the test iterates *)
@@ -59,9 +61,13 @@ VAR CONSTANT
 	SHR is not working with __XINT
 	*)
 	{attribute 'hide'}
+	{warning disable C0195}
 	BINARY_MINUS_ONE		:__XWORD := ALL_BITS_SET;
+	{warning enable C0195}
 	(* the msb is unset only *)
+	{warning disable C0196}
 	MAXIMUM_VALUE			:__XINT := SHR(BINARY_MINUS_ONE,1);
+	{warning ensable C0196}
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -131,7 +137,7 @@ END_VAR
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -199,7 +205,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsEven``
-of CNM_AssertionInterfaceLib library with various inputs
+of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -243,7 +249,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsGreaterThan``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -319,7 +325,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsInRangeOf``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -401,7 +407,7 @@ TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsLessThan``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -477,7 +483,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsMax``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -553,7 +559,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsMin``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -629,7 +635,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsNegative``
-of CNM_AssertionInterfaceLib library with various inputs
+of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -673,7 +679,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -741,7 +747,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsOdd``
-of CNM_AssertionInterfaceLib library with various inputs
+of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -785,7 +791,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsPositive``
-of CNM_AssertionInterfaceLib library with various inputs
+of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -829,7 +835,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -902,7 +908,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsEven``
-of CNM_AssertionInterfaceLib library, 
+of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -973,7 +979,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsGreaterThan``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -1045,7 +1051,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsInRangeOf``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -1123,7 +1129,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsLessThan``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -1194,7 +1200,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsMax``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -1266,7 +1272,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsMin``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -1338,7 +1344,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsNegative``
-of CNM_AssertionInterfaceLib library, 
+of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -1409,7 +1415,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -1481,7 +1487,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsOdd``
-of CNM_AssertionInterfaceLib library, 
+of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -1551,7 +1557,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.integer.signed.x.valueIsPositive``
-of CNM_AssertionInterfaceLib library, 
+of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 

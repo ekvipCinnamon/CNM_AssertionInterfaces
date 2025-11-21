@@ -1,12 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="BooleanAssertion" Id="{7b02c6b8-8f94-4a00-8971-0ae30ddc1b33}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This class provides assert statements for booleans.
-It implements the interface :ref:`IBooleanAssertion`
 
 .. <legal notes>
 
@@ -26,7 +24,7 @@ methods and properties
 *)
 
 {attribute 'reflection'}
-FUNCTION_BLOCK INTERNAL BooleanAssertion EXTENDS AbstactAssertion IMPLEMENTS IBooleanAssertion
+FUNCTION_BLOCK INTERNAL BooleanAssertion EXTENDS AbstractAssertion IMPLEMENTS IBooleanAssertion
 VAR
 END_VAR
 ]]></Declaration>
@@ -36,8 +34,7 @@ END_VAR
     <Property Name="className" Id="{e9a59bbe-d4b2-4228-a66b-399059b4e512}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This abstract property returns the class name of the concrete object, 
 It's for debugging purpose
 
@@ -61,7 +58,7 @@ PROPERTY className :CNM_AbstractObject.ClassName]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[className := 'CNM_AssertionInterfaceLib.BooleanAssertion';
+          <ST><![CDATA[className := 'CNM_Assertor.BooleanAssertion';
 ]]></ST>
         </Implementation>
       </Get>
@@ -69,8 +66,7 @@ END_VAR
     <Method Name="valueIsEqualTo" Id="{af770f27-ce30-4926-8dc2-4693c6d43f62}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is equal to the expected value
 
 .. <legal notes>
@@ -85,8 +81,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -109,8 +104,7 @@ END_IF]]></ST>
     <Method Name="valueIsFalse" Id="{1ea7a3f4-1a6e-40f4-bf47-18935e3e653c}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is ``FALSE``
 
 .. <legal notes>
@@ -125,8 +119,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -148,8 +141,7 @@ END_IF
     <Method Name="valueIsNotEqualTo" Id="{b1f0ce9a-7c34-4d1c-9e78-2f86b28f130b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is not equal to the unexpected value
 
 .. <legal notes>
@@ -164,8 +156,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -188,8 +179,7 @@ END_IF]]></ST>
     <Method Name="valueIsTrue" Id="{9d5b3ef4-4ce9-41ee-84bc-fd1df4f4c9fc}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is ``TRUE``
 
 .. <legal notes>
@@ -204,8 +194,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 

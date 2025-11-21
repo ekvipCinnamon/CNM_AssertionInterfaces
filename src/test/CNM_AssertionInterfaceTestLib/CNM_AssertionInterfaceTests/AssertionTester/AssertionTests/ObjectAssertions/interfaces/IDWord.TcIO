@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+  <Itf Name="IDWord" Id="{a5cce378-ebc8-480b-a717-f8fa5bb3dbcd}">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+Interface for DWordValue Class
+only needed for ´´__QUERYINTERFACE()´´ in ´´compareTo()´´
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2023 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+INTERFACE IDWord EXTENDS CNM_AbstractObject.IObject
+]]></Declaration>
+    <Property Name="value" Id="{e874070e-6e89-49c4-a02f-420c3a34ba91}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+value of the DWordValue Class
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2023 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+PROPERTY value : DWORD]]></Declaration>
+      <Get Name="Get" Id="{22fad6da-39b8-4ad5-a159-a233578a0335}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{070d6ca8-391d-4fc1-90d2-8d3f5ea6c0e0}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

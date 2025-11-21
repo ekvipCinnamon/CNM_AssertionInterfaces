@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="SimpleDateAndTimeAssertions" Id="{f3dc97fb-181e-402c-8292-4576bcf882dc}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| This class provides assert statements for date and time types with 32 bit length
-| It implements the interface :ref:`ISimpleDateAndTimeAssertions`
-| For date and time (``DT``) use :ref:`SimpleDateAndTimeAssertions.dateAndTime`
-| For date (``DATE``) use  :ref:`SimpleDateAndTimeAssertions.dateOnly`
-| For time of day (``TOD``) use  :ref:`SimpleDateAndTimeAssertions.timeOfDay`
+## Short summary
+
+This class provides assert statements for date and time types with 32 bit length
+It implements the interface `ISimpleDateAndTimeAssertions`
+For date and time (``DT``) use `SimpleDateAndTimeAssertions.dateAndTime`
+For date (``DATE``) use  `SimpleDateAndTimeAssertions.dateOnly`
+For time of day (``TOD``) use  `SimpleDateAndTimeAssertions.timeOfDay`
 
 .. <legal notes>
 
@@ -23,8 +23,7 @@ legal notes
 
 .. </legal notes>
 
-methods and properties
-=======================
+
 
 *)
 
@@ -47,8 +46,7 @@ END_VAR
     <Property Name="className" Id="{b832bafb-84d2-4b1e-adf6-f14116155244}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This abstract property returns the class name of the concrete object, 
 It's for debugging purpose
 
@@ -72,7 +70,7 @@ PROPERTY className :CNM_AbstractObject.ClassName]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[className := 'CNM_AssertionInterfaceLib.SimplyDateAndTimeAssertions';
+          <ST><![CDATA[className := 'CNM_Assertor.SimpleDateAndTimeAssertions';
 ]]></ST>
         </Implementation>
       </Get>
@@ -80,9 +78,8 @@ END_VAR
     <Property Name="dateAndTime" Id="{bb67ca2a-d53b-4d0e-9f82-b9aa54727ecf}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`I32BitDtAssertions`
+## Short summary
+Returns the interface `I32BitDtAssertions`
 with assert statements for 32 bit date and time ``DT``
 
 .. <legal notes>
@@ -114,9 +111,8 @@ END_VAR
     <Property Name="dateOnly" Id="{abb540b7-37c0-4d0f-bdf8-fb8b025068f2}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`I32BitDateAssertions`
+## Short summary
+Returns the interface `I32BitDateAssertions`
 with assert statements for 32 bit date ``DATE``
 
 .. <legal notes>
@@ -148,8 +144,7 @@ END_VAR
     <Method Name="setCallBack" Id="{55c7dbf2-73b8-4a27-9087-f94699962405}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This methods is the setter for the callback class if an assertion was false
 
 .. <legal notes>
@@ -164,15 +159,14 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
 METHOD setCallBack
 VAR_INPUT
 	(* the class that must be informed if an assertion is false *)
-	callBack	:IAssertCallback;  
+	callBack	:IAssertCallBack;  
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -185,9 +179,8 @@ THIS^.timeOfDayAssertions.setCallBack(callBack);
     <Property Name="timeOfDay" Id="{1ba11a9a-0e79-4afb-aac9-e7d98b447f29}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`I32BitDateAssertions`
+## Short summary
+Returns the interface `I32BitDateAssertions`
 with assert statements for 32 bit time of day ``TOD``
 
 .. <legal notes>

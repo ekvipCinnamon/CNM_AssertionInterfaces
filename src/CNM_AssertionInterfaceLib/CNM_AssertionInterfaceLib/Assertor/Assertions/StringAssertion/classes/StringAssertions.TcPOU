@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="StringAssertions" Id="{021e2eff-f314-4410-aa94-a992b4891e84}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| This class provides assert statements for strings
-| For UTF-16 strings up to 255 ``WORD`` (``WSTRING(Tc2_System.MAX_STRING_LENGTH)``) use the property :ref:`IStringAssertions.utf16`.
-| For windows-1252 strings up to 255 ``BYTE`` (``Tc2_System.T_MaxString``) use the property :ref:`IStringAssertions.windows1252`.
-| For windows-1252 or UTF-16 strings that are longer, use the property :ref:`IStringAssertions.anyString`  
+## Short summary
+
+This class provides assert statements for strings
+For UTF-16 strings up to 255 ``WORD`` (``WSTRING(Tc2_System.MAX_STRING_LENGTH)``) use the property `IStringAssertions.utf16`.
+For windows-1252 strings up to 255 ``BYTE`` (``Tc2_System.T_MaxString``) use the property `IStringAssertions.windows1252`.
+For windows-1252 or UTF-16 strings that are longer, use the property `IStringAssertions.anyString`  
 
 .. <legal notes>
 
@@ -22,78 +22,30 @@ legal notes
 
 .. </legal notes>
 
-methods and properties
-=======================
+
 
 *)
 
 {attribute 'reflection'}
 FUNCTION_BLOCK INTERNAL StringAssertions EXTENDS CNM_AbstractObject.Object IMPLEMENTS IStringAssertions, IAssertCallBackSetter
 VAR
-	(* class to handle windows-1252 assertions *)
-	win1252StringAssertions	:Windows1252StringAssertions();
 	(* class to handle windows-1252 and windows-1251 assertions *)
 	win125xStringAssertions	:Windows125xStringAssertions();
 	(* class to handle UTF-16 assertions *)
 	utf16StringAssertions	:Utf16StringAssertions();
 	(* class to handle UTF-8 assertions *)
 	utf8StringAssertions	:Utf8StringAssertions();
-	(* class to handle ANY_STRING assertions *)
-	anyStringAssertions		:AnyStringAssertions();
+	(* class to handle Unicode assertions with anys string*)
+	UnicodeAssertions :UnicodeAssertions();
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <Property Name="anyString" Id="{83bf6d8f-b45d-4c34-bfb2-15ee0fc408cb}">
-      <Declaration><![CDATA[(*
-
-short summary
-=================
-Returns an interface :ref:`IAnyStringAssertions` with assert statements,
-for 8-bit windows-1252 and UTF-16 strings with an undifined length.
-
-.. attention:: 
-	All strings are handled as null terminated byte/word streams.
-	For windows-1252 is end of the string 16#00
-	For UTF-16 is end of the string 16#00_00
-
-.. attention:: 
-	The interface :ref:`IAnyStringAssertions` uses ``ANY_STRING``, 
-	for this it's not possible to use literals/constants,
-	because for ``ANY`` types generates the compiler ``__SYSTEM.AnyType``
-	and ``__SYSTEM.AnyType`` contains a pointer  
-
-.. <legal notes>
-
-legal notes
-=================
-| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
-| SPDX-License-Identifier: Apache-2.0
-| For details check: Apache-2.0_
-
-.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
-
-.. </legal notes>
-
-*)
-
-PROPERTY anyString :IAnyStringAssertions
-]]></Declaration>
-      <Get Name="Get" Id="{71b617a6-315f-4adc-bbef-86bbf65cccd4}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[anyString := THIS^.anyStringAssertions;]]></ST>
-        </Implementation>
-      </Get>
-    </Property>
     <Property Name="className" Id="{555ec8d0-998c-4d51-947b-a00038fc251b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This abstract property returns the class name of the concrete object, 
 It's for debugging purpose
 
@@ -118,15 +70,14 @@ PROPERTY className :CNM_AbstractObject.ClassName
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[className := 'CNM_AssertionInterfaceLib.StringAssertions';]]></ST>
+          <ST><![CDATA[className := 'CNM_Assertor.StringAssertions';]]></ST>
         </Implementation>
       </Get>
     </Property>
     <Method Name="setCallBack" Id="{98d51a66-31a8-4e14-8d43-1c3d68f8920a}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This methods is the setter for the callback class if an assertion was false
 
 .. <legal notes>
@@ -141,32 +92,70 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
 METHOD setCallBack
 VAR_INPUT
 	(* the class that must be informed if an assertion is false *)
-	callBack	: IAssertCallback;
+	callBack	: IAssertCallBack;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[THIS^.anyStringAssertions.setCallBack(callBack);
-THIS^.win1252StringAssertions.setCallBack(callBack);
-THIS^.utf16StringAssertions.setCallBack(callBack);
+        <ST><![CDATA[THIS^.utf16StringAssertions.setCallBack(callBack);
 THIS^.win125xStringAssertions.setCallBack(callBack);
 THIS^.utf8StringAssertions.setCallBack(callBack);
+THIS^.UnicodeAssertions.setCallBack(callBack);
 ]]></ST>
       </Implementation>
     </Method>
+    <Property Name="unicode" Id="{9c482a1e-ec38-4ab4-a917-d8c37a173922}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+Returns an interface `IUnicodeStringAssertions` with assert statements,
+for UTF-8 and UTF-16 strings with an undefined length.
+
+**Attention:** 
+	All strings are handled as null terminated byte/word streams.
+	For UTF-8 is end of the string 16#00
+	For UTF-16 is end of the string 16#00_00
+
+**Attention:** 
+	The interface `IUnicodeAssertions` uses ``ANY_STRING``, 
+	for this it's not possible to use literals/constants,
+	because for ``ANY`` types generates the compiler ``__SYSTEM.AnyType``
+	and ``__SYSTEM.AnyType`` contains a pointer  
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+PROPERTY unicode :IUnicodeStringAssertions]]></Declaration>
+      <Get Name="Get" Id="{20d81158-4ead-47e2-b859-1b8aa91f45c9}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[unicode := THIS^.UnicodeAssertions;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Property Name="utf16" Id="{8c35efe3-da80-4ce5-b25e-cf1d715e4a32}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns an interface :ref:`IUtf16StringAssertions` with assert statements
+## Short summary
+Returns an interface `IUtf16StringAssertions` with assert statements
 for UTF-16 strings until 255 ``WORD`` length (``WSTRING(Tc2_System.MAX_STRING_LENGTH)``)
 
 .. <legal notes>
@@ -198,9 +187,8 @@ END_VAR
     <Property Name="utf8" Id="{68e05729-c5c3-436c-9817-db5dd5fb6dd9}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns an interface :ref:`IUtf8StringAssertions` with assert statements
+## Short summary
+Returns an interface `IUtf8StringAssertions` with assert statements
 for UTF-8 strings up to 255 bytes length (``STRING(Tc2_System.MAX_STRING_LENGTH)``)
 
 .. <legal notes>
@@ -229,46 +217,11 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
-    <Property Name="windows1252" Id="{29f75dc2-e9da-4c1b-a89c-f399fd2abc59}">
-      <Declaration><![CDATA[(*
-
-short summary
-=================
-Returns an interface :ref:`IWindows1252StringAssertions` with assert statements
-for 8-bit windows-1252 strings until 255 characters length (``Tc2_System.T_MaxString``)
-
-.. <legal notes>
-
-legal notes
-=================
-| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
-| SPDX-License-Identifier: Apache-2.0
-| For details check: Apache-2.0_
-
-.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
-
-.. </legal notes>
-
-*)
-
-PROPERTY windows1252 :IWindows1252StringAssertions
-]]></Declaration>
-      <Get Name="Get" Id="{2c376a7a-de3e-49f6-a453-d529e2cf7a28}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[windows1252 := THIS^.win1252StringAssertions;
-]]></ST>
-        </Implementation>
-      </Get>
-    </Property>
     <Property Name="windows125x" Id="{4708f9dd-1d22-44f6-bc75-c94afb229506}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns an interface :ref:`IWindows125xStringAssertions` with assert statements for 8-bit 
+## Short summary
+Returns an interface `IWindows125xStringAssertions` with assert statements for 8-bit 
 windows-1252 and windows-1251 strings up to 255 characters length (``Tc2_System.T_MaxString``).
 Use Tc2_Utilities.GLOBAL_SBCS_TABLE variable to select required encoding
 
@@ -298,5 +251,30 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
+    <LineIds Name="StringAssertions">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="StringAssertions.className.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="StringAssertions.setCallBack">
+      <LineId Id="5" Count="3" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="StringAssertions.unicode.Get">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="StringAssertions.utf16.Get">
+      <LineId Id="3" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="StringAssertions.utf8.Get">
+      <LineId Id="3" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="StringAssertions.windows125x.Get">
+      <LineId Id="3" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
   </POU>
 </TcPlcObject>

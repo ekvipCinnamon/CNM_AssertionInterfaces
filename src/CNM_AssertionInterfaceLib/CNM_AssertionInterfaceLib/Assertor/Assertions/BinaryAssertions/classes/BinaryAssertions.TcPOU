@@ -1,13 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="BinaryAssertions" Id="{716c6ad5-0053-4aac-928d-711886214de6}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This class provides assert statements for binaries
 e.g. structures, arrays etc...
-It implements the interface :ref:`IBinaryAssertions`
+It implements the interface IBinaryAssertions
 
 .. <legal notes>
 
@@ -21,19 +20,16 @@ legal notes
 
 .. </legal notes>
 
-methods and properties
-=======================
-
 *)
 
 {attribute 'reflection'}
-FUNCTION_BLOCK INTERNAL BinaryAssertions EXTENDS AbstactAssertion IMPLEMENTS IBinaryAssertions
+FUNCTION_BLOCK INTERNAL BinaryAssertions EXTENDS AbstractAssertion IMPLEMENTS IBinaryAssertions
 VAR CONSTANT
 	(* to check if binary data points to nowhere *)
 	NULL_POINTER	:POINTER TO BYTE := 0;
 	(* to check if the binary data has no size *)
 	ZERO_SIZE		:DINT := 0;
-	(* register size of the plattform, shall be always 8 byte *)
+	(* register size of the plattform in bytes *)
 	REGISTER_SIZE	:DINT := SIZEOF(__XWORD);
 	(* first index of a pointer *) 
 	FIRST_DATA		:LINT := 0;
@@ -48,8 +44,7 @@ END_VAR
     <Method Name="binaryCompare" Id="{4578db9b-24ed-493e-9b2b-69b2c6761e36}" FolderPath="protected\">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This method comapres the data of two any pointers. 
 The table below shows with some examples how it works.
 
@@ -73,17 +68,17 @@ The table below shows with some examples how it works.
 | 16#0FF0           | 2                | 16#F00F                    | 2                         | SMALLER                               |
 +-------------------+------------------+----------------------------+---------------------------+---------------------------------------+
 
-.. attention:: 
+**Attention:** 
 	Binary comparison means it compares values byte by byte, regardless of type information (signs, ``REAL`` etc...)
 	and it compares padding bytes, too.
 
-.. attention:: 
+**Attention:** 
 	``STRING`` and ``WSTRING`` is null terminated
 	that means TwinCAT sets null byte/word at the end of the string and touches nothing else
 	For example ``foo :STRING(3) := 'foo';`` looks binary 16#66 16#6F 16#6F 16#00.
 	if you set foo to an empty string ``foo := ''`` it looks like 16#00 16#6F 16#6F 16#00.
 
-.. attention:: 
+**Attention:** 
 	It works not for bits because the minimum size must be at least one byte. If the ``__SYSTEM.TYPE_CLASS``
 	of ``data`` ``AND`` ``dataToCompare is ``__SYSTEM.TYPE_CLASS.TYPE_BOOL`` ``OR`` ``__SYSTEM.TYPE_CLASS.TYPE_BIT``
 	it uses the ``TO_BOOL`` operator for comarison. That means for ``__SYSTEM.TYPE_CLASS.TYPE_BIT`` it has no idea
@@ -101,14 +96,14 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 :return: ``SMALLER``: ``data`` is smaller than ``dataToCompare``, 
 ``EQUAL``: ``data`` is equal to ``dataToCompare``,
 ``Greater``: ``data`` is greater to ``dataToCompare``
 
 *)
 
+{attribute 'analysis' := '-130'}
 METHOD PROTECTED binaryCompare :CNM_ReturnTypes.ComparationResult
 VAR_INPUT
 	(* current binary data *)
@@ -116,25 +111,10 @@ VAR_INPUT
 	(* binary data with smaller values *)
 	dataToCompare	:ANY;
 END_VAR
-VAR CONSTANT
-	(* for boolens to figure out if the size exactly one byte *) 
-	SIZE_OF_ONE_BYTE	:DINT := 1;
-END_VAR]]></Declaration>
+]]></Declaration>
       <Implementation>
-        <ST><![CDATA[binaryCompare := CNM_ReturnTypes.ComparationResult.EQUAL;
-RETURN ((data.pValue = THIS^.NULL_POINTER) AND (dataToCompare.pValue = THIS^.NULL_POINTER));
-RETURN ((data.diSize = THIS^.ZERO_SIZE) AND (dataToCompare.diSize = THIS^.ZERO_SIZE));
-IF (
-	((data.pValue = THIS^.NULL_POINTER) AND (dataToCompare.pValue <> THIS^.NULL_POINTER))
-	OR ((data.diSize = THIS^.ZERO_SIZE) AND (dataToCompare.diSize <> THIS^.ZERO_SIZE))
-)THEN
-	binaryCompare := CNM_ReturnTypes.ComparationResult.SMALLER;
-ELSIF (
-	((data.pValue <> THIS^.NULL_POINTER) AND (dataToCompare.pValue = THIS^.NULL_POINTER))
-	OR ((data.diSize <> THIS^.ZERO_SIZE) AND (dataToCompare.diSize = THIS^.ZERO_SIZE))
-)THEN
-	binaryCompare := CNM_ReturnTypes.ComparationResult.GREATER;
-ELSIF (data.diSize < dataToCompare.diSize) THEN
+        <ST><![CDATA[RETURN(THIS^.isDataNullOrSizeZero(data := data,dataToCompare := dataToCompare,result => binaryCompare));
+IF (data.diSize < dataToCompare.diSize) THEN
 	IF (THIS^.isDataZero(
 		data := dataToCompare.pValue,
 		size := dataToCompare.diSize,
@@ -162,17 +142,7 @@ ELSIF (data.diSize > dataToCompare.diSize) THEN
 	ELSE
 		binaryCompare := CNM_ReturnTypes.ComparationResult.GREATER;
 	END_IF
-ELSIF (
-	(data.diSize = SIZE_OF_ONE_BYTE)
-	AND (dataToCompare.diSize = SIZE_OF_ONE_BYTE)
-	AND (
-		(data.TypeClass = __SYSTEM.TYPE_CLASS.TYPE_BOOL)
-		OR (data.TypeClass = __SYSTEM.TYPE_CLASS.TYPE_BIT)
-	)AND(
-		(dataToCompare.TypeClass = __SYSTEM.TYPE_CLASS.TYPE_BOOL)
-		OR (dataToCompare.TypeClass = __SYSTEM.TYPE_CLASS.TYPE_BIT)
-	)	
-)THEN
+ELSIF (THIS^.isDataBoolOrBit(data := data, dataToCompare := dataToCompare)) THEN
 	IF (TO_BOOL(data.pValue^) AND (NOT TO_BOOL(dataToCompare.pValue^))) THEN
 		binaryCompare := CNM_ReturnTypes.ComparationResult.GREATER;
 	ELSIF  ((NOT TO_BOOL(data.pValue^)) AND TO_BOOL(dataToCompare.pValue^)) THEN
@@ -191,8 +161,7 @@ END_IF
     <Property Name="className" Id="{7e152899-a18c-4a0e-adfa-143f141134d7}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This abstract property returns the class name of the concrete object, 
 It's for debugging purpose
 
@@ -216,7 +185,7 @@ PROPERTY className :CNM_AbstractObject.ClassName]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[className := 'CNM_AssertionInterfaceLib.BinaryAssertions';
+          <ST><![CDATA[className := 'CNM_Assertor.BinaryAssertions';
 ]]></ST>
         </Implementation>
       </Get>
@@ -224,9 +193,8 @@ END_VAR
     <Method Name="compareBytewise" Id="{3a1c97f7-979d-432d-a2de-7d9cdecb1a67}" FolderPath="protected\">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-This method comapres the data of two byte pointers. 
+## Short summary
+This method compares the data of two byte pointers. 
 The table below shows with some examples how it works.
 
 +-------------------+----------------------------+----------+---------------------------------------+
@@ -245,11 +213,11 @@ The table below shows with some examples how it works.
 | 16#0FF0           | 16#F00F                    | 2        | SMALLER                               |
 +-------------------+----------------------------+----------+---------------------------------------+
 
-.. attention:: 
+**Attention:** 
 	Binary comparison means it compares values byte by byte, regardless of type information (signs, ``REAL`` etc...)
 	and it compares padding bytes, too.
 
-.. attention:: 
+**Attention:** 
 	``STRING`` and ``WSTRING`` is null terminated
 	that means TwinCAT sets null byte/word at the end of the string and touches nothing else
 	For example ``foo :STRING(3) := 'foo';`` looks binary 16#66 16#6F 16#6F 16#00.
@@ -267,14 +235,13 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 :return: ``SMALLER``: ``data`` is smaller than ``dataToCompare``, 
 ``EQUAL``: ``data`` is equal to ``dataToCompare``,
 ``Greater``: ``data`` is greater to ``dataToCompare``
 
 *)
-
+{attribute 'analysis' := '-41, -130'}
 METHOD PROTECTED compareBytewise :CNM_ReturnTypes.ComparationResult
 VAR_INPUT
 	(* current binary data *)
@@ -283,7 +250,7 @@ VAR_INPUT
 	dataToCompare	:POINTER TO BYTE;
 	(* size to compare in bytes, it must be smaller or equal to the smaller size of both data *)
 	size			:DINT;
-	(* last address to comapre *)
+	(* last index to compare *)
 	end				:LINT;
 END_VAR
 VAR
@@ -293,7 +260,7 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[compareBytewise := CNM_ReturnTypes.ComparationResult.EQUAL;
-
+// memcmp is not used, as it compares from low to highbyte which contradicts the semantics of Numberdatatypes
 FOR pointerIndex := (size-1) TO end BY THIS^.DIRECTION_LE DO
 	IF (data[pointerIndex] < dataToCompare[pointerIndex]) THEN
 		compareBytewise := CNM_ReturnTypes.ComparationResult.SMALLER;
@@ -309,8 +276,7 @@ END_FOR;
     <Method Name="compareData" Id="{1389599e-a087-4365-b3b7-e20c49cb4e46}" FolderPath="protected\">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This method comapres the data of two byte pointers.
 It tries to compare registerwise if it makes sens (pointers are aligned and size big enough)
 The table below shows with some examples how it works.
@@ -329,11 +295,11 @@ The table below shows with some examples how it works.
 | 16#0FF0           | 2                | 16#F00F                    | 2                         | SMALLER                               |
 +-------------------+------------------+----------------------------+---------------------------+---------------------------------------+
 
-.. attention:: 
+**Attention:** 
 	Binary comparison means it compares values byte by byte, regardless of type information (signs, ``REAL`` etc...)
 	and it compares padding bytes, too.
 
-.. attention:: 
+**Attention:** 
 	``STRING`` and ``WSTRING`` is null terminated
 	that means TwinCAT sets null byte/word at the end of the string and touches nothing else
 	For example ``foo :STRING(3) := 'foo';`` looks binary 16#66 16#6F 16#6F 16#00.
@@ -351,14 +317,14 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 :return: ``SMALLER``: ``data`` is smaller than ``dataToCompare``, 
 ``EQUAL``: ``data`` is equal to ``dataToCompare``,
 ``Greater``: ``data`` is greater to ``dataToCompare``
 
 *)
 
+{attribute 'analysis' := '-130'}
 METHOD PROTECTED compareData :CNM_ReturnTypes.ComparationResult
 VAR_INPUT
 	(* current binary data *)
@@ -408,8 +374,7 @@ END_IF
     <Method Name="compareRegisterwise" Id="{fdfa35d2-7caa-44de-a9aa-57b222af0f20}" FolderPath="protected\">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This method comapres the data of two byte pointers, but it iterates registerwise through the data.
 The table below shows with some examples how it works.
 
@@ -429,11 +394,11 @@ The table below shows with some examples how it works.
 | 16#70FF_FFFF_FFFF_FFFF | 16#80FF_FFFF_0000_FFFF     | 8        | SMALLER                               |
 +------------------------+----------------------------+----------+---------------------------------------+
 
-.. attention:: 
+**Attention:** 
 	Binary comparison means it compares values register by register, regardless of type information (signs, ``REAL`` etc...)
 	and it compares padding bytes, too.
 
-.. attention:: 
+**Attention:** 
 	``STRING`` and ``WSTRING`` is null terminated
 	that means TwinCAT sets null byte/word at the end of the string and touches nothing else
 	For example ``foo :STRING(3) := 'foo';`` looks binary 16#66 16#6F 16#6F 16#00.
@@ -451,14 +416,14 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 :return: ``SMALLER``: ``data`` is smaller than ``dataToCompare``, 
 ``EQUAL``: ``data`` is equal to ``dataToCompare``,
 ``Greater``: ``data`` is greater to ``dataToCompare``
 
 *)
 
+{attribute 'analysis' := '-41, -130'}
 METHOD PROTECTED compareRegisterwise :CNM_ReturnTypes.ComparationResult
 VAR_INPUT
 	(* current binary data *)
@@ -471,10 +436,6 @@ END_VAR
 VAR
 	(* index of the current address *)
 	pointerIndex	:LINT;
-END_VAR
-VAR CONSTANT
-	(* direction for little endian *)
-	DIRECTION_LE	:LINT := -1;
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -495,10 +456,9 @@ END_FOR;
     <Method Name="getRemainingBytes" Id="{cd25364d-6567-44e8-afdd-85b13f461d28}" FolderPath="protected\">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This method calculates the number of bytes that are remaining
-if size is devided by register size.
+if size is divided by register size.
 
 .. <legal notes>
 
@@ -512,8 +472,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 :return: number of bytes that are remaining if it iterates registerwise through the data
 
 *)
@@ -529,11 +488,134 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
+    <Method Name="isDataBoolOrBit" Id="{ddc17dfe-19fa-4cc0-afe6-92e9d6e8ce79}" FolderPath="protected\">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This method checks if the current Data and DataToCompare are both either bools or bits.
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+:return: ``TRUE`` data and dataToCompare are both bool / bits, otherwise false
+
+*)
+
+METHOD PROTECTED isDataBoolOrBit : BOOL
+VAR_INPUT
+	(* current binary data *)
+	data			:ANY;
+	(* binary data with smaller values *)
+	dataToCompare	:ANY;
+END_VAR
+VAR CONSTANT
+	(* for boolens to figure out if the size exactly one byte *) 
+	SIZE_OF_ONE_BYTE	:DINT := 1;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[isDataBoolOrBit := ((
+	data.diSize = SIZE_OF_ONE_BYTE
+	) AND (
+		dataToCompare.diSize = SIZE_OF_ONE_BYTE
+	) AND ( 
+		(data.TypeClass = TYPE_CLASS.TYPE_BOOL)
+		OR 	(data.TypeClass = TYPE_CLASS.TYPE_BIT)
+	) AND (
+			(dataToCompare.TypeClass = TYPE_CLASS.TYPE_BOOL)
+			OR (dataToCompare.TypeClass = TYPE_CLASS.TYPE_BIT)
+	)
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="isDataNullOrSizeZero" Id="{66b288ea-2036-42c7-8792-872889c19dfd}" FolderPath="protected\">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This method checks if the two given pointers have a valid address and the size of data is defined.
+
++-------------------+------------------+----------------------------+---------------------------+---------------------------------------+--------------------------+
+| **value of data** | **size of data** | **value of dataToCompare** | **size of dataToCompare** | **CNM_ReturnTypes.ComparationResult** | **ReturnValue**		   |
++===================+==================+============================+===========================+=======================================+==========================+
+| null              | *                | null                       | *                         | EQUAL                                 | TRUE					   |
++-------------------+------------------+----------------------------+---------------------------+---------------------------------------+--------------------------+
+| *              	| 0                | *	                        | 0                         | EQUAL                                 | TRUE					   |
++-------------------+------------------+----------------------------+---------------------------+---------------------------------------+--------------------------+
+| null              | *                | *                          | *                         | SMALLER                               | TRUE					   |
++-------------------+------------------+----------------------------+---------------------------+---------------------------------------+--------------------------+
+| *                 | 0                | *                          | *                         | SMALLER                               | TRUE					   |
++-------------------+------------------+----------------------------+---------------------------+---------------------------------------+--------------------------+
+| *                 | *                | null                       | *                         | GREATER                               | TRUE					   |
++-------------------+------------------+----------------------------+---------------------------+---------------------------------------+--------------------------+
+| *                 | *                | *                          | 0                         | GREATER                               | TRUE					   |
++-------------------+------------------+----------------------------+---------------------------+---------------------------------------+--------------------------+
+Otherwise: EQUAL, FALSE
+( referes to something not null / <> 0)
+
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2025 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+:return: consider table
+
+*)
+
+METHOD PROTECTED isDataNullOrSizeZero : BOOL
+VAR_INPUT
+	(* current binary data *)
+	data			:ANY;
+	(* binary data with smaller values *)
+	dataToCompare	:ANY;
+END_VAR
+VAR_OUTPUT
+	(*see table*)
+	result: CNM_ReturnTypes.ComparationResult;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[result := CNM_ReturnTypes.ComparationResult.EQUAL;
+isDataNullOrSizeZero := TRUE;
+RETURN ((data.pValue = THIS^.NULL_POINTER) AND (dataToCompare.pValue = THIS^.NULL_POINTER));
+RETURN ((data.diSize = THIS^.ZERO_SIZE) AND (dataToCompare.diSize = THIS^.ZERO_SIZE));
+IF (
+	((data.pValue = THIS^.NULL_POINTER) AND (dataToCompare.pValue <> THIS^.NULL_POINTER))
+	OR ((data.diSize = THIS^.ZERO_SIZE) AND (dataToCompare.diSize <> THIS^.ZERO_SIZE))
+)THEN
+	result := CNM_ReturnTypes.ComparationResult.SMALLER;
+ELSIF (
+	((data.pValue <> THIS^.NULL_POINTER) AND (dataToCompare.pValue = THIS^.NULL_POINTER))
+	OR ((data.diSize <> THIS^.ZERO_SIZE) AND (dataToCompare.diSize = THIS^.ZERO_SIZE))
+)THEN
+	result := CNM_ReturnTypes.ComparationResult.GREATER;
+ELSE
+	isDataNullOrSizeZero := FALSE;
+END_IF;
+]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="isDataZero" Id="{7a11a03c-fde8-4344-9da4-ec890608b7f3}" FolderPath="protected\">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This method checks if the data of a pointer is zero through all bytes (``size-1``)
 
 +------------------------+----------+---------+------------------+
@@ -564,19 +646,19 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 :return: ``TRUE`` all bytes are zero, ``FALSE`` at least one byte isn't zero
 
 *)
 
+{attribute 'analysis' := '-130'}
 METHOD PROTECTED isDataZero :BOOL
 VAR_INPUT
 	(* current binary data *)
 	data			:POINTER TO BYTE;
 	(* size to compare in bytes *)
 	size			:DINT;
-	(* last address to comapre *)
+	(* last index to compare *)
 	end				:LINT;	
 END_VAR
 VAR
@@ -587,7 +669,7 @@ END_VAR
       <Implementation>
         <ST><![CDATA[isPointerAligned := THIS^.isPointerAligend(data);
 
-IF (isPointerAligned AND ((size-end) >= THIS^.REGISTER_SIZE)) THEN;
+IF (isPointerAligned AND_THEN ((size-end) >= THIS^.REGISTER_SIZE)) THEN
 	remainingBytes := THIS^.getRemainingBytes(size);
 	IF (remainingBytes > THIS^.ZERO_SIZE) THEN
 		isDataZero := THIS^.isDataZeroBytewise(
@@ -615,8 +697,7 @@ END_IF;
     <Method Name="isDataZeroBytewise" Id="{3d402eb0-6a63-48ec-b8e1-874b0af5d8de}" FolderPath="protected\">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This method checks if the data of a byte pointer is zero through all bytes form (``size-1``) to ``end``.
 The table below shows how it works.
 
@@ -648,19 +729,19 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 :return: ``TRUE`` all bytes are zero, ``FALSE`` at least one byte isn't zero
 
 *)
 
+{attribute 'analysis' := '-130, -41'}
 METHOD PROTECTED isDataZeroBytewise :BOOL
 VAR_INPUT
 	(* current binary data *)
 	data			:POINTER TO BYTE;
 	(* size to compare in bytes *)
 	size			:DINT;
-	(* last index to comapre *)
+	(* last index to compare *)
 	end				:LINT;
 END_VAR
 VAR
@@ -686,8 +767,7 @@ END_FOR;
     <Method Name="isDataZeroRegisterwise" Id="{b93fcdd4-3aa8-46e9-9eae-5349f06f3fdb}" FolderPath="protected\">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This method checks if the data of a ``__XWORD pointer`` is zero
 through all bytes form (``size-1``) to ``end``.
 
@@ -703,19 +783,19 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 :return: ``TRUE`` all bytes are zero, ``FALSE`` at least one byte isn't zero
 
 *)
 
+{attribute 'analysis' := '-41, -130'}
 METHOD PROTECTED isDataZeroRegisterwise :BOOL
 VAR_INPUT
 	(* current binary data *)
 	data			:POINTER TO __XWORD;
 	(* size to compare in bytes *)
 	size			:DINT;
-	(* last address to comapre *)
+	(* last index to compare *)
 	end				:LINT;
 END_VAR
 VAR
@@ -741,22 +821,21 @@ END_FOR;
     <Method Name="isEqualTo" Id="{dc268479-c6e3-4f06-ab1e-6d3c8e20c01a}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if all bytes of memory of
 ``data`` and ``dataToCompare`` are equal
 
-.. attention:: 
+**Attention:** 
 	Binary comparison means it compares values byte by byte, regardless of type information (signs, ``REAL`` etc...)
 	and it compares padding bytes, too.
 
-.. attention:: 
+**Attention:** 
 	``STRING`` and ``WSTRING`` is null terminated
 	that means TwinCAT sets null byte/word at the end of the string and touches nothing else
 	For example ``foo :STRING(3) := 'foo';`` looks binary 16#66 16#6F 16#6F 16#00.
 	if you set foo to an empty string ``foo := ''`` it looks like 16#00 16#6F 16#6F 16#00.
 
-.. attention:: 
+**Attention:** 
 	It works not for bits because the minimum size must be at least one byte. If the ``__SYSTEM.TYPE_CLASS``
 	of ``data`` ``AND`` ``dataToCompare is ``__SYSTEM.TYPE_CLASS.TYPE_BOOL`` ``OR`` ``__SYSTEM.TYPE_CLASS.TYPE_BIT``
 	it uses the ``TO_BOOL`` operator for comarison. That means for ``__SYSTEM.TYPE_CLASS.TYPE_BIT`` it has no idea
@@ -774,8 +853,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -799,24 +877,23 @@ END_IF
     <Method Name="isGreaterThan" Id="{f3e319da-09b0-4c85-9538-96e4cc2c6ace}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks the bytes of memory of
 ``data`` and ``dataToCompare`` if the content of the first unequal
 ``data`` byte is greater than the byte of ``dataToCompare``
 the assertion is true. Direction of comaprison is little endian.
 
-.. attention:: 
+**Attention:** 
 	Binary comparison means it compares values byte by byte, regardless of type information (signs, ``REAL`` etc...)
 	and it compares padding bytes, too.
 
-.. attention:: 
+**Attention:** 
 	``STRING`` and ``WSTRING`` is null terminated
 	that means TwinCAT sets null byte/word at the end of the string and touches nothing else
 	For example ``foo :STRING(3) := 'foo';`` looks binary 16#66 16#6F 16#6F 16#00.
 	if you set foo to an empty string ``foo := ''`` it looks like 16#00 16#6F 16#6F 16#00.
 
-.. attention:: 
+**Attention:** 
 	It works not for bits because the minimum size must be at least one byte. If the ``__SYSTEM.TYPE_CLASS``
 	of ``data`` ``AND`` ``dataToCompare is ``__SYSTEM.TYPE_CLASS.TYPE_BOOL`` ``OR`` ``__SYSTEM.TYPE_CLASS.TYPE_BIT``
 	it uses the ``TO_BOOL`` operator for comarison. That means for ``__SYSTEM.TYPE_CLASS.TYPE_BIT`` it has no idea
@@ -834,8 +911,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -859,8 +935,7 @@ END_IF
     <Method Name="isLessThan" Id="{2aeb4fc0-f751-4513-a70f-812386b6718e}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks the bytes of memory of
 ``data`` and ``dataToCompare`` if the content of the first unequal
 ``data`` byte is less than the byte of ``dataToCompare``
@@ -868,17 +943,17 @@ the assertion is true. Direction of comaprison is little endian.
 
 .. <legal notes>
 
-.. attention:: 
+**Attention:** 
 	Binary comparison means it compares values byte by byte, regardless of type information (signs, ``REAL`` etc...)
 	and it compares padding bytes, too.
 
-.. attention:: 
+**Attention:** 
 	``STRING`` and ``WSTRING`` is null terminated
 	that means TwinCAT sets null byte/word at the end of the string and touches nothing else
 	For example ``foo :STRING(3) := 'foo';`` looks binary 16#66 16#6F 16#6F 16#00.
 	if you set foo to an empty string ``foo := ''`` it looks like 16#00 16#6F 16#6F 16#00.
 
-.. attention:: 
+**Attention:** 
 	It works not for bits because the minimum size must be at least one byte. If the ``__SYSTEM.TYPE_CLASS``
 	of ``data`` ``AND`` ``dataToCompare is ``__SYSTEM.TYPE_CLASS.TYPE_BOOL`` ``OR`` ``__SYSTEM.TYPE_CLASS.TYPE_BIT``
 	it uses the ``TO_BOOL`` operator for comarison. That means for ``__SYSTEM.TYPE_CLASS.TYPE_BIT`` it has no idea
@@ -894,8 +969,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -919,22 +993,21 @@ END_IF
     <Method Name="isNotEqualTo" Id="{6c45cfea-9c5a-4b19-8227-7c0b71df293d}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if minimal one byte of memory of
 ``data`` and ``dataToCompare`` is not equal
 
-.. attention:: 
+**Attention:** 
 	Binary comparison means it compares values byte by byte, regardless of type information (signs, ``REAL`` etc...)
 	and it compares padding bytes, too.
 
-.. attention:: 
+**Attention:** 
 	``STRING`` and ``WSTRING`` is null terminated
 	that means TwinCAT sets null byte/word at the end of the string and touches nothing else
 	For example ``foo :STRING(3) := 'foo';`` looks binary 16#66 16#6F 16#6F 16#00.
 	if you set foo to an empty string ``foo := ''`` it looks like 16#00 16#6F 16#6F 16#00.
 
-.. attention:: 
+**Attention:** 
 	It works not for bits because the minimum size must be at least one byte. If the ``__SYSTEM.TYPE_CLASS``
 	of ``data`` ``AND`` ``dataToCompare is ``__SYSTEM.TYPE_CLASS.TYPE_BOOL`` ``OR`` ``__SYSTEM.TYPE_CLASS.TYPE_BIT``
 	it uses the ``TO_BOOL`` operator for comarison. That means for ``__SYSTEM.TYPE_CLASS.TYPE_BIT`` it has no idea
@@ -952,8 +1025,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -977,8 +1049,7 @@ END_IF
     <Method Name="isPointerAligend" Id="{e4f327ee-0899-4b91-b56c-200a0857d280}" FolderPath="protected\">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This method checks if an address is aligned to a register
 
 .. <legal notes>
@@ -993,8 +1064,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 :return: ``TRUE`` pointer address **is** aligned to a register,
 ``FALSE`` pointer address **isn't** aligned to a register
 
@@ -1024,21 +1094,8 @@ END_VAR
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="BinaryAssertions.binaryCompare">
-      <LineId Id="45" Count="14" />
-      <LineId Id="66" Count="3" />
-      <LineId Id="71" Count="3" />
-      <LineId Id="70" Count="0" />
-      <LineId Id="75" Count="16" />
-      <LineId Id="157" Count="0" />
-      <LineId Id="161" Count="0" />
-      <LineId Id="163" Count="4" />
-      <LineId Id="169" Count="2" />
-      <LineId Id="162" Count="0" />
-      <LineId Id="172" Count="1" />
-      <LineId Id="175" Count="1" />
-      <LineId Id="174" Count="0" />
-      <LineId Id="60" Count="5" />
-      <LineId Id="24" Count="0" />
+      <LineId Id="177" Count="29" />
+      <LineId Id="217" Count="11" />
       <LineId Id="92" Count="0" />
     </LineIds>
     <LineIds Name="BinaryAssertions.className.Get">
@@ -1062,6 +1119,12 @@ END_VAR
     <LineIds Name="BinaryAssertions.getRemainingBytes">
       <LineId Id="5" Count="0" />
       <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="BinaryAssertions.isDataBoolOrBit">
+      <LineId Id="1" Count="12" />
+    </LineIds>
+    <LineIds Name="BinaryAssertions.isDataNullOrSizeZero">
+      <LineId Id="1" Count="17" />
     </LineIds>
     <LineIds Name="BinaryAssertions.isDataZero">
       <LineId Id="5" Count="0" />

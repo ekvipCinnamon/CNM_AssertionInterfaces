@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <Itf Name="IStringAssertions" Id="{e18995ab-9503-4af3-9fad-9e2f0d75cae0}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| This interface provides assert statements for strings
-| For UTF-16 strings up to 255 ``WORD`` (``WSTRING(Tc2_System.MAX_STRING_LENGTH)``) use the property :ref:`IStringAssertions.utf16`.
-| For windows-1252 strings up to 255 ``BYTE`` (``Tc2_System.T_MaxString``) use the property :ref:`IStringAssertions.windows1252`.
-| For windows-1252 or UTF-16 strings that are longer, use the property :ref:`IStringAssertions.anyString`  
+## Short summary
+
+This interface provides assert statements for strings
+For UTF-16 strings up to 255 ``WORD`` (``WSTRING(Tc2_System.MAX_STRING_LENGTH)``) use the property `IStringAssertions.utf16`.
+For windows-125x strings up to 255 ``BYTE`` (``Tc2_System.T_MaxString``) use the property `IStringAssertions.windows125x`.
+For windows-125x or UTF-16 strings that are longer, use the property `IStringAssertions.anyString`  
 
 .. <legal notes>
 
@@ -29,21 +29,20 @@ properties
 
 INTERFACE IStringAssertions EXTENDS __SYSTEM.IQueryInterface
 ]]></Declaration>
-    <Property Name="anyString" Id="{16b8f2bc-45bd-4a13-b855-b60cf9e6b09a}">
+    <Property Name="unicode" Id="{a6d1bf92-b879-42a6-b334-cbeb0b424f47}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns an interface :ref:`IAnyStringAssertions` with assert statements,
-for 8-bit windows-1252 and UTF-16 strings with an undifined length.
+## Short summary
+Returns an interface `IUnicodeStringAssertions` with assert statements,
+for UTF-8 and UTF-16 strings with an undefined length.
 
-.. attention:: 
+**Attention:** 
 	All strings are handled as null terminated byte/word streams.
-	For windows-1252 is end of the string 16#00
+	For UTF-8 is end of the string 16#00
 	For UTF-16 is end of the string 16#00_00
 
-.. attention:: 
-	The interface :ref:`IAnyStringAssertions` uses ``ANY_STRING``, 
+**Attention:** 
+	The interface `IUnicodeAssertions` uses ``ANY_STRING``, 
 	for this it's not possible to use literals/constants,
 	because for ``ANY`` types generates the compiler ``__SYSTEM.AnyType``
 	and ``__SYSTEM.AnyType`` contains a pointer  
@@ -62,18 +61,17 @@ legal notes
 
 *)
 
-PROPERTY anyString :IAnyStringAssertions]]></Declaration>
-      <Get Name="Get" Id="{b5e413b1-e81b-4a9e-b670-cf638135dc22}">
+PROPERTY unicode :IUnicodeStringAssertions]]></Declaration>
+      <Get Name="Get" Id="{4858134d-4f7a-4114-ba99-44e92d0dc761}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>
     </Property>
     <Property Name="utf16" Id="{8df4010b-3eae-4a2e-8150-ce528203d304}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns an interface :ref:`IUtf16StringAssertions` with assert statements
-for UTF-16 strings until 255 ``WORD`` length (``WSTRING(Tc2_System.MAX_STRING_LENGTH)``)
+## Short summary
+Returns an interface `IUtf16StringAssertions` with assert statements
+for UTF-16 strings up to 255 ``WORD`` length (``WSTRING(Tc2_System.MAX_STRING_LENGTH)``)
 
 .. <legal notes>
 
@@ -97,9 +95,8 @@ PROPERTY utf16 :IUtf16StringAssertions]]></Declaration>
     <Property Name="utf8" Id="{2345ac52-5459-4b86-a402-9aada8a6f95d}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns an interface :ref:`IUtf8StringAssertions` with assert statements
+## Short summary
+Returns an interface `IUtf8StringAssertions` with assert statements
 for UTF-8 strings up to 255 bytes length (``STRING(Tc2_System.MAX_STRING_LENGTH)``)
 
 .. <legal notes>
@@ -122,39 +119,11 @@ PROPERTY utf8 :IUtf8StringAssertions
         <Declaration><![CDATA[]]></Declaration>
       </Get>
     </Property>
-    <Property Name="windows1252" Id="{7fd2f1ed-e975-4475-93ff-52ca5c2f3e82}">
-      <Declaration><![CDATA[(*
-
-short summary
-=================
-Returns an interface :ref:`IWindows1252StringAssertions` with assert statements
-for 8-bit windows-1252 strings until 255 characters length (``Tc2_System.T_MaxString``)
-
-.. <legal notes>
-
-legal notes
-=================
-| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
-| SPDX-License-Identifier: Apache-2.0
-| For details check: Apache-2.0_
-
-.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
-
-.. </legal notes>
-
-*)
-
-PROPERTY windows1252 :IWindows1252StringAssertions]]></Declaration>
-      <Get Name="Get" Id="{79df93e4-5906-4dd9-a1af-a98c170e30bc}">
-        <Declaration><![CDATA[]]></Declaration>
-      </Get>
-    </Property>
     <Property Name="windows125x" Id="{4575868b-605a-448b-bf27-f4ae1935dcfb}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns an interface :ref:`IWindows125xStringAssertions` with assert statements for 8-bit 
+## Short summary
+Returns an interface `IWindows125xStringAssertions` with assert statements for 8-bit 
 windows-1252 and windows-1251 strings up to 255 characters length (``Tc2_System.T_MaxString``).
 Use Tc2_Utilities.GLOBAL_SBCS_TABLE variable to select required encoding
 

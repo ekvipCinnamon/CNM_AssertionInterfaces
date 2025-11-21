@@ -1,12 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="RealAssertions" Id="{4075a3a7-d344-4366-ab18-03d825ecb56e}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This class provides assert statements for 32 bit floatings (``REAL``).
-It implements the interface :ref:`IRealAssertions`
+It implements the interface `IRealAssertions`
 
 .. <legal notes>
 
@@ -20,13 +19,12 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
 {attribute 'reflection'}
-FUNCTION_BLOCK INTERNAL RealAssertions EXTENDS AbstactAssertion IMPLEMENTS IRealAssertions
+FUNCTION_BLOCK INTERNAL RealAssertions EXTENDS AbstractAssertion IMPLEMENTS IRealAssertions
 VAR
 END_VAR
 VAR CONSTANT
@@ -42,12 +40,11 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <Folder Name="internal" Id="{dacb2e0d-2ab1-4edf-940d-2e980797670d}" />
+    <Folder Name="internal" Id="{9b5a21f9-50fb-4066-bc95-f4055f2f4c7d}" />
     <Property Name="className" Id="{110d9f83-5196-40f7-a8f8-c92f095c55d5}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This abstract property returns the class name of the concrete object, 
 It's for debugging purpose
 
@@ -71,20 +68,18 @@ PROPERTY className :CNM_AbstractObject.ClassName]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[className := 'CNM_AssertionInterfaceLib.RealAssertions';
+          <ST><![CDATA[className := 'CNM_Assertor.RealAssertions';
 ]]></ST>
         </Implementation>
       </Get>
     </Property>
-    <Method Name="isValueInfinite" Id="{5c0faf21-e12e-4e3b-b404-ca440724eab9}" FolderPath="internal\">
+    <Method Name="isValueInfinite" Id="{815271fd-453a-4747-8b1d-6aeb8d232960}" FolderPath="internal\">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This method checks if a value is infinite
-(infinty OR -inifinity), for details check `IEEE 754`_
+(infinity OR -inifinity), for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -98,8 +93,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 :return: 
 ``TRUE``: value is inifinty or -infinity
 ``FALSE``: value is not inifinty and not -infinity
@@ -113,27 +107,25 @@ VAR_INPUT
 END_VAR
 VAR
 	(* just to cast the value*)
-	realAsDword		:POINTER TO DWORD;
+	realAsDword	:POINTER TO DWORD;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[realAsDword := ADR(value);
 isValueInfinite := (
 	THIS^.isValueSpecial(value)
-	AND ((realAsDword^ AND THIS^.MASK_FOR_FRACTION) = THIS^.ZERO)
+	AND_THEN ((realAsDword^ AND THIS^.MASK_FOR_FRACTION) = THIS^.ZERO)
 );
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="isValueNaN" Id="{9d207ed1-76e3-4669-9b89-511934d1b200}" FolderPath="internal\">
+    <Method Name="isValueNaN" Id="{1b6a5f42-d917-4473-a294-9723909489b5}" FolderPath="internal\">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This method checks if a value is not a number
-(NaN), for details check `IEEE 754`_
+(NaN), for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -147,8 +139,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 :return: 
 ``TRUE``: value is NaN
 ``FALSE``: value is not NaN
@@ -162,27 +153,25 @@ VAR_INPUT
 END_VAR
 VAR
 	(* just to cast the value*)
-	realAsDword		:POINTER TO DWORD;
+	realAsDword	:POINTER TO DWORD;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[realAsDword := ADR(value);
 isValueNaN := (
 	THIS^.isValueSpecial(value)
-	AND ((realAsDword^ AND THIS^.MASK_FOR_FRACTION) > THIS^.ZERO)
+	AND_THEN ((realAsDword^ AND THIS^.MASK_FOR_FRACTION) > THIS^.ZERO)
 );
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="isValueNegativeInfinite" Id="{423c834a-755b-4204-a989-5f21b9a0c144}" FolderPath="internal\">
+    <Method Name="isValueNegativeInfinite" Id="{bd6d20f3-d12a-4d15-8fc1-50d4adbb55f7}" FolderPath="internal\">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This method checks if a value is negative infinite
-(-inifinity), for details check `IEEE 754`_
+(-inifinity), for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -196,8 +185,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 :return: 
 ``TRUE``: value is -infinity
 ``FALSE``: value is not -infinity
@@ -211,27 +199,25 @@ VAR_INPUT
 END_VAR
 VAR
 	(* just to cast the value*)
-	realAsDword		:POINTER TO DWORD;
+	realAsDword	:POINTER TO DWORD;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[realAsDword := ADR(value);
 isValueNegativeInfinite := (
 	THIS^.isValueInfinite(value)
-	AND ((realAsDword^ AND THIS^.MASK_FOR_SIGN_BIT) = THIS^.MASK_FOR_SIGN_BIT)
+	AND_THEN ((realAsDword^ AND THIS^.MASK_FOR_SIGN_BIT) = THIS^.MASK_FOR_SIGN_BIT)
 );
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="isValuePositiveInfinite" Id="{a07bc0f9-f251-4eb2-9854-e41d7804a8d5}" FolderPath="internal\">
+    <Method Name="isValuePositiveInfinite" Id="{f5b97f96-5e04-48a8-b304-723a470e3f06}" FolderPath="internal\">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This method checks if a value is positive infinite
-(infinty), for details check `IEEE 754`_
+(infinity), for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -245,8 +231,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 :return: 
 ``TRUE``: value is inifinty
 ``FALSE``: value is not inifinty
@@ -260,27 +245,25 @@ VAR_INPUT
 END_VAR
 VAR
 	(* just to cast the value*)
-	realAsDword		:POINTER TO DWORD;
+	realAsDword	:POINTER TO DWORD;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[realAsDword := ADR(value);
 isValuePositiveInfinite := (
 	THIS^.isValueInfinite(value)
-	AND ((realAsDword^ AND THIS^.MASK_FOR_SIGN_BIT) = THIS^.ZERO)
+	AND_THEN ((realAsDword^ AND THIS^.MASK_FOR_SIGN_BIT) = THIS^.ZERO)
 );
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="isValueSpecial" Id="{bd6a599f-fefc-4b6a-9b5a-6d06135aa314}" FolderPath="internal\">
+    <Method Name="isValueSpecial" Id="{1c7e00db-3cd4-43a7-9f70-6426dab3ed41}" FolderPath="internal\">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This method checks if a value is a special value
-(NaN OR infinty OR -inifinity), for details check `IEEE 754`_
+(NaN OR infinity OR -inifinity), for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -294,8 +277,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 :return: 
 ``TRUE``: value is inifinty or -infinity or NaN
 ``FALSE``: value is not inifinty and not -infinity and not NaN
@@ -309,7 +291,7 @@ VAR_INPUT
 END_VAR
 VAR
 	(* just to cast the value*)
-	realAsDword		:POINTER TO DWORD;
+	realAsDword	:POINTER TO DWORD;
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -318,15 +300,13 @@ isValueSpecial := ((realAsDword^ AND THIS^.MASK_FOR_EXPONENT) = THIS^.MASK_FOR_E
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsANumber" Id="{01a6428d-9f21-45b0-a8c1-d4f5d54065f7}">
+    <Method Name="valueIsANumber" Id="{709dd568-fc6a-4afc-8e25-eb28fbaed59b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is a number (NOT NaN)
-for details check `IEEE 754`_
+for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -340,8 +320,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -360,29 +339,27 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsEqualTo" Id="{23c83b88-d0da-42e0-955c-a6f47bae0c69}">
+    <Method Name="valueIsEqualTo" Id="{f84f1d68-7a08-4c1f-9083-9a614eabfdf6}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is equal to the expected value
 
-.. attention:: 
+**Attention:** 
 	Nothing is equal to NaN, that means if ``currentValue`` OR ``expectedValue`` OR ``tolerance``
 	is NaN then is the assertion false. For details check `IEEE 754`_
 
-.. attention:: 
+**Attention:** 
 	infinity is equal to infinity and -infinity is equal to -infinity, that means if
 	``currentValue`` AND ``expectedValue`` have the value infinity 
 	OR ``currentValue`` AND ``expectedValue`` have the value -infinity
 	the assertion is TRUE. For details check `IEEE 754`_
 
-.. attention:: 
+**Attention:** 
 	If ``tolerance`` has the value infinity or -infinity and 
 	``currentValue`` is not NaN and ``expectedValue`` is not NaN
-	then is the assertion true. For details check `IEEE 754`_
+	then is the assertion true. for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -396,8 +373,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -416,19 +392,19 @@ END_VAR
       <Implementation>
         <ST><![CDATA[IF (
 	THIS^.isValueNaN(currentValue)
-	OR THIS^.isValueNaN(expectedValue)
-	OR THIS^.isValueNaN(tolerance)
+	OR_ELSE THIS^.isValueNaN(expectedValue)
+	OR_ELSE THIS^.isValueNaN(tolerance)
 ) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsEqualTo'));
 ELSIF (THIS^.isValueInfinite(tolerance)) THEN
 	RETURN;
 ELSIF (
 	THIS^.isValueInfinite(currentValue)
-	OR THIS^.isValueInfinite(expectedValue)
-	OR THIS^.isValueInfinite(tolerance)
+	OR_ELSE THIS^.isValueInfinite(expectedValue)
+	OR_ELSE THIS^.isValueInfinite(tolerance)
 ) THEN
-	RETURN (THIS^.isValuePositiveInfinite(currentValue) AND THIS^.isValuePositiveInfinite(expectedValue));
-	RETURN (THIS^.isValueNegativeInfinite(currentValue) AND THIS^.isValueNegativeInfinite(expectedValue));
+	RETURN (THIS^.isValuePositiveInfinite(currentValue) AND_THEN THIS^.isValuePositiveInfinite(expectedValue));
+	RETURN (THIS^.isValueNegativeInfinite(currentValue) AND_THEN THIS^.isValueNegativeInfinite(expectedValue));
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsEqualTo'));	
 ELSIF (ABS(currentValue-expectedValue) > ABS(tolerance)) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsEqualTo'));
@@ -436,15 +412,13 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsFinite" Id="{46d1e6fc-d580-437e-af9d-09737f998478}">
+    <Method Name="valueIsFinite" Id="{f1cb7e5e-cc50-4c87-a7eb-83cadc17b06c}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is finite
-(NOT (infinty OR -inifinity)), for details check `IEEE 754`_
+(NOT (infinity OR -inifinity)), for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -458,8 +432,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -478,24 +451,22 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsGreaterThan" Id="{729170e6-29b6-428b-a0be-d7a35bb7d079}">
+    <Method Name="valueIsGreaterThan" Id="{cd597d17-f21e-4e14-8472-e0703c59f17f}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than the less value
 
-.. attention:: 
+**Attention:** 
 	Any comparsion to NaN is ``FALSE`` that means if ``currentValue`` OR ``lessValue``
 	is NaN then is the assertion false.
 	For details check `IEEE 754`_ and the truth table below.
 
-.. attention:: 
-	Every number is smaller than infinity except -infinity, it's equal.
+**Attention:** 
+	Every number is smaller than infinity except infinity, it's equal.
 	Every number is greater than -infinity except -infinity, it's equal.
-	For details check `IEEE 754`_ and the truth table below.
+	For details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754) and the truth table below.
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 truth table for special values
 ===============================
@@ -509,7 +480,7 @@ truth table for special values
 | infinity             | NOT NaN           | TRUE          |
 |                      | NOT infinity      |               |
 +----------------------+-------------------+---------------+
-| -infinty             | Any value         | FALSE         |
+| -infinity             | Any value         | FALSE         |
 +----------------------+-------------------+---------------+
 | Any value            | infinity          | FALSE         |
 +----------------------+-------------------+---------------+
@@ -529,8 +500,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -545,15 +515,17 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF (THIS^.isValueNaN(currentValue) OR THIS^.isValueNaN(lessValue)) THEN
+        <ST><![CDATA[IF (
+	THIS^.isValueNaN(currentValue) 
+	OR_ELSE THIS^.isValueNaN(lessValue)
+	OR_ELSE THIS^.isValueNegativeInfinite(currentValue) 
+	OR_ELSE THIS^.isValuePositiveInfinite(lessValue)
+)THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsGreaterThan'));
-ELSIF (THIS^.isValueNegativeInfinite(currentValue)) THEN
-	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsGreaterThan'));
-ELSIF (THIS^.isValuePositiveInfinite(lessValue)) THEN
-	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsGreaterThan'));
-ELSIF (THIS^.isValueNegativeInfinite(lessValue)) THEN
-	RETURN;
-ELSIF (THIS^.isValuePositiveInfinite(currentValue)) THEN
+ELSIF (
+	THIS^.isValueNegativeInfinite(lessValue)
+	OR_ELSE THIS^.isValuePositiveInfinite(currentValue)
+) THEN
 	RETURN;
 ELSIF (currentValue <= lessValue) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsGreaterThan'));
@@ -561,15 +533,13 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsInfinite" Id="{d5eec068-c757-44d3-8c92-1dfab0efd570}">
+    <Method Name="valueIsInfinite" Id="{8bb571d6-fffc-4c06-8094-a5b1b9984123}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is infinite
-(infinty OR -inifinity), for details check `IEEE 754`_
+(infinity OR -inifinity), for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -583,8 +553,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -603,28 +572,26 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsInRangeOf" Id="{809fdd7b-21c0-4b90-aa38-03282b659c2a}">
+    <Method Name="valueIsInRangeOf" Id="{02f55ee9-3bcf-4a32-bca7-d602c6776919}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is inside a limit
 
-.. attention:: 
+**Attention:** 
 	limits are included: ``valueIsInRangeOf(3.0, 3.0, 3.0)`` is a true assertion
 
-.. attention:: 
+**Attention:** 
 	Any comparsion to NaN is ``FALSE`` that means 
 	if ``lowerLimit`` OR ``currentValue`` OR ``upperLimit``
 	is NaN then is the assertion false.
 	For details check `IEEE 754`_ and the truth table below.
 
-.. attention:: 
-	Every number is smaller than infinity except -infinity, it's equal.
+**Attention:** 
+	Every number is smaller than infinity except infinity, it's equal.
 	Every number is greater than -infinity except -infinity, it's equal.
-	For details check `IEEE 754`_ and the truth table below.
+	For details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754) and the truth table below.
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 truth table for special values
 ===============================
@@ -666,8 +633,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -684,39 +650,41 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF (THIS^.isValueNaN(lowerLimit) OR THIS^.isValueNaN(currentValue) OR THIS^.isValueNaN(upperLimit)) THEN
-	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsInRangeOf'));
-ELSIF (THIS^.isValueNegativeInfinite(upperLimit) AND THIS^.isValuePositiveInfinite(lowerLimit)) THEN	
-	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsInRangeOf'));
-ELSIF (THIS^.isValueNegativeInfinite(currentValue) AND (NOT THIS^.isValueNegativeInfinite(lowerLimit))) THEN
-	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsInRangeOf'));
-ELSIF (THIS^.isValuePositiveInfinite(currentValue) AND (NOT THIS^.isValuePositiveInfinite(upperLimit))) THEN
-	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsInRangeOf'));
-ELSIF (
-	THIS^.isValuePositiveInfinite(lowerLimit)
-	AND (NOT THIS^.isValuePositiveInfinite(currentValue))
-	AND THIS^.isValuePositiveInfinite(upperLimit)
+        <ST><![CDATA[IF (
+	THIS^.isValueNaN(lowerLimit)
+	OR_ELSE THIS^.isValueNaN(currentValue)
+	OR_ELSE THIS^.isValueNaN(upperLimit)
+	OR_ELSE (
+		THIS^.isValueNegativeInfinite(upperLimit) 
+		AND_THEN THIS^.isValuePositiveInfinite(lowerLimit)
+	) OR_ELSE (	
+		THIS^.isValueNegativeInfinite(currentValue) 
+		AND_THEN (NOT THIS^.isValueNegativeInfinite(lowerLimit))
+	) OR_ELSE (
+		THIS^.isValuePositiveInfinite(currentValue) 
+		AND_THEN (NOT THIS^.isValuePositiveInfinite(upperLimit))
+	) OR_ELSE (
+		THIS^.isValuePositiveInfinite(lowerLimit)
+		AND_THEN (NOT THIS^.isValuePositiveInfinite(currentValue))
+		AND_THEN THIS^.isValuePositiveInfinite(upperLimit)
+	) OR_ELSE (
+		THIS^.isValueNegativeInfinite(lowerLimit)
+		AND_THEN (NOT THIS^.isValueNegativeInfinite(currentValue))
+		AND_THEN THIS^.isValueNegativeInfinite(upperLimit))
 ) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsInRangeOf'));
-ELSIF (
-	THIS^.isValueNegativeInfinite(lowerLimit)
-	AND (NOT THIS^.isValueNegativeInfinite(currentValue))
-	AND THIS^.isValueNegativeInfinite(upperLimit)
+ELSIF ((
+		THIS^.isValuePositiveInfinite(lowerLimit)
+		AND_THEN THIS^.isValuePositiveInfinite(currentValue)
+		AND_THEN THIS^.isValuePositiveInfinite(upperLimit)
+	) OR_ELSE (
+		THIS^.isValueNegativeInfinite(lowerLimit)
+		AND_THEN THIS^.isValueNegativeInfinite(currentValue)
+		AND_THEN THIS^.isValueNegativeInfinite(upperLimit)
+	) OR_ELSE (
+		THIS^.isValueNegativeInfinite(lowerLimit) 
+		AND_THEN THIS^.isValuePositiveInfinite(upperLimit))
 ) THEN
-	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsInRangeOf'));
-ELSIF (
-	THIS^.isValuePositiveInfinite(lowerLimit)
-	AND THIS^.isValuePositiveInfinite(currentValue)
-	AND THIS^.isValuePositiveInfinite(upperLimit)
-) THEN
-	RETURN;
-ELSIF (
-	THIS^.isValueNegativeInfinite(lowerLimit)
-	AND THIS^.isValueNegativeInfinite(currentValue)
-	AND THIS^.isValueNegativeInfinite(upperLimit)
-) THEN
-	RETURN;
-ELSIF (THIS^.isValueNegativeInfinite(lowerLimit) AND THIS^.isValuePositiveInfinite(upperLimit)) THEN
 	RETURN;
 ELSIF ((currentValue < lowerLimit) OR (currentValue > upperLimit)) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsInRangeOf'));
@@ -724,24 +692,22 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsLessThan" Id="{aaf01ae9-f482-4060-b8bd-362534f1325d}">
+    <Method Name="valueIsLessThan" Id="{2997a92f-abab-4ef5-95d2-154c21a84b03}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than the less value
 
-.. attention::
+**Attention:**
 	Any comparsion to NaN is ``FALSE`` that means if ``currentValue`` OR ``greaterValue``
 	is NaN then is the assertion false.
 	For details check `IEEE 754`_ and the truth table below.
 
-.. attention::
-	Every number is smaller than infinity except -infinity, it's equal.
+**Attention:**
+	Every number is smaller than infinity except infinity, it's equal.
 	Every number is greater than -infinity except -infinity, it's equal.
-	For details check `IEEE 754`_ and the truth table below.
+	For details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754) and the truth table below.
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 truth table for special values
 ===============================
@@ -754,7 +720,7 @@ truth table for special values
 +----------------------+----------------------+---------------+
 | infinity             | Any value            | FALSE         |
 +----------------------+----------------------+---------------+
-| -infinty             | NOT NaN              | TRUE          |
+| -infinity             | NOT NaN              | TRUE          |
 |                      | NOT -infinity        |               |
 +----------------------+----------------------+---------------+
 | NOT NaN              | infinity             | TRUE          |
@@ -773,8 +739,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -789,15 +754,17 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF (THIS^.isValueNaN(currentValue) OR THIS^.isValueNaN(greaterValue)) THEN
+        <ST><![CDATA[IF (
+	THIS^.isValueNaN(currentValue) 
+	OR_ELSE THIS^.isValueNaN(greaterValue)
+	OR_ELSE THIS^.isValuePositiveInfinite(currentValue)
+	OR_ELSE THIS^.isValueNegativeInfinite(greaterValue)
+) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsLessThan'));
-ELSIF (THIS^.isValuePositiveInfinite(currentValue)) THEN
-	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsLessThan'));
-ELSIF (THIS^.isValueNegativeInfinite(greaterValue)) THEN
-	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsLessThan'));
-ELSIF (THIS^.isValuePositiveInfinite(greaterValue)) THEN
-	RETURN;
-ELSIF (THIS^.isValueNegativeInfinite(currentValue)) THEN
+ELSIF (
+	THIS^.isValuePositiveInfinite(greaterValue)
+	OR_ELSE THIS^.isValueNegativeInfinite(currentValue)
+) THEN
 	RETURN;
 ELSIF (currentValue >= greaterValue) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsLessThan'));
@@ -805,24 +772,22 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsMax" Id="{aa9a09c5-6d33-43ee-8d89-d12cb1966b9d}">
+    <Method Name="valueIsMax" Id="{98a0980d-8eb8-4d2c-b23a-734e2b6d4ce1}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is less than or equal to the maximum value
 
-.. attention::
+**Attention:**
 	Any comparsion to NaN is ``FALSE`` that means if ``currentValue`` OR ``maximumValue``
 	is NaN then is the assertion false.
 	For details check `IEEE 754`_ and the truth table below.
 
-.. attention::
-	Every number is smaller than infinity except -infinity, it's equal.
+**Attention:**
+	Every number is smaller than infinity except infinity, it's equal.
 	Every number is greater than -infinity except -infinity, it's equal.
-	For details check `IEEE 754`_ and the truth table below.
+	For details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754) and the truth table below.
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 truth table for special values
 ===============================
@@ -854,8 +819,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -870,21 +834,22 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF (THIS^.isValueNaN(currentValue) OR THIS^.isValueNaN(maximumValue)) THEN
-	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsMax'));
-ELSIF (
-	THIS^.isValueNegativeInfinite(maximumValue)
-	AND (NOT THIS^.isValueNegativeInfinite(currentValue))
+        <ST><![CDATA[IF (
+	THIS^.isValueNaN(currentValue) 
+	OR_ELSE THIS^.isValueNaN(maximumValue)
+	OR_ELSE (
+		THIS^.isValueNegativeInfinite(maximumValue)
+		AND_THEN (NOT THIS^.isValueNegativeInfinite(currentValue))
+	) OR_ELSE (
+		THIS^.isValuePositiveInfinite(currentValue)
+		AND_THEN (NOT THIS^.isValuePositiveInfinite(maximumValue))
+	)
 ) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsMax'));
 ELSIF (
-	THIS^.isValuePositiveInfinite(currentValue)
-	AND (NOT THIS^.isValuePositiveInfinite(maximumValue))
+	THIS^.isValuePositiveInfinite(maximumValue)
+	OR_ELSE THIS^.isValueNegativeInfinite(currentValue)
 ) THEN
-	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsMax'));
-ELSIF (THIS^.isValuePositiveInfinite(maximumValue)) THEN
-	RETURN;	
-ELSIF (THIS^.isValueNegativeInfinite(currentValue)) THEN
 	RETURN;
 ELSIF (currentValue > maximumValue) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsMax'));
@@ -892,24 +857,22 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsMin" Id="{e599ad08-8100-44e7-8aa2-e69f18f6038a}">
+    <Method Name="valueIsMin" Id="{8bdcaaad-54e1-401d-b7fd-ad8ef23f4662}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than or equal to the minimum value
 
-.. attention::
+**Attention:**
 	Any comparsion to NaN is ``FALSE`` that means if ``currentValue`` OR ``minimumValue``
 	is NaN then is the assertion false.
 	For details check `IEEE 754`_ and the truth table below.
 
-.. attention::
-	Every number is smaller than infinity except -infinity, it's equal.
+**Attention:**
+	Every number is smaller than infinity except infinity, it's equal.
 	Every number is greater than -infinity except -infinity, it's equal.
-	For details check `IEEE 754`_ and the truth table below.
+	For details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754) and the truth table below.
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 truth table for special values
 ===============================
@@ -941,8 +904,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -957,21 +919,22 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF (THIS^.isValueNaN(currentValue) OR THIS^.isValueNaN(minimumValue)) THEN
-	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsMin'));
-ELSIF (
-	THIS^.isValueNegativeInfinite(currentValue)
-	AND (NOT THIS^.isValueNegativeInfinite(minimumValue))
+        <ST><![CDATA[IF (
+	THIS^.isValueNaN(currentValue) 
+	OR_ELSE THIS^.isValueNaN(minimumValue)
+	OR_ELSE (
+		THIS^.isValueNegativeInfinite(currentValue)
+		AND_THEN (NOT THIS^.isValueNegativeInfinite(minimumValue))
+	) OR_ELSE (
+		THIS^.isValuePositiveInfinite(minimumValue)
+		AND_THEN (NOT THIS^.isValuePositiveInfinite(currentValue))
+	)
 ) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsMin'));
 ELSIF (
-	THIS^.isValuePositiveInfinite(minimumValue)
-	AND (NOT THIS^.isValuePositiveInfinite(currentValue))
+	THIS^.isValuePositiveInfinite(currentValue)
+	OR_ELSE THIS^.isValueNegativeInfinite(minimumValue)
 ) THEN
-	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsMin'));
-ELSIF (THIS^.isValuePositiveInfinite(currentValue)) THEN
-	RETURN;	
-ELSIF (THIS^.isValueNegativeInfinite(minimumValue)) THEN
 	RETURN;
 ELSIF (currentValue < minimumValue) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsMin'));
@@ -979,15 +942,13 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsNaN" Id="{5ba7face-def7-44ed-a9e2-e3c8d06b9b8b}">
+    <Method Name="valueIsNaN" Id="{fc26c4f5-ec39-4c76-a036-66bde40b41c8}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is a not a number (NaN)
-for details check `IEEE 754`_
+for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -1001,8 +962,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -1021,26 +981,24 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsNegative" Id="{196e3f23-0387-4279-9249-8c52a29112f1}">
+    <Method Name="valueIsNegative" Id="{acc8447d-cf51-4bac-ba7f-59342219593a}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is negative
 
-.. attention::
+**Attention:**
 	Any comparsion to NaN is ``FALSE`` that means if ``currentValue``
 	is NaN then is the assertion false.
 	For details check `IEEE 754`_.
 
-.. attention::
+**Attention:**
 	``currentValue`` has the value infinity means the assertion is false.
 	``currentValue`` has the value -infinity means the assertion is true.
 	``currentValue`` has the +0.0 means the assertion is false.
 	``currentValue`` has the value -0.0 means the assertion is true.	
-	For details check `IEEE 754`_.
+		For details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754).
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -1054,8 +1012,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -1083,15 +1040,13 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsNegativeInfinite" Id="{9f3e8c15-3a99-422b-a9f5-cc588575386c}">
+    <Method Name="valueIsNegativeInfinite" Id="{23407c25-c3f6-4850-9fb2-253dc72a9f05}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is negative infinite
-(-infinty), for details check `IEEE 754`_
+(-infinity), for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -1105,8 +1060,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -1125,15 +1079,13 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsNegativeZero" Id="{9c7eb503-5772-4a80-a6bf-48b6de5759b3}">
+    <Method Name="valueIsNegativeZero" Id="{633b0bca-b28f-414c-8313-f7c07197635e}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-This assertion method checks if the current value is +0.0
-for details check `IEEE 754`_
+## Short summary
+This assertion method checks if the current value is -0.0
+for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -1147,8 +1099,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -1170,16 +1121,14 @@ IF (currentValueAsDWord^ <> THIS^.MASK_FOR_SIGN_BIT) THEN
 END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsNormal" Id="{971b583f-77bb-4603-967c-0772d9cfc8b2}">
+    <Method Name="valueIsNormal" Id="{d22ed2a4-89ae-4279-85c2-043e0051c3f3}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is a normal number
 (a finite non-zero/non-subnormal floating-point number)
-for details check `IEEE 754`_
+for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -1193,8 +1142,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -1211,7 +1159,7 @@ VAR
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF (THIS^.isValueNaN(currentValue) OR THIS^.isValueInfinite(currentValue)) THEN
+        <ST><![CDATA[IF (THIS^.isValueNaN(currentValue) OR_ELSE THIS^.isValueInfinite(currentValue)) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsNormal'));
 ELSE
 	currentValueAsDWord := ADR(currentValue);
@@ -1222,29 +1170,27 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsNotEqualTo" Id="{bb7da86f-a9ed-4972-87e2-da9055c11de9}">
+    <Method Name="valueIsNotEqualTo" Id="{cc528cc3-817d-46ff-ae2e-a0526988dcce}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is not equal to the unexpected value
 
-.. attention:: 
+**Attention:** 
 	Nothing is equal to NaN, that means if ``currentValue`` OR ``unexpectedValue`` OR ``tolerance``
 	is NaN then is the assertion true. For details check `IEEE 754`_
 
-.. attention:: 
+**Attention:** 
 	infinity is equal to infinity and -infinity is equal to -infinity, that means if
 	``currentValue`` AND ``unexpectedValue`` have the value infinity 
 	OR ``currentValue`` AND ``unexpectedValue`` have the value -infinity
 	the assertion is false. For details check `IEEE 754`_
 
-.. attention:: 
+**Attention:** 
 	If ``tolerance`` has the value infinity or -infinity and 
 	``currentValue`` is not NaN and ``unexpectedValue`` is not NaN
-	then is the assertion false. For details check `IEEE 754`_
+	then is the assertion false. for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -1258,8 +1204,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -1278,20 +1223,20 @@ END_VAR
       <Implementation>
         <ST><![CDATA[IF (
 	THIS^.isValueNaN(currentValue)
-	OR THIS^.isValueNaN(unexpectedValue)
-	OR THIS^.isValueNaN(tolerance)
+	OR_ELSE THIS^.isValueNaN(unexpectedValue)
+	OR_ELSE THIS^.isValueNaN(tolerance)
 ) THEN
 	RETURN;
 ELSIF (THIS^.isValueInfinite(tolerance)) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsNotEqualTo'));
 ELSIF (
 	THIS^.isValueInfinite(currentValue)
-	OR THIS^.isValueInfinite(unexpectedValue)
+	OR_ELSE THIS^.isValueInfinite(unexpectedValue)
 ) THEN
-	RETURN (THIS^.isValuePositiveInfinite(currentValue) AND (NOT THIS^.isValuePositiveInfinite(unexpectedValue)));
-	RETURN (THIS^.isValueNegativeInfinite(currentValue) AND (NOT THIS^.isValueNegativeInfinite(unexpectedValue)));
-	RETURN (THIS^.isValuePositiveInfinite(unexpectedValue) AND (NOT THIS^.isValuePositiveInfinite(currentValue)));
-	RETURN (THIS^.isValueNegativeInfinite(unexpectedValue) AND (NOT THIS^.isValueNegativeInfinite(currentValue)));
+	RETURN (THIS^.isValuePositiveInfinite(currentValue) AND_THEN (NOT THIS^.isValuePositiveInfinite(unexpectedValue)));
+	RETURN (THIS^.isValueNegativeInfinite(currentValue) AND_THEN (NOT THIS^.isValueNegativeInfinite(unexpectedValue)));
+	RETURN (THIS^.isValuePositiveInfinite(unexpectedValue) AND_THEN (NOT THIS^.isValuePositiveInfinite(currentValue)));
+	RETURN (THIS^.isValueNegativeInfinite(unexpectedValue) AND_THEN (NOT THIS^.isValueNegativeInfinite(currentValue)));
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsNotEqualTo'));
 ELSIF (ABS(currentValue-unexpectedValue) <= ABS(tolerance)) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsNotEqualTo'));
@@ -1299,15 +1244,13 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsNotNegativeInfinite" Id="{a5999cde-df2a-42fa-9686-58d56eb55c8d}">
+    <Method Name="valueIsNotNegativeInfinite" Id="{24c1beb1-733c-4e65-aa2b-1981611c1fab}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is not negative infinite
-NOT (-infinty), for details check `IEEE 754`_
+NOT (-infinity), for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -1321,8 +1264,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -1341,15 +1283,13 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsNotPositiveInfinite" Id="{0e74a275-4a00-43e4-ac07-0eef8bbfc5ce}">
+    <Method Name="valueIsNotPositiveInfinite" Id="{d4d9443b-484d-4c97-a9a0-fd6ab2a9d9bc}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is not positive infinite
-NOT (infinty), for details check `IEEE 754`_
+NOT (infinity), for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -1363,8 +1303,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -1383,15 +1322,13 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsNotSpecial" Id="{39d10c28-a17b-4000-87e5-b53205532416}">
+    <Method Name="valueIsNotSpecial" Id="{5af1017a-8b79-43ef-8eae-222de6f84645}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is a non special number
-(NOT (NaN OR infinty OR -inifinity)), for details check `IEEE 754`_
+(NOT (NaN OR infinity OR -inifinity)), for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -1405,12 +1342,11 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
-METHOD valueIsNotSpecial : BOOL
+METHOD valueIsNotSpecial
 VAR_INPUT
 	(* current value to check *)
 	currentValue	:REAL;
@@ -1425,26 +1361,24 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsPositive" Id="{59a0d857-c5f4-4496-bb39-aec683e6c979}">
+    <Method Name="valueIsPositive" Id="{a6752b6c-a25c-44cf-9758-5f963d8e39f3}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is positve
 
-.. attention::
+**Attention:**
 	Any comparsion to NaN is ``FALSE`` that means if ``currentValue``
 	is NaN then is the assertion false.
 	For details check `IEEE 754`_.
 
-.. attention::
+**Attention:**
 	``currentValue`` has the value infinity means the assertion is true.
 	``currentValue`` has the value -infinity means the assertion is false.
 	``currentValue`` has the +0.0 means the assertion is true.
 	``currentValue`` has the value -0.0 means the assertion is false.	
-	For details check `IEEE 754`_.
+		For details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754).
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -1458,8 +1392,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -1487,15 +1420,13 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsPositiveInfinite" Id="{2e93fe7c-8e54-40ef-a67e-9362199d50a3}">
+    <Method Name="valueIsPositiveInfinite" Id="{810de819-859c-4aee-b9c5-3a1b94b6eb18}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is positive infinite
-(infinty), for details check `IEEE 754`_
+(infinity), for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -1509,8 +1440,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -1529,15 +1459,13 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsPositiveZero" Id="{4db29f5b-3a0f-42cc-9bca-74eecdc9ea6e}">
+    <Method Name="valueIsPositiveZero" Id="{4cbd5478-17ab-4595-8db6-8d0546732621}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-This assertion method checks if the current value is -0.0
-for details check `IEEE 754`_
+## Short summary
+This assertion method checks if the current value is +0.0
+for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -1551,8 +1479,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -1575,15 +1502,13 @@ IF (currentValueAsDWord^ <> THIS^.ZERO) THEN
 END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsSpecial" Id="{fa227a03-0a18-4e65-b42d-1229b9785211}">
+    <Method Name="valueIsSpecial" Id="{1a91340a-aa5b-420c-8f43-9662764dd26e}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is a special
-(NaN OR infinty OR -inifinity), for details check `IEEE 754`_
+(NaN OR infinity OR -inifinity), for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -1597,8 +1522,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -1617,15 +1541,13 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="valueIsSubnormal" Id="{31dc6de5-ee2e-4578-9a2c-083937389a26}">
+    <Method Name="valueIsSubnormal" Id="{9902eb9c-76db-490c-ae37-b6cf36aa8a62}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is a subnormal number
-for details check `IEEE 754`_
+for details check [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 
-.. _IEEE 754: https://en.wikipedia.org/wiki/IEEE_754
 
 .. <legal notes>
 
@@ -1639,8 +1561,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -1672,174 +1593,91 @@ END_IF
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="RealAssertions.className.Get">
-      <LineId Id="5" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="1" />
     </LineIds>
     <LineIds Name="RealAssertions.isValueInfinite">
-      <LineId Id="15" Count="4" />
-      <LineId Id="5" Count="0" />
+      <LineId Id="1" Count="5" />
     </LineIds>
     <LineIds Name="RealAssertions.isValueNaN">
-      <LineId Id="5" Count="0" />
-      <LineId Id="13" Count="4" />
+      <LineId Id="1" Count="5" />
     </LineIds>
     <LineIds Name="RealAssertions.isValueNegativeInfinite">
-      <LineId Id="14" Count="4" />
-      <LineId Id="5" Count="0" />
+      <LineId Id="1" Count="5" />
     </LineIds>
     <LineIds Name="RealAssertions.isValuePositiveInfinite">
-      <LineId Id="14" Count="4" />
-      <LineId Id="5" Count="0" />
+      <LineId Id="1" Count="5" />
     </LineIds>
     <LineIds Name="RealAssertions.isValueSpecial">
-      <LineId Id="5" Count="0" />
-      <LineId Id="12" Count="1" />
+      <LineId Id="1" Count="2" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsANumber">
-      <LineId Id="40" Count="1" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="42" Count="0" />
+      <LineId Id="1" Count="3" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsEqualTo">
-      <LineId Id="77" Count="0" />
-      <LineId Id="79" Count="2" />
-      <LineId Id="78" Count="0" />
-      <LineId Id="82" Count="0" />
-      <LineId Id="113" Count="1" />
-      <LineId Id="84" Count="4" />
-      <LineId Id="90" Count="1" />
-      <LineId Id="89" Count="0" />
-      <LineId Id="39" Count="0" />
-      <LineId Id="41" Count="1" />
-      <LineId Id="40" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsFinite">
-      <LineId Id="36" Count="1" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="38" Count="0" />
+      <LineId Id="1" Count="3" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsGreaterThan">
-      <LineId Id="115" Count="5" />
-      <LineId Id="122" Count="1" />
-      <LineId Id="140" Count="1" />
-      <LineId Id="34" Count="0" />
-      <LineId Id="37" Count="1" />
-      <LineId Id="36" Count="0" />
+      <LineId Id="1" Count="15" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsInfinite">
-      <LineId Id="36" Count="1" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="38" Count="0" />
+      <LineId Id="1" Count="3" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsInRangeOf">
-      <LineId Id="113" Count="0" />
-      <LineId Id="118" Count="1" />
-      <LineId Id="145" Count="5" />
-      <LineId Id="152" Count="1" />
-      <LineId Id="155" Count="0" />
-      <LineId Id="154" Count="0" />
-      <LineId Id="151" Count="0" />
-      <LineId Id="156" Count="19" />
-      <LineId Id="36" Count="0" />
-      <LineId Id="41" Count="0" />
-      <LineId Id="40" Count="0" />
-      <LineId Id="42" Count="0" />
+      <LineId Id="1" Count="39" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsLessThan">
-      <LineId Id="136" Count="3" />
-      <LineId Id="141" Count="4" />
-      <LineId Id="149" Count="0" />
-      <LineId Id="35" Count="1" />
-      <LineId Id="34" Count="0" />
-      <LineId Id="37" Count="0" />
+      <LineId Id="1" Count="15" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsMax">
-      <LineId Id="100" Count="0" />
-      <LineId Id="102" Count="0" />
-      <LineId Id="106" Count="5" />
-      <LineId Id="113" Count="3" />
-      <LineId Id="101" Count="0" />
-      <LineId Id="103" Count="2" />
-      <LineId Id="35" Count="2" />
-      <LineId Id="34" Count="0" />
+      <LineId Id="1" Count="20" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsMin">
-      <LineId Id="100" Count="1" />
-      <LineId Id="105" Count="13" />
-      <LineId Id="35" Count="2" />
-      <LineId Id="34" Count="0" />
+      <LineId Id="1" Count="20" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsNaN">
-      <LineId Id="36" Count="2" />
-      <LineId Id="35" Count="0" />
+      <LineId Id="1" Count="3" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsNegative">
-      <LineId Id="83" Count="0" />
-      <LineId Id="86" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="89" Count="1" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="91" Count="0" />
-      <LineId Id="34" Count="0" />
-      <LineId Id="36" Count="0" />
+      <LineId Id="1" Count="8" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsNegativeInfinite">
-      <LineId Id="36" Count="2" />
-      <LineId Id="35" Count="0" />
+      <LineId Id="1" Count="3" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsNegativeZero">
-      <LineId Id="35" Count="0" />
-      <LineId Id="39" Count="2" />
+      <LineId Id="1" Count="3" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsNormal">
-      <LineId Id="35" Count="0" />
-      <LineId Id="39" Count="0" />
-      <LineId Id="41" Count="4" />
-      <LineId Id="40" Count="0" />
-      <LineId Id="47" Count="0" />
+      <LineId Id="1" Count="8" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsNotEqualTo">
-      <LineId Id="92" Count="5" />
-      <LineId Id="109" Count="1" />
-      <LineId Id="98" Count="2" />
-      <LineId Id="102" Count="2" />
-      <LineId Id="111" Count="1" />
-      <LineId Id="106" Count="0" />
-      <LineId Id="37" Count="1" />
-      <LineId Id="36" Count="0" />
-      <LineId Id="39" Count="0" />
+      <LineId Id="1" Count="20" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsNotNegativeInfinite">
-      <LineId Id="36" Count="2" />
-      <LineId Id="35" Count="0" />
+      <LineId Id="1" Count="3" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsNotPositiveInfinite">
-      <LineId Id="36" Count="2" />
-      <LineId Id="35" Count="0" />
+      <LineId Id="1" Count="3" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsNotSpecial">
-      <LineId Id="36" Count="2" />
-      <LineId Id="35" Count="0" />
+      <LineId Id="1" Count="3" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsPositive">
-      <LineId Id="84" Count="7" />
-      <LineId Id="32" Count="0" />
+      <LineId Id="1" Count="8" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsPositiveInfinite">
-      <LineId Id="36" Count="2" />
-      <LineId Id="35" Count="0" />
+      <LineId Id="1" Count="3" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsPositiveZero">
-      <LineId Id="40" Count="2" />
-      <LineId Id="35" Count="0" />
+      <LineId Id="1" Count="3" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsSpecial">
-      <LineId Id="36" Count="2" />
-      <LineId Id="35" Count="0" />
+      <LineId Id="1" Count="3" />
     </LineIds>
     <LineIds Name="RealAssertions.valueIsSubnormal">
-      <LineId Id="40" Count="7" />
-      <LineId Id="35" Count="0" />
+      <LineId Id="1" Count="8" />
     </LineIds>
   </POU>
 </TcPlcObject>

@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+  <POU Name="ReverseOrderComparator" Id="{a1c41f85-893c-4faa-a3ef-5a27f3ec2afe}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=================
+A comparator to reverse the natural order of the objects
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+methods and properties
+=========================
+
+*)
+
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK ReverseOrderComparator EXTENDS CNM_ABstractObject.Object IMPLEMENTS CNM_AbstractObject.IComparator]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="className" Id="{372e122d-da95-40af-a1f1-5951c0b2ae69}">
+      <Declaration><![CDATA[
+(*
+
+short summary
+=================
+This abstract property returns the class name of the concrete object, 
+which is useful to check the class name for ``__DELETE``.
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+PROPERTY className :CNM_AbstractObject.ClassName
+]]></Declaration>
+      <Get Name="Get" Id="{aebb8502-91dd-4504-a4a9-1f83e2760300}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[className := 'ReverseOrderComparator_Internal';
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="clone" Id="{d94e1178-ccc6-4e21-83b9-2a28cdd2b332}">
+      <Declaration><![CDATA[
+(*
+
+short summary
+=================
+This method is used to create a new instance
+of the object which has the same internal state as the object.
+If the object is a container class, the references to the content objects
+are not cloned for this there is the method `ICloneable.deepClone`.
+
+If an object does not support cloning the return value is
+``CNM_ReturnTypes.CloneResult.CLONE_IS_NOT_SUPPORTED``.
+
+If there is not enough memory or the cloning fails because the
+attribute enable dynamic creation was forgotten the return value is 
+``CNM_ReturnTypes.CloneResult.FAILED``.
+
+Only if the return value is ``CNM_ReturnTypes.CloneResult.SUCCESS``
+the output ``clonedObject`` points to the new object
+otherwise ``clonedObject`` is NULL.  
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+=================
+:return:``CNM_ReturnTypes.CloneResult.SUCCESS``: new object clone was created,
+	``CNM_ReturnTypes.CloneResult.FAILED``: object clone failed
+	``CNM_ReturnTypes.CloneResult.CLONE_IS_NOT_SUPPORTED``: object does not support cloning
+
+*)
+
+METHOD clone	:CNM_AbstractObject.CNM_ReturnTypes.CloneResult
+VAR_OUTPUT
+	(* new object instance or NULL if somthing went wrong *)
+	clonedObject	:CNM_AbstractObject.IObject;
+END_VAR
+VAR
+	newComparator	:POINTER TO ReverseOrderComparator;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[newComparator := __NEW(ReverseOrderComparator());
+
+IF ((
+		newComparator <> 0
+	) AND_THEN (
+		__QUERYINTERFACE(newComparator^,clonedObject)
+	)
+) THEN
+	clone := CNM_ReturnTypes.CloneResult.SUCCESS;
+ELSE
+	clone := CNM_ReturnTypes.CloneResult.FAILED;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="compare" Id="{e2a1b3e6-6ba6-4348-b8b9-aa49b4136a36}">
+      <Declaration><![CDATA[
+(*
+
+short summary
+=================
+This method compares two objects, this is needed for sort orders.
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+=================
+:return: ``SMALLER``: ``object1`` precedes in order,
+	``EQUAL``: ``object1`` and ``object2`` at the same position in order,
+	``GREATER``: ``object1`` is after in order. Checkout the library CNM_ReturnTypes.
+
+*)
+METHOD compare :CNM_AbstractObject.CNM_ReturnTypes.ComparationResult
+VAR_INPUT
+	(* first object to compare*)
+	object1	:CNM_AbstractObject.IObject;
+	(* second object to compare*)
+	object2	:CNM_AbstractObject.IObject;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^.isObjectValid(object1) THEN
+	CASE object1.compareTo(object2) OF
+		CNM_ReturnTypes.ComparationResult.GREATER:
+			compare := CNM_ReturnTypes.ComparationResult.SMALLER;
+		CNM_ReturnTypes.ComparationResult.SMALLER:
+			compare := CNM_ReturnTypes.ComparationResult.GREATER;
+		ELSE
+			compare := CNM_ReturnTypes.ComparationResult.EQUAL;
+	END_CASE
+ELSIF THIS^.isObjectValid(object2) THEN
+	CASE object2.compareTo(object1) OF
+		CNM_ReturnTypes.ComparationResult.GREATER:
+			compare := CNM_ReturnTypes.ComparationResult.GREATER;
+		CNM_ReturnTypes.ComparationResult.SMALLER:
+			compare := CNM_ReturnTypes.ComparationResult.SMALLER;
+		ELSE
+			compare := CNM_ReturnTypes.ComparationResult.EQUAL;
+	END_CASE
+ELSE 
+	compare := CNM_ReturnTypes.ComparationResult.GREATER;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="deepClone" Id="{1f5e5df6-4d0c-47f5-82de-7193b8aa6770}">
+      <Declaration><![CDATA[(*
+
+short summary
+=================
+This method is used to create a new instance
+of the object which has the same internal state as the object.
+If the object is a container class, the references to the content objects
+are cloned too.
+
+If an object does not support cloning the return value is
+``CNM_ReturnTypes.CloneResult.CLONE_IS_NOT_SUPPORTED``.
+
+If there is not enough memory or the cloning fails because the
+attribute enable dynamic creation was forgotten the return value is 
+``CNM_ReturnTypes.CloneResult.FAILED``.
+If something goes wrong, then this method must clean up everything
+that has been cloned and free the memory again.
+**The deepClone either works completely, or not at all**
+
+Only if the return value is ``CNM_ReturnTypes.CloneResult.SUCCESS``
+the output ``clonedObject`` points to the new object
+otherwise ``clonedObject`` is NULL.  
+
+.. attention:: 
+	For derivations: **If a derived class needs ``deepClone`` this method must be overwritten.**
+	and don't forget the attribute ``{attribute 'enable_dynamic_creation'}``, even for container content 
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+=================
+:return:``CNM_ReturnTypes.CloneResult.SUCCESS``: new object clone was created,
+``CNM_ReturnTypes.CloneResult.FAILED``: object clone failed
+``CNM_ReturnTypes.CloneResult.CLONE_IS_NOT_SUPPORTED``: object does not support deep cloning
+
+*)
+
+METHOD deepClone :CNM_ReturnTypes.CloneResult
+VAR_OUTPUT
+	(* new object instance or NULL if somthing went wrong *)
+	clonedObject	:CNM_AbstractObject.IObject;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[deepClone := THIS^.clone(clonedObject => clonedObject);
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="ReverseOrderComparator">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="ReverseOrderComparator.className.Get">
+      <LineId Id="1" Count="1" />
+    </LineIds>
+    <LineIds Name="ReverseOrderComparator.clone">
+      <LineId Id="1" Count="12" />
+    </LineIds>
+    <LineIds Name="ReverseOrderComparator.compare">
+      <LineId Id="10" Count="0" />
+      <LineId Id="1" Count="7" />
+      <LineId Id="11" Count="7" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="20" Count="1" />
+      <LineId Id="19" Count="0" />
+    </LineIds>
+    <LineIds Name="ReverseOrderComparator.deepClone">
+      <LineId Id="1" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

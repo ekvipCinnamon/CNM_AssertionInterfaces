@@ -3,12 +3,12 @@
   <Itf Name="ISimpleDateAndTimeAssertions" Id="{537949a7-1f31-4966-a7d9-2e5c1933d4f3}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| This interface provides assert statements for date and time types with 32 bit length
-| For date and time (``DT``) use :ref:`ISimpleDateAndTimeAssertions.dateAndTime`
-| For date (``DATE``) use  :ref:`ISimpleDateAndTimeAssertions.dateOnly`
-| For time of day (``TOD``) use  :ref:`ISimpleDateAndTimeAssertions.timeOfDay`
+## Short summary
+
+This interface provides assert statements for date and time types with 32 bit length
+For date and time (``DT``) use `ISimpleDateAndTimeAssertions.dateAndTime`
+For date (``DATE``) use  `ISimpleDateAndTimeAssertions.dateOnly`
+For time of day (``TOD``) use  `ISimpleDateAndTimeAssertions.timeOfDay`
 
 .. <legal notes>
 
@@ -22,8 +22,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
@@ -32,9 +31,8 @@ INTERFACE ISimpleDateAndTimeAssertions EXTENDS __SYSTEM.IQueryInterface
     <Property Name="dateAndTime" Id="{09d5b49f-dbf2-4bfb-82ce-fe59122b23a9}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`I32BitDtAssertions` with assert statements for 32 bit date and time ``DT``
+## Short summary
+Returns the interface `I32BitDtAssertions` with assert statements for 32 bit date and time ``DT``
 
 .. <legal notes>
 
@@ -58,9 +56,8 @@ PROPERTY dateAndTime :I32BitDtAssertions]]></Declaration>
     <Property Name="dateOnly" Id="{fb6bcf64-f18c-4001-a123-142e39971157}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`I32BitDateAssertions` with assert statements for 32 bit date ``DATE``
+## Short summary
+Returns the interface `I32BitDateAssertions` with assert statements for 32 bit date ``DATE``
 
 .. <legal notes>
 
@@ -84,9 +81,8 @@ PROPERTY dateOnly :I32BitDateAssertions]]></Declaration>
     <Property Name="timeOfDay" Id="{f38e2fee-1bf7-42e4-9a5c-96c04e601046}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`I32BitTodAssertions` with assert statements for 32 bit time of day ``TOD``
+## Short summary
+Returns the interface `I32BitTodAssertions` with assert statements for 32 bit time of day ``TOD``
 
 .. <legal notes>
 

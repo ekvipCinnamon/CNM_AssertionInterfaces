@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="UnsignedIntegerAssertions" Id="{d26d2d05-0d86-4837-8178-4e02e7d3d780}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| This class provides assert statements for unsigned integers from 8~64 bit length 
-| It implements the interface :ref:`IUnsignedIntegerAssertions`
-| For 8 bit intgers use :ref:`UnsignedIntegerAssertions.short`
-| For 16 bit intgers use :ref:`UnsignedIntegerAssertions.simple`
-| For 32 bit intgers use :ref:`UnsignedIntegerAssertions.double`
-| For 64 bit intgers use :ref:`UnsignedIntegerAssertions.long`
-| For integers in register length use :ref:`UnsignedIntegerAssertions.x`
+## Short summary
+
+This class provides assert statements for unsigned integers from 8~64 bit length 
+It implements the interface `IUnsignedIntegerAssertions`
+For 8 bit intgers use `UnsignedIntegerAssertions.short`
+For 16 bit intgers use `UnsignedIntegerAssertions.simple`
+For 32 bit intgers use `UnsignedIntegerAssertions.double`
+For 64 bit intgers use `UnsignedIntegerAssertions.long`
+For integers in register length use `UnsignedIntegerAssertions.x`
 
 .. <legal notes>
 
@@ -25,8 +25,7 @@ legal notes
 
 .. </legal notes>
 
-methods and properties
-=======================
+
 
 *)
 
@@ -51,8 +50,7 @@ END_VAR
     <Property Name="className" Id="{e8ab4c70-40a2-4660-bc50-a670906e80ff}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This abstract property returns the class name of the concrete object, 
 It's for debugging purpose
 
@@ -76,7 +74,7 @@ PROPERTY className :CNM_AbstractObject.ClassName]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[className := 'CNM_AssertionInterfaceLib.UnsignedIntegerAssertions';
+          <ST><![CDATA[className := 'CNM_Assertor.UnsignedIntegerAssertions';
 ]]></ST>
         </Implementation>
       </Get>
@@ -84,9 +82,8 @@ END_VAR
     <Property Name="double" Id="{0b4db36d-1d7e-4d25-b3c5-0ccd390d6639}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IUdintAssertions` with assert statements for unsigned 32 bit integers 
+## Short summary
+Returns the interface `IUdintAssertions` with assert statements for unsigned 32 bit integers 
 
 .. <legal notes>
 
@@ -117,9 +114,8 @@ END_VAR
     <Property Name="long" Id="{7aa11f53-2289-4f5f-ab40-9dc9506ab775}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IUlintAssertions` with assert statements for unsigned 64 bit integers 
+## Short summary
+Returns the interface `IUlintAssertions` with assert statements for unsigned 64 bit integers 
 
 .. <legal notes>
 
@@ -150,8 +146,7 @@ END_VAR
     <Method Name="setCallBack" Id="{145eb7fa-8974-4bd9-b18b-3e0d74cd9984}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This methods is the setter for the callback class if an assertion was false
 
 .. <legal notes>
@@ -166,15 +161,14 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
 METHOD setCallBack
 VAR_INPUT
 	(* the class that must be informed if an assertion is false *)
-	callBack	:IAssertCallback;  
+	callBack	:IAssertCallBack;  
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -189,9 +183,8 @@ THIS^.ulintAssertions.setCallBack(callBack);
     <Property Name="short" Id="{9160085d-91ac-4c1c-a84f-d3e2ff342b1c}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IUsintAssertions` with assert statements for unsigned 8 bit integers 
+## Short summary
+Returns the interface `IUsintAssertions` with assert statements for unsigned 8 bit integers 
 
 .. <legal notes>
 
@@ -222,9 +215,8 @@ END_VAR
     <Property Name="simple" Id="{b73e7c32-727b-4d75-891c-563b36a028d3}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IUintAssertions` with assert statements for unsigned 16 bit integers 
+## Short summary
+Returns the interface `IUintAssertions` with assert statements for unsigned 16 bit integers 
 
 .. <legal notes>
 
@@ -255,9 +247,8 @@ END_VAR
     <Property Name="x" Id="{baedee3b-e75c-495b-8ed9-6238b278e602}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IUxintAssertions` with assert statements for unsigned integers register length 
+## Short summary
+Returns the interface `IUxintAssertions` with assert statements for unsigned integers register length 
 
 .. <legal notes>
 

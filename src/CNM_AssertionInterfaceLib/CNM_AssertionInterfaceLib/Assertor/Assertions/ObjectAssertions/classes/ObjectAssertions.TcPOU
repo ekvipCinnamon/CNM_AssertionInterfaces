@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="ObjectAssertions" Id="{6b0104dc-0fa5-4796-b05c-cc0271c4c02e}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This class provides assert statements for ``CNM_AbstractObject.IObjects``  
 
 .. <legal notes>
@@ -19,13 +18,12 @@ legal notes
 
 .. </legal notes>
 
-methods and properties
-=======================
+
 
 *)
 
 {attribute 'reflection'}
-FUNCTION_BLOCK INTERNAL ObjectAssertions EXTENDS AbstactAssertion IMPLEMENTS IObjectAssertions
+FUNCTION_BLOCK INTERNAL ObjectAssertions EXTENDS AbstractAssertion IMPLEMENTS IObjectAssertions
 VAR
 	(* injected comperator *)
 	comperator	: CNM_AbstractObject.IComparator;
@@ -37,8 +35,7 @@ END_VAR
     <Property Name="className" Id="{76a4cba8-ada8-4bf0-b8ac-6f3bcb8eeac1}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This abstract property returns the class name of the concrete object, 
 It's for debugging purpose
 
@@ -62,7 +59,7 @@ PROPERTY className :CNM_AbstractObject.ClassName]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[className := 'CNM_AssertionInterfaceLib.ObjectAssertions';
+          <ST><![CDATA[className := 'CNM_Assertor.ObjectAssertions';
 ]]></ST>
         </Implementation>
       </Get>
@@ -70,8 +67,7 @@ END_VAR
     <Method Name="isAfterInOrderTo" Id="{b7a0129b-14a0-464a-8c6e-3e425c5c2dc8}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if ``object`` is after in order to ``objectToCompare``
 
 .. <legal notes>
@@ -86,8 +82,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -126,8 +121,7 @@ END_IF
     <Method Name="isEqualInOrderTo" Id="{11d54115-1f87-4097-98bc-7287b9134de6}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if ``object``
 is at the same position in the sequence as ``objectToCompare``
 
@@ -143,8 +137,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -181,8 +174,7 @@ END_IF
     <Method Name="isEqualTo" Id="{0684d09c-0456-4ad1-9e66-4e9998502043}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if ``object`` is ``objectToCompare``
 
 .. <legal notes>
@@ -197,8 +189,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -226,8 +217,7 @@ END_IF
     <Method Name="isNotEqualTo" Id="{db7266fe-1971-4010-8539-fb86bedb9744}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if ``object`` is not ``objectToCompare``
 
 .. <legal notes>
@@ -242,8 +232,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -271,8 +260,7 @@ END_IF
     <Method Name="objectIsNull" Id="{f4944f04-968a-4e94-8665-33487c8a9b2b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if ``object`` is NULL
 
 .. <legal notes>
@@ -287,8 +275,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -310,13 +297,8 @@ END_IF
     <Method Name="objectIsValid" Id="{48a1a2d3-5740-4e3e-9864-08b0175b7f37}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if ``object`` is not NULL
-
-.. attention:: 
-	Validity of the pointer will be proofed for 32 bit systems only.
-	For other systems it's an optimistic estimate.
 
 .. <legal notes>
 
@@ -330,8 +312,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -344,7 +325,7 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF (THIS^.isObjectNull(object)) THEN
+        <ST><![CDATA[IF (NOT THIS^.isObjectValid(object)) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('objectIsValid'));
 END_IF
 ]]></ST>
@@ -353,8 +334,7 @@ END_IF
     <Method Name="precedesInOrderTo" Id="{ee776579-a813-496b-9c62-857e1ce9e857}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if ``object``
 precedes in sequence to ``objectToCompare``
 
@@ -370,8 +350,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -410,12 +389,11 @@ END_IF
     <Method Name="setComperator" Id="{63bdbad0-6e7b-42cd-b3d0-55596e213964}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This allows you to set your own comperator for the methods
-:ref:`IObjectAssertions.precedesInOrderTo`  
-:ref:`IObjectAssertions.isEqualInOrderTo`  
-:ref:`IObjectAssertions.isAfterInOrderTo`
+`IObjectAssertions.precedesInOrderTo`  
+`IObjectAssertions.isEqualInOrderTo`  
+`IObjectAssertions.isAfterInOrderTo`
 to clear the comperator again, just call it with 0: ``foo.setComperator(comperator := 0);``
 
 .. <legal notes>
@@ -430,8 +408,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 

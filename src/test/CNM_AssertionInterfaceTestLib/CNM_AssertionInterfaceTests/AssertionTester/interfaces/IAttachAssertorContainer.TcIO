@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <Itf Name="IAttachAssertorContainer" Id="{fde88d91-cf83-470c-ba30-446634bab73b}">
     <Declaration><![CDATA[(*
 
@@ -20,7 +20,6 @@ legal notes
 
 *)
 
-{warning 'header is generated please add your documentation'}
 INTERFACE IAttachAssertorContainer EXTENDS  __SYSTEM.IQueryInterface
 ]]></Declaration>
     <Property Name="attachAssertorContainer" Id="{70ba9d15-9c7b-43e0-9240-ad9c754cbaf4}">
@@ -43,7 +42,6 @@ legal notes
 
 *)
 
-{warning 'header is generated please add your documentation'}
 PROPERTY attachAssertorContainer : IAssertorContainer]]></Declaration>
       <Set Name="Set" Id="{6d2871be-447a-4d8e-a07b-e56f5ad7b1d2}">
         <Declaration><![CDATA[]]></Declaration>

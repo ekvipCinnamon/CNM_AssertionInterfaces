@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="AbstractAssertorTest" Id="{216f80eb-9475-4c73-b0e7-c7b972951a89}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
@@ -104,8 +104,6 @@ parameters
 
 *)
 
-{warning 'header is generated please add your documentation'}
-
 
 METHOD PROTECTED AnyTypeToArg :Tc2_Utilities.T_Arg
 VAR_INPUT
@@ -139,7 +137,6 @@ legal notes
 
 *)
 
-{warning 'header is generated please add your documentation'}
 
 PROPERTY attachAssertorContainer : IAssertorContainer
 ]]></Declaration>
@@ -163,7 +160,6 @@ legal notes
 
 *)
 
-{warning 'header is generated please add your documentation'}
 VAR
 END_VAR
 ]]></Declaration>
@@ -175,8 +171,6 @@ END_VAR
     </Property>
     <Method Name="dereferenceAnys" Id="{e376c7eb-2976-44c2-ab30-b669a36e1097}" FolderPath="T_Arg\">
       <Declaration><![CDATA[
-{warning 'header is generated please add your documentation'}
-
 METHOD PROTECTED dereferenceAnys
 VAR_INPUT
 	in :__SYSTEM.AnyType;
@@ -200,7 +194,8 @@ __SYSTEM.TYPE_CLASS.TYPE_ANYREAL:
 	THIS^.dereferenceAnys(p^, out => out);
 ELSE
 	out := in;
-END_CASE]]></ST>
+END_CASE
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="FB_init" Id="{27eb1f1e-8668-40bb-8d4e-f749c23f4bb1}">
@@ -226,7 +221,6 @@ parameters
 
 *)
 
-{warning 'header is generated please add your documentation'}
 METHOD FB_init :BOOL
 VAR_INPUT
     bInitRetains	:BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
@@ -241,11 +235,9 @@ END_VAR
     </Method>
     <Method Name="typeClassToArgType" Id="{1c5572c6-da61-47bd-9668-e57d7edd1615}" FolderPath="T_Arg\">
       <Declaration><![CDATA[
-{warning 'header is generated please add your documentation'}
-
 METHOD PROTECTED typeClassToArgType : Tc2_Utilities.E_ArgType
 VAR_INPUT
-	class 	:__SYSTEM.TYPE_CLASS;
+	typeClass 	:__SYSTEM.TYPE_CLASS;
 	size	:UDINT;
 END_VAR
 VAR CONSTANT
@@ -255,7 +247,7 @@ VAR CONSTANT
 	LENGTH_8_BYTE	:UINT := 8;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[CASE class OF
+        <ST><![CDATA[CASE typeClass OF
 __SYSTEM.TYPE_CLASS.TYPE_BOOL, __SYSTEM.TYPE_CLASS.TYPE_BYTE,
 __SYSTEM.TYPE_CLASS.TYPE_BIT:
 	typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_BYTE;
@@ -340,20 +332,14 @@ END_CASE
       <LineId Id="14" Count="0" />
       <LineId Id="19" Count="0" />
       <LineId Id="5" Count="0" />
+      <LineId Id="24" Count="0" />
     </LineIds>
     <LineIds Name="AbstractAssertorTest.FB_init">
       <LineId Id="3" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="AbstractAssertorTest.typeClassToArgType">
-      <LineId Id="8" Count="0" />
-      <LineId Id="10" Count="0" />
-      <LineId Id="117" Count="0" />
-      <LineId Id="11" Count="34" />
-      <LineId Id="49" Count="13" />
-      <LineId Id="105" Count="0" />
-      <LineId Id="109" Count="0" />
-      <LineId Id="5" Count="0" />
+      <LineId Id="119" Count="54" />
       <LineId Id="118" Count="0" />
     </LineIds>
   </POU>

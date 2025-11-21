@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="AssertionTester" Id="{062a13c0-32f4-400a-837d-0e73b4c206ee}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
@@ -23,7 +23,7 @@ methods and properties
 
 *)
 
-{warning 'header is generated please add your documentation'}
+
 FUNCTION_BLOCK AssertionTester EXTENDS CNM_AbstractObject.Object IMPLEMENTS IAttachAssertorContainer
 VAR	
 	pointerTests 			:PointerAssertionsTests(classToBeTested := 0);
@@ -46,11 +46,17 @@ VAR
 	bitNumberAssertionXWord :XWordAssertionTests(classToBeTested := 0);
 	binaryTests				:BinaryAssertionsTests(classToBeTested := 0);
 	dateAndTimeAssertions 	:DTAssertionTests(classToBeTested := 0);
+	ldateAndTimeAssertions 	:LDTAssertionTests(classToBeTested := 0);
 	timeTests				:TimeAssertionsTests(classToBeTested := 0);
-	stringTests				:StringAssertionTests(classToBeTested := 0);
+	ltimeTests				:LTimeAssertionsTests(classToBeTested := 0);
+	windows125xStringTests	:Windows125xStringAssertionTests(classToBeTested := 0);
+	unicodeUtf8StringTests	:UnicodeUtf8StringAssertionTests(classToBeTested := 0);
+	unicodeUtf16StringTests	:UnicodeUtf16StringAssertionTests(classToBeTested := 0);
 	objectTests				:ObjectAssertionsTests(classToBeTested := 0);
 	dateAssertions			:DateAssertionTests(classToBeTested := 0);
+	ldateAssertions			:LDateAssertionTests(classToBeTested := 0);
 	timeOfDayAssertions 	:TODAssertionTests(classToBeTested := 0);
+	ltimeOfDayAssertions 	:LTODAssertionTests(classToBeTested := 0);
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -76,23 +82,29 @@ legal notes
 
 *)
 
-{warning 'header is generated please add your documentation'}
 PROPERTY attachAssertorContainer : IAssertorContainer]]></Declaration>
       <Set Name="Set" Id="{e2fd7566-6860-4b16-b058-8285801ebad1}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[THIS^.timeTests.attachAssertorContainer					:= attachAssertorContainer;
-THIS^.stringTests.attachAssertorContainer 				:= attachAssertorContainer;
+          <ST><![CDATA[
+THIS^.timeTests.attachAssertorContainer					:= attachAssertorContainer;
+THIS^.ltimeTests.attachAssertorContainer				:= attachAssertorContainer;
+THIS^.windows125xStringTests.attachAssertorContainer	:= attachAssertorContainer;
+THIS^.unicodeUtf8StringTests.attachAssertorContainer	:= attachAssertorContainer;
+THIS^.unicodeUtf16StringTests.attachAssertorContainer	:= attachAssertorContainer;
 THIS^.objectTests.attachAssertorContainer 				:= attachAssertorContainer;
 THIS^.pointerTests.attachAssertorContainer 				:= attachAssertorContainer;
 THIS^.binaryTests.attachAssertorContainer 				:= attachAssertorContainer;
 THIS^.lrealAssertions.attachAssertorContainer 			:= attachAssertorContainer;
 THIS^.realAssertions.attachAssertorContainer 			:= attachAssertorContainer;
 THIS^.dateAssertions.attachAssertorContainer 			:= attachAssertorContainer;
+THIS^.ldateAssertions.attachAssertorContainer 			:= attachAssertorContainer;
 THIS^.dateAndTimeAssertions.attachAssertorContainer		:= attachAssertorContainer;
+THIS^.ldateAndTimeAssertions.attachAssertorContainer	:= attachAssertorContainer;
 THIS^.timeOfDayAssertions.attachAssertorContainer		:= attachAssertorContainer;
+THIS^.ltimeOfDayAssertions.attachAssertorContainer		:= attachAssertorContainer;
 THIS^.usintAssertions.attachAssertorContainer			:= attachAssertorContainer;
 THIS^.uintAssertions.attachAssertorContainer			:= attachAssertorContainer;
 THIS^.udintAssertions.attachAssertorContainer			:= attachAssertorContainer;
@@ -132,7 +144,6 @@ legal notes
 
 *)
 
-{warning 'header is generated please add your documentation'}
 PROPERTY className :CNM_AbstractObject.ClassName]]></Declaration>
       <Get Name="Get" Id="{6e0df682-d4b6-418d-b9d3-d8540a0dfc49}">
         <Declaration><![CDATA[(*
@@ -154,7 +165,6 @@ legal notes
 
 *)
 
-{warning 'header is generated please add your documentation'}
 VAR
 END_VAR
 ]]></Declaration>
@@ -194,7 +204,7 @@ parameters
 
 *)
 
-METHOD FB_init
+METHOD FB_init :BOOL
 VAR_INPUT
 	(* if TRUE, the retain variables are initialized (warm start / cold start)*)
 	bInitRetains	:BOOL;
@@ -205,7 +215,7 @@ VAR_INPUT
 END_VAR
 VAR
 	{attribute 'hide'}
-	newHashstate3		:Hashcode;
+	newHashstate3		:CNM_AbstractObject.Hashcode;
 END_VAR
 VAR CONSTANT
 	{attribute 'hide'}
@@ -222,13 +232,25 @@ END_VAR]]></Declaration>
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="AssertionTester.attachAssertorContainer.Set">
-      <LineId Id="5" Count="9" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="45" Count="1" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="9" Count="3" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="42" Count="0" />
       <LineId Id="32" Count="4" />
       <LineId Id="15" Count="0" />
       <LineId Id="23" Count="2" />
       <LineId Id="28" Count="0" />
       <LineId Id="16" Count="4" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="57" Count="0" />
     </LineIds>
     <LineIds Name="AssertionTester.className.Get">
       <LineId Id="2" Count="0" />

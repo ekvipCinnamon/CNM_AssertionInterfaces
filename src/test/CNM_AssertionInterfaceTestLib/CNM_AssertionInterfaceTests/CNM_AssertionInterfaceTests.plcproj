@@ -8,7 +8,7 @@
     <WriteProductVersion>true</WriteProductVersion>
     <GenerateTpy>false</GenerateTpy>
     <Name>CNM_AssertionInterfaceTests</Name>
-    <ProgramVersion>3.1.4024.0</ProgramVersion>
+    <ProgramVersion>3.1.4026.19</ProgramVersion>
     <Application>{97047b2b-d062-4663-9dff-f282a4252282}</Application>
     <TypeSystem>{137e967f-34c4-4473-acdc-625d6068e1f7}</TypeSystem>
     <Implicit_Task_Info>{af4167f4-778b-4faf-ab05-f2d31bbff93d}</Implicit_Task_Info>
@@ -731,27 +731,36 @@
     </SelectedLibraryCategories>
     <Released>false</Released>
     <Company>ekvip automation GmbH</Company>
-    <ProjectVersion>1.0.0.47</ProjectVersion>
+    <ProjectVersion>1.2.0.6</ProjectVersion>
     <Title>CNM_AssertionInterfaceTests</Title>
     <DefaultNamespace>CNM_AssertionInterfaceTests</DefaultNamespace>
     <Placeholder>CNM_AssertionInterfaceTests</Placeholder>
     <Author>boez &amp; ajum</Author>
-    <Description>Foo bar baz</Description>
+    <Description>dirty desperate Foo bar baz 
+run it or go to jail
+</Description>
     <DocFormat>reStructuredText</DocFormat>
     <PreserveCompiledLibComments>true</PreserveCompiledLibComments>
+    <AllowChecksForLibrary>false</AllowChecksForLibrary>
+    <POUsForPropertyAccessIncluded>true</POUsForPropertyAccessIncluded>
+    <GlobalVersionStructureIncluded>true</GlobalVersionStructureIncluded>
   </PropertyGroup>
   <ItemGroup>
     <PlaceholderReference Include="CNM_AbstractObject">
       <DefaultResolution>CNM_AbstractObject, * (ekvip automation GmbH)</DefaultResolution>
       <Namespace>CNM_AbstractObject</Namespace>
     </PlaceholderReference>
-    <PlaceholderReference Include="CNM_AssertionInterfaceLib">
-      <DefaultResolution>CNM_AssertionInterfaceLib, * (ekvip automation GmbH)</DefaultResolution>
-      <Namespace>CNM_AssertionInterfaceLib</Namespace>
+    <PlaceholderReference Include="CNM_AssertionInterfaces">
+      <DefaultResolution>CNM_AssertionInterfaces, * (ekvip automation GmbH)</DefaultResolution>
+      <Namespace>CNM_AssertionInterfaces</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="CNM_ReturnTypes">
       <DefaultResolution>CNM_ReturnTypes, * (ekvip automation GmbH)</DefaultResolution>
       <Namespace>CNM_ReturnTypes</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="CNM_UnicodeUtilities">
+      <DefaultResolution>CNM_UnicodeUtilities, * (ekvip automation GmbH)</DefaultResolution>
+      <Namespace>CNM_UnicodeUtilities</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc2_CncBase">
       <DefaultResolution>Tc2_CncBase, * (Beckhoff Automation GmbH)</DefaultResolution>
@@ -784,50 +793,66 @@
   </ItemGroup>
   <ItemGroup>
     <PlaceholderResolution Include="CNM_AbstractObject">
-      <Resolution>CNM_AbstractObject, 2.0.4.7 (ekvip automation GmbH)</Resolution>
+      <Resolution>CNM_AbstractObject, 1.* (ekvip automation GmbH)</Resolution>
     </PlaceholderResolution>
-    <PlaceholderResolution Include="CNM_AssertionInterfaceLib">
-      <Resolution>CNM_AssertionInterfaceLib, 4.0.0.0 (ekvip automation GmbH)</Resolution>
+    <PlaceholderResolution Include="CNM_AssertionInterfaces">
+      <Resolution>CNM_AssertionInterfaces, 0.1.* (ekvip automation GmbH) [Default]</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="CNM_ReturnTypes">
-      <Resolution>CNM_ReturnTypes, 4.0.2.0 (ekvip automation GmbH)</Resolution>
+      <Resolution>CNM_ReturnTypes, 1.* (ekvip automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="CNM_UnicodeUtilities">
+      <Resolution>CNM_UnicodeUtilities, * (ekvip automation GmbH) [Default]</Resolution>
     </PlaceholderResolution>
     <PlaceholderResolution Include="TcUnit">
-      <Resolution>TcUnit, 1.2.0.0 (www.tcunit.org)</Resolution>
+      <Resolution>TcUnit, 1.3.1 (www.tcunit.org)</Resolution>
     </PlaceholderResolution>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AssertionTester\AssertionResult\interfaces" />
-    <Folder Include="AssertionTester\AssertionTests\BinaryAssertions" />
+    <Folder Include="AssertionTester\AssertionTests\BinaryAssertions">
+      <ExcludeFromBuild>false</ExcludeFromBuild>
+    </Folder>
     <Folder Include="AssertionTester\AssertionTests\BinaryAssertions\classes" />
-    <Folder Include="AssertionTester\AssertionTests\BitNumberAssertions" />
+    <Folder Include="AssertionTester\AssertionTests\BitNumberAssertions">
+      <ExcludeFromBuild>false</ExcludeFromBuild>
+    </Folder>
     <Folder Include="AssertionTester\AssertionTests\BitNumberAssertions\classes" />
-    <Folder Include="AssertionTester\AssertionTests\DateTimeAssertions" />
+    <Folder Include="AssertionTester\AssertionTests\DateTimeAssertions">
+      <ExcludeFromBuild>false</ExcludeFromBuild>
+    </Folder>
     <Folder Include="AssertionTester\AssertionTests\DateTimeAssertions\classes" />
-    <Folder Include="AssertionTester\AssertionTests\FloatAssertions" />
+    <Folder Include="AssertionTester\AssertionTests\FloatAssertions">
+      <ExcludeFromBuild>false</ExcludeFromBuild>
+    </Folder>
     <Folder Include="AssertionTester\AssertionTests\FloatAssertions\classes" />
     <Folder Include="AssertionTester\AssertionTests\FloatAssertions\types" />
     <Folder Include="AssertionTester\AssertionTests\FloatAssertions\types\structs" />
-    <Folder Include="AssertionTester\AssertionTests\IntegerAssertions" />
+    <Folder Include="AssertionTester\AssertionTests\IntegerAssertions">
+      <ExcludeFromBuild>false</ExcludeFromBuild>
+    </Folder>
     <Folder Include="AssertionTester\AssertionTests\classes" />
     <Folder Include="AssertionTester\AssertionTests\IntegerAssertions\classes" />
-    <Folder Include="AssertionTester\AssertionTests\ObjectAssertions" />
-    <Folder Include="AssertionTester\AssertionTests\PointerAssertions" />
+    <Folder Include="AssertionTester\AssertionTests\ObjectAssertions\interfaces" />
     <Folder Include="AssertionTester\AssertionTests\StringAssertions" />
-    <Folder Include="AssertionTester\AssertionTests\StringAssertions\InputStructs" />
-    <Folder Include="AssertionTester\AssertionTests\StringAssertions\InputStructs\common" />
-    <Folder Include="AssertionTester\AssertionTests\StringAssertions\InputStructs\containsStr" />
-    <Folder Include="AssertionTester\AssertionTests\StringAssertions\InputStructs\isEmptyStr" />
-    <Folder Include="AssertionTester\AssertionTests\StringAssertions\InputStructs\isEqualStr" />
-    <Folder Include="AssertionTester\AssertionTests\StringAssertions\InputStructs\isLenghtBetweenStr" />
-    <Folder Include="AssertionTester\AssertionTests\StringAssertions\InputStructs\isLenghtStr" />
-    <Folder Include="AssertionTester\AssertionTests\StringAssertions\TestDataSets" />
-    <Folder Include="AssertionTester\AssertionTests\TimeAssertions" />
+    <Folder Include="AssertionTester\AssertionTests\ObjectAssertions">
+      <ExcludeFromBuild>false</ExcludeFromBuild>
+    </Folder>
+    <Folder Include="AssertionTester\AssertionTests\ObjectAssertions\classes" />
+    <Folder Include="AssertionTester\AssertionTests\ObjectAssertions\classes\internal" />
+    <Folder Include="AssertionTester\AssertionTests\PointerAssertions">
+      <ExcludeFromBuild>false</ExcludeFromBuild>
+    </Folder>
+    <Folder Include="AssertionTester\AssertionTests\PointerAssertions\classes" />
+    <Folder Include="AssertionTester\AssertionTests\StringAssertions\classes" />
+    <Folder Include="AssertionTester\AssertionTests\TimeAssertions">
+      <ExcludeFromBuild>false</ExcludeFromBuild>
+    </Folder>
     <Folder Include="AssertionTester\AssertionResult" />
     <Folder Include="AssertionTester\AssertionTests" />
+    <Folder Include="AssertionTester\AssertionTests\TimeAssertions\classes" />
     <Folder Include="AssertionTester\classes" />
     <Folder Include="AssertionTester" />
-    <Folder Include="AssertionTester\functions" />
     <Folder Include="AssertionTester\interfaces" />
     <Folder Include="Project Information" />
     <Folder Include="Version" />
@@ -866,13 +891,22 @@
     <Compile Include="AssertionTester\AssertionTests\DateTimeAssertions\classes\DateAssertionTests.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AssertionTester\AssertionTests\DateTimeAssertions\classes\LDateAssertionTests.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssertionTester\AssertionTests\DateTimeAssertions\classes\LDTAssertionTests.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssertionTester\AssertionTests\DateTimeAssertions\classes\LTODAssertionTests.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="AssertionTester\AssertionTests\DateTimeAssertions\classes\TODAssertionTests.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssertionTester\AssertionTests\FloatAssertions\classes\RealAssertionTests.TcPOU">
+    <Compile Include="AssertionTester\AssertionTests\FloatAssertions\classes\LRealAssertionTests.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssertionTester\AssertionTests\FloatAssertions\classes\LRealAssertionTests.TcPOU">
+    <Compile Include="AssertionTester\AssertionTests\FloatAssertions\classes\RealAssertionTests.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AssertionTester\AssertionTests\FloatAssertions\types\structs\LRealTestParameter.TcDUT">
@@ -908,104 +942,43 @@
     <Compile Include="AssertionTester\AssertionTests\IntegerAssertions\classes\XintAssertionTests.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssertionTester\AssertionTests\ObjectAssertions\IInt.TcIO">
+    <Compile Include="AssertionTester\AssertionTests\ObjectAssertions\classes\internal\ConcreteObject.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssertionTester\AssertionTests\ObjectAssertions\IntValue.TcPOU">
+    <Compile Include="AssertionTester\AssertionTests\ObjectAssertions\classes\internal\DWordValue.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssertionTester\AssertionTests\ObjectAssertions\IReal.TcIO">
+    <Compile Include="AssertionTester\AssertionTests\ObjectAssertions\classes\internal\ReverseOrderComparator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssertionTester\AssertionTests\ObjectAssertions\ObjectAssertionsTests.TcPOU">
+    <Compile Include="AssertionTester\AssertionTests\ObjectAssertions\classes\ObjectAssertionsTests.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssertionTester\AssertionTests\ObjectAssertions\RealValue.TcPOU">
+    <Compile Include="AssertionTester\AssertionTests\ObjectAssertions\interfaces\IDWord.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssertionTester\AssertionTests\PointerAssertions\PointerAssertionsTests.TcPOU">
+    <Compile Include="AssertionTester\AssertionTests\PointerAssertions\classes\PointerAssertionsTests.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\InputStructs\common\AnyTestString.TcDUT">
+    <Compile Include="AssertionTester\AssertionTests\StringAssertions\classes\UnicodeUtf16StringAssertionTests.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>false</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="AssertionTester\AssertionTests\StringAssertions\classes\UnicodeUtf8StringAssertionTests.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>false</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="AssertionTester\AssertionTests\StringAssertions\classes\Windows125xStringAssertionTests.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>false</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="AssertionTester\AssertionTests\TimeAssertions\classes\LTimeAssertionsTests.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\InputStructs\common\StringType.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\InputStructs\containsStr\containsDataStr.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\InputStructs\isEmptyStr\isEmptyDataStr.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\InputStructs\isEqualStr\isEqualToDataStr.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\InputStructs\isLenghtBetweenStr\IsLengthBetweenBasicData.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\InputStructs\isLenghtStr\FunctionType.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\InputStructs\isLenghtStr\IsLengthBasicData.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\InputStructs\isLenghtStr\StringTestDataIsLength.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\InputStructs\isLenghtStr\TypeToTest.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\StringAssertionTests.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\TestDataSets\containsNoTestDataSet.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\TestDataSets\containsTestDataSet.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\TestDataSets\endsWithDataSet.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\TestDataSets\isEmptyTestDataSet.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\TestDataSets\isEqualToTestDataSet.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\TestDataSets\IsLengthBetweenDataSet.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\TestDataSets\IsLengthTestDataSet.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\TestDataSets\isNotEmtyTestDataSet.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\TestDataSets\isNotEqualToTestDataSet.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\StringAssertions\TestDataSets\startsWithDataSet.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="AssertionTester\AssertionTests\TimeAssertions\TimeAssertionsTests.TcPOU">
+    <Compile Include="AssertionTester\AssertionTests\TimeAssertions\classes\TimeAssertionsTests.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AssertionTester\classes\AssertionTester.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AssertionTester\functions\ArrayOfMessageStringToString.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AssertionTester\interfaces\IAttachAssertorContainer.TcIO">
@@ -1039,6 +1012,37 @@
           <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
+        <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
+        <o>
+          <v n="Name">"{192FAD59-8248-4824-A8DE-9177C94C195A}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{246001F4-279D-43AC-B241-948EB31120E1}</v>
+        <o>
+          <v n="Name">"{246001F4-279D-43AC-B241-948EB31120E1}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{29BD8D0C-3586-4548-BB48-497B9A01693F}</v>
+        <o>
+          <v n="Name">"{29BD8D0C-3586-4548-BB48-497B9A01693F}"</v>
+          <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
+            <v>NamingConventions</v>
+            <o>
+              <v n="Name">"NamingConventions"</v>
+              <d n="SubKeys" t="Hashtable" />
+              <d n="Values" t="Hashtable" />
+            </o>
+            <v>Rules</v>
+            <o>
+              <v n="Name">"Rules"</v>
+              <d n="SubKeys" t="Hashtable" />
+              <d n="Values" t="Hashtable" />
+            </o>
+          </d>
+          <d n="Values" t="Hashtable" />
+        </o>
         <v>{40450F57-0AA3-4216-96F3-5444ECB29763}</v>
         <o>
           <v n="Name">"{40450F57-0AA3-4216-96F3-5444ECB29763}"</v>
@@ -1048,17 +1052,30 @@
             <v>IR0whWr8bwfwBwAAiD2qpQAAAABVAgAA37x72QAAAAABAAAAAAAAAAEaUwB5AHMAdABlAG0ALgBTAHQAcgBpAG4AZwACTHsAZgA5ADUAYgBiADQAMgA2AC0ANQA1ADIANAAtADQAYgA0ADUALQA5ADQAMAAwAC0AZgBiADAAZgAyAGUANwA3AGUANQAxAGIAfQADCE4AYQBtAGUABDBUAHcAaQBuAEMAQQBUACAAMwAuADEAIABCAHUAaQBsAGQAIAA0ADAAMgA0AC4ANwAFFlAAcgBvAGYAaQBsAGUARABhAHQAYQAGTHsAMQA2AGUANQA1AGIANgAwAC0ANwAwADQAMwAtADQAYQA2ADMALQBiADYANQBiAC0ANgAxADQANwAxADMAOAA3ADgAZAA0ADIAfQAHEkwAaQBiAHIAYQByAGkAZQBzAAhMewAzAGIAZgBkADUANAA1ADkALQBiADAANwBmAC0ANABkADYAZQAtAGEAZQAxAGEALQBhADgAMwAzADUANgBhADUANQAxADQAMgB9AAlMewA5AGMAOQA1ADgAOQA2ADgALQAyAGMAOAA1AC0ANAAxAGIAYgAtADgAOAA3ADEALQA4ADkANQBmAGYAMQBmAGUAZABlADEAYQB9AAoOVgBlAHIAcwBpAG8AbgALBmkAbgB0AAwKVQBzAGEAZwBlAA0KVABpAHQAbABlAA4aVgBpAHMAdQBFAGwAZQBtAE0AZQB0AGUAcgAPDkMAbwBtAHAAYQBuAHkAEAxTAHkAcwB0AGUAbQARElYAaQBzAHUARQBsAGUAbQBzABIwVgBpAHMAdQBFAGwAZQBtAHMAUwBwAGUAYwBpAGEAbABDAG8AbgB0AHIAbwBsAHMAEyhWAGkAcwB1AEUAbABlAG0AcwBXAGkAbgBDAG8AbgB0AHIAbwBsAHMAFCRWAGkAcwB1AEUAbABlAG0AVABlAHgAdABFAGQAaQB0AG8AcgAVIlYAaQBzAHUATgBhAHQAaQB2AGUAQwBvAG4AdAByAG8AbAAWFHYAaQBzAHUAaQBuAHAAdQB0AHMAFwxzAHkAcwB0AGUAbQAYGFYAaQBzAHUARQBsAGUAbQBCAGEAcwBlABkmRABlAHYAUABsAGEAYwBlAGgAbwBsAGQAZQByAHMAVQBzAGUAZAAaCGIAbwBvAGwAGyJQAGwAdQBnAGkAbgBDAG8AbgBzAHQAcgBhAGkAbgB0AHMAHEx7ADQAMwBkADUAMgBiAGMAZQAtADkANAAyAGMALQA0ADQAZAA3AC0AOQBlADkANAAtADEAYgBmAGQAZgAzADEAMABlADYAMwBjAH0AHRxBAHQATABlAGEAcwB0AFYAZQByAHMAaQBvAG4AHhRQAGwAdQBnAGkAbgBHAHUAaQBkAB8WUwB5AHMAdABlAG0ALgBHAHUAaQBkACBIYQBmAGMAZAA1ADQANAA2AC0ANAA5ADEANAAtADQAZgBlADcALQBiAGIANwA4AC0AOQBiAGYAZgBlAGIANwAwAGYAZAAxADcAIRRVAHAAZABhAHQAZQBJAG4AZgBvACJMewBiADAAMwAzADYANgBhADgALQBiADUAYwAwAC0ANABiADkAYQAtAGEAMAAwAGUALQBlAGIAOAA2ADAAMQAxADEAMAA0AGMAMwB9ACMOVQBwAGQAYQB0AGUAcwAkTHsAMQA4ADYAOABmAGYAYwA5AC0AZQA0AGYAYwAtADQANQAzADIALQBhAGMAMAA2AC0AMQBlADMAOQBiAGIANQA1ADcAYgA2ADkAfQAlTHsAYQA1AGIAZAA0ADgAYwAzAC0AMABkADEANwAtADQAMQBiADUALQBiADEANgA0AC0ANQBmAGMANgBhAGQAMgBiADkANgBiADcAfQAmFk8AYgBqAGUAYwB0AHMAVAB5AHAAZQAnVFUAcABkAGEAdABlAEwAYQBuAGcAdQBhAGcAZQBNAG8AZABlAGwARgBvAHIAQwBvAG4AdgBlAHIAdABpAGIAbABlAEwAaQBiAHIAYQByAGkAZQBzACgQTABpAGIAVABpAHQAbABlACkUTABpAGIAQwBvAG0AcABhAG4AeQAqHlUAcABkAGEAdABlAFAAcgBvAHYAaQBkAGUAcgBzACs4UwB5AHMAdABlAG0ALgBDAG8AbABsAGUAYwB0AGkAbwBuAHMALgBIAGEAcwBoAHQAYQBiAGwAZQAsEnYAaQBzAHUAZQBsAGUAbQBzAC1INgBjAGIAMQBjAGQAZQAxAC0AZAA1AGQAYwAtADQAYQAzAGIALQA5ADAANQA0AC0AMgAxAGYAYQA3ADUANgBhADMAZgBhADQALihJAG4AdABlAHIAZgBhAGMAZQBWAGUAcgBzAGkAbwBuAEkAbgBmAG8AL0x7AGMANgAxADEAZQA0ADAAMAAtADcAZgBiADkALQA0AGMAMwA1AC0AYgA5AGEAYwAtADQAZQAzADEANABiADUAOQA5ADYANAAzAH0AMBhNAGEAagBvAHIAVgBlAHIAcwBpAG8AbgAxGE0AaQBuAG8AcgBWAGUAcgBzAGkAbwBuADIMTABlAGcAYQBjAHkAMzBMAGEAbgBnAHUAYQBnAGUATQBvAGQAZQBsAFYAZQByAHMAaQBvAG4ASQBuAGYAbwA0MEwAbwBhAGQATABpAGIAcgBhAHIAaQBlAHMASQBuAHQAbwBQAHIAbwBqAGUAYwB0ADUaQwBvAG0AcABhAHQAaQBiAGkAbABpAHQAeQDQAAIaA9ADAS0E0AUGGgfQBwgaAUUHCQjQAAkaBEUKCwQDAAAABQAAAA0AAAAAAAAA0AwLrQIAAADQDQEtDtAPAS0Q0AAJGgRFCgsEAwAAAAUAAAANAAAAKAAAANAMC60BAAAA0A0BLRHQDwEtENAACRoERQoLBAMAAAAFAAAADQAAAAAAAADQDAutAgAAANANAS0S0A8BLRDQAAkaBEUKCwQDAAAABQAAAA0AAAAUAAAA0AwLrQIAAADQDQEtE9APAS0Q0AAJGgRFCgsEAwAAAAUAAAANAAAAAAAAANAMC60CAAAA0A0BLRTQDwEtENAACRoERQoLBAMAAAAFAAAADQAAAAAAAADQDAutAgAAANANAS0V0A8BLRDQAAkaBEUKCwQDAAAABQAAAA0AAAAAAAAA0AwLrQIAAADQDQEtFtAPAS0X0AAJGgRFCgsEAwAAAAUAAAANAAAAKAAAANAMC60EAAAA0A0BLRjQDwEtENAZGq0BRRscAdAAHBoCRR0LBAMAAAAFAAAADQAAAAAAAADQHh8tINAhIhoCRSMkAtAAJRoFRQoLBAMAAAADAAAAAAAAAAoAAADQJgutAAAAANADAS0n0CgBLRHQKQEtENAAJRoFRQoLBAMAAAADAAAAAAAAAAoAAADQJgutAQAAANADAS0n0CgBLRHQKQEtEJoqKwFFAAEC0AABLSzQAAEtF9AAHy0t0C4vGgPQMAutAQAAANAxC60XAAAA0DIarQDQMy8aA9AwC60CAAAA0DELrQMAAADQMhqtANA0Gq0A0DUarQA=</v>
           </d>
         </o>
-        <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
+        <v>{8A0FB252-96EB-4DCC-A5B4-B4804D05E2D6}</v>
         <o>
-          <v n="Name">"{192FAD59-8248-4824-A8DE-9177C94C195A}"</v>
+          <v n="Name">"{8A0FB252-96EB-4DCC-A5B4-B4804D05E2D6}"</v>
           <d n="SubKeys" t="Hashtable" />
-          <d n="Values" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String" cvt="Boolean">
+            <v>WriteLineIDs</v>
+            <v>True</v>
+          </d>
+        </o>
+        <v>{8F99A816-E488-41E4-9FA3-846536012284}</v>
+        <o>
+          <v n="Name">"{8F99A816-E488-41E4-9FA3-846536012284}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String" cvt="String">
+            <v>DisabledWarningIds</v>
+            <v>5410</v>
+          </d>
         </o>
       </d>
       <d n="Values" t="Hashtable" />
     </o>
         </Data>
         <TypeList>
+          <Type n="Boolean">System.Boolean</Type>
           <Type n="Hashtable">System.Collections.Hashtable</Type>
           <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
           <Type n="String">System.String</Type>

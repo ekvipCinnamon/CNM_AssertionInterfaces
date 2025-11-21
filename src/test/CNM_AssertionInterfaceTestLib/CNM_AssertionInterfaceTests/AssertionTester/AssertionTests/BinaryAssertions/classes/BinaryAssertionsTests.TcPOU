@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.13">
   <POU Name="BinaryAssertionsTests" Id="{37e73c2d-24d6-40c3-b311-f092f66f0cb2}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
@@ -108,7 +108,7 @@ END_VAR
 short summary
 ==================
 This test method tests ``assert.binary.isEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -230,7 +230,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.binary.isGreaterThan``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -366,7 +366,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.binary.isLessThan``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -523,7 +523,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.binary.isNotEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -645,7 +645,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.binary.isEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -711,7 +711,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.binary.isGreaterThan``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -777,7 +777,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.binary.isLessThan``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -843,7 +843,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.binary.isNotEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 

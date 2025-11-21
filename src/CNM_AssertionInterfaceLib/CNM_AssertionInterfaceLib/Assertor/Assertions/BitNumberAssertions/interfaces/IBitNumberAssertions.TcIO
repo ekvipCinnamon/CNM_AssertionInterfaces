@@ -3,14 +3,14 @@
   <Itf Name="IBitNumberAssertions" Id="{895eff78-c4a0-4ee1-bf26-cc1689b19a34}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| This interface provides assert statements for bit numbers:
-| For ``BYTE`` use :ref:`IBitNumberAssertions.short`
-| For ``WORD`` use :ref:`IBitNumberAssertions.simple`
-| For ``DWORD`` use :ref:`IBitNumberAssertions.double`
-| For ``LWORD`` use :ref:`IBitNumberAssertions.long`
-| For ``__XWORD`` use :ref:`IBitNumberAssertions.x`
+## Short summary
+
+This interface provides assert statements for bit numbers:
+For ``BYTE`` use `IBitNumberAssertions.short`
+For ``WORD`` use `IBitNumberAssertions.simple`
+For ``DWORD`` use `IBitNumberAssertions.double`
+For ``LWORD`` use `IBitNumberAssertions.long`
+For ``__XWORD`` use `IBitNumberAssertions.x`
 
 .. <legal notes>
 
@@ -34,9 +34,8 @@ INTERFACE IBitNumberAssertions EXTENDS __SYSTEM.IQueryInterface
     <Property Name="double" Id="{be1b6755-03f0-4cbb-a198-494b2784a469}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IDwordAssertions`
+## Short summary
+Returns the interface `IDwordAssertions`
 with assert statements for double words ``DWORD`` 
 
 .. <legal notes>
@@ -61,9 +60,8 @@ PROPERTY double :IDwordAssertions]]></Declaration>
     <Property Name="long" Id="{587dc4f8-0531-41fd-91e8-27e69dd7baa7}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`ILwordAssertions`
+## Short summary
+Returns the interface `ILwordAssertions`
 with assert statements for long words ``LWORD`` 
 
 .. <legal notes>
@@ -88,9 +86,8 @@ PROPERTY long :ILwordAssertions]]></Declaration>
     <Property Name="short" Id="{f4237945-ec7b-48b7-9410-edfa9257f61f}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IByteAssertions`
+## Short summary
+Returns the interface `IByteAssertions`
 with assert statements for bytes
 
 .. <legal notes>
@@ -116,9 +113,8 @@ PROPERTY short :IByteAssertions
     <Property Name="simple" Id="{3b50a78e-7cc9-4c5d-88fa-05ea12958332}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IWordAssertions`
+## Short summary
+Returns the interface `IWordAssertions`
 with assert statements for words 
 
 .. <legal notes>
@@ -143,9 +139,8 @@ PROPERTY simple :IWordAssertions]]></Declaration>
     <Property Name="x" Id="{94c1e8bf-9196-429a-ac21-956783054882}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IXwordAssertions`
+## Short summary
+Returns the interface `IXwordAssertions`
 with assert statements for register length words ``__XWORD``
 
 .. <legal notes>

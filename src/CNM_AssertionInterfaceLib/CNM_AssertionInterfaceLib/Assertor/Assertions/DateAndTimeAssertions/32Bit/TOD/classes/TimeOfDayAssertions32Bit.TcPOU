@@ -1,12 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="TimeOfDayAssertions32Bit" Id="{1273c61d-a574-404c-becd-ee7307898279}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This class provides assert statements for 32 bit time of day ``TOD``.
-It implements the interface :ref:`I32BitTodAssertions`
+It implements the interface `I32BitTodAssertions`
 
 .. <legal notes>
 
@@ -20,13 +19,12 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
 {attribute 'reflection'}
-FUNCTION_BLOCK INTERNAL TimeOfDayAssertions32Bit EXTENDS AbstactAssertion IMPLEMENTS I32BitTodAssertions
+FUNCTION_BLOCK INTERNAL TimeOfDayAssertions32Bit EXTENDS AbstractAssertion IMPLEMENTS I32BitTodAssertions
 VAR
 END_VAR
 ]]></Declaration>
@@ -36,8 +34,7 @@ END_VAR
     <Property Name="className" Id="{d27a159b-7eb3-49df-98e8-c894de23f360}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This abstract property returns the class name of the concrete object, 
 It's for debugging purpose
 
@@ -61,7 +58,7 @@ PROPERTY className :CNM_AbstractObject.ClassName]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[className := 'CNM_AssertionInterfaceLib.TimeOfDayAssertions32Bit';
+          <ST><![CDATA[className := 'CNM_Assertor.TimeOfDayAssertions32Bit';
 ]]></ST>
         </Implementation>
       </Get>
@@ -69,8 +66,7 @@ END_VAR
     <Method Name="valueIsEqualTo" Id="{673359bf-6f3a-46f2-8b3a-30849497c773}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is equal to the expected value
 
 .. <legal notes>
@@ -85,8 +81,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -110,8 +105,7 @@ END_IF
     <Method Name="valueIsGreaterThan" Id="{f80b559c-fe48-4465-8702-3b3af7035ae0}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than the less value
 
 .. <legal notes>
@@ -126,8 +120,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -151,11 +144,10 @@ END_IF
     <Method Name="valueIsInRangeOf" Id="{79e893f9-a96a-4b77-92c4-59873d13ca3b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is inside a limit
 
-.. attention:: 
+**Attention:** 
 	limits are included: ``valueIsInRangeOf(tod#3:0:0, tod#3:0:0, tod#3:0:0)`` is a true assertion
 
 .. <legal notes>
@@ -170,8 +162,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -200,8 +191,7 @@ END_IF
     <Method Name="valueIsLessThan" Id="{629fdb10-11c1-448d-b149-4b77634f2493}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is less than the greater value
 
 .. <legal notes>
@@ -216,8 +206,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -241,8 +230,7 @@ END_IF
     <Method Name="valueIsMax" Id="{2d7ca7fb-feb7-4abe-bfdd-ee7cf029b233}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is less than or equal to the maximum value
 
 .. <legal notes>
@@ -257,8 +245,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -282,8 +269,7 @@ END_IF
     <Method Name="valueIsMin" Id="{14cb2e90-841f-4840-af28-93218297f0fe}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than or equal to the minimum value
 
 .. <legal notes>
@@ -298,8 +284,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -323,8 +308,7 @@ END_IF
     <Method Name="valueIsNotEqualTo" Id="{2bc16d11-90ce-41bc-a85a-bb48df46cf54}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is not equal to the unexpected value
 
 .. <legal notes>
@@ -339,8 +323,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 

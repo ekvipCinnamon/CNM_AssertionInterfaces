@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <POU Name="TestObject" Id="{e3948534-87db-4d11-99ae-df91f37501c1}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+==================
+Implementaion of CNM_AbstractObject.IObject for testing purposes
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+FUNCTION_BLOCK TestObject EXTENDS CNM_AbstractObject.Object IMPLEMENTS ITestObject
+
+VAR
+	(* local DWORD value of this Class*)
+	dwordValue :DWORD;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="className" Id="{0bc719b4-28b5-4c3b-8e2e-fce4f89a974b}">
+      <Declaration><![CDATA[(*
+
+short summary
+=================
+This abstract property returns the class name of the concrete object, 
+which is useful to check the class name for ``__DELETE``.
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+PROPERTY className : CNM_AbstractObject.ClassName]]></Declaration>
+      <Get Name="Get" Id="{ae6a0b21-9544-4de2-bd06-e2530a892195}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[className := 'TestObject';]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="compareTo" Id="{d3cbb335-7b16-4d8d-aaf7-4113df0ab581}">
+      <Declaration><![CDATA[(*
+
+short summary
+=================
+overwrites compareTo of IObject: This method compares a foreign object with the own one, this is needed for sort orders.
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+=================
+:return:``SMALLER``: ``THIS`` precedes in order,
+``EQUAL``: ``THIS`` and ``object`` at the same position in order,
+``GREATER``: ``THIS`` is after in order.
+Checkout the library CNM_ReturnTypes.
+
+*)
+
+METHOD compareTo :CNM_ReturnTypes.ComparationResult
+VAR_INPUT
+	(* foreign objet to compare*)
+	object		:CNM_AbstractObject.IObject;
+END_VAR
+VAR
+	foreignTestObject	:ITestObject;
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (__QUERYINTERFACE(object, foreignTestObject)) THEN
+	IF (THIS^.value < foreignTestObject.value) THEN
+		compareTo := CNM_ReturnTypes.ComparationResult.SMALLER;
+	ELSIF (THIS^.value = foreignTestObject.value) THEN
+		compareTo := CNM_ReturnTypes.ComparationResult.EQUAL;
+	ELSE
+		compareTo := CNM_ReturnTypes.ComparationResult.GREATER;
+	END_IF
+ELSE
+	compareTo := CNM_ReturnTypes.ComparationResult.SMALLER;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{b83a2d9b-1c61-4dba-89bd-2275b5116b0a}">
+      <Declaration><![CDATA[(*
+
+short summary
+=================
+For initializing an DWordValue
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+=================
+
+*)
+
+
+METHOD FB_Init: BOOL
+VAR_INPUT
+	(* if TRUE, the retain variables are initialized (warm start / cold start) *)
+    bInitRetains	:BOOL;
+	(* if TRUE, the instance afterwards gets moved into the copy code (online change) *)
+    bInCopyCode		:BOOL;
+	(* value of the DWordValue Class*)
+	initvalue 		:DWORD;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.dwordValue := initvalue;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="value" Id="{ece1b958-84ff-4e7e-aa71-14937a278b49}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+contains the DWORD Value of this Class
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2023 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+PROPERTY value : DWORD]]></Declaration>
+      <Get Name="Get" Id="{06e2dc54-c440-4204-be8d-669192325ed8}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[value := THIS^.dwordValue;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{815ed38c-0f86-47f0-af18-fd5dcf5d7bbf}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.value := dwordValue;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="TestObject">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="TestObject.className.Get">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="TestObject.compareTo">
+      <LineId Id="14" Count="10" />
+      <LineId Id="12" Count="0" />
+    </LineIds>
+    <LineIds Name="TestObject.FB_init">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="TestObject.value.Get">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="TestObject.value.Set">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

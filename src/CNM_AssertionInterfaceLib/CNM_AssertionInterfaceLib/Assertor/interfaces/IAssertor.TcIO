@@ -3,8 +3,7 @@
   <Itf Name="IAssertor" Id="{494385c1-a2d8-444c-a0f6-b200312ac877}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This interface provides assert statements
 for the most common data types. The interface
 is made to avoid to many methods to select in 
@@ -32,9 +31,8 @@ INTERFACE IAssertor EXTENDS __SYSTEM.IQueryInterface
     <Property Name="assert" Id="{d83f9712-1108-4d7c-93ff-08e68224b2d8}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IAssertions`
+## Short summary
+Returns the interface `IAssertions`
 to get access to the assert statements
 
 .. <legal notes>
@@ -49,8 +47,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 

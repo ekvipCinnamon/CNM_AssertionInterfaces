@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.13">
   <POU Name="ConcreteAssertions" Id="{81987a0e-d932-45b6-ab4b-b2c6b593d05f}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK ConcreteAssertions EXTENDS CNM_AssertionInterfaceLib.AbstractAssertor IMPLEMENTS CNM_AssertionInterfaceTests.IAssertorContainer
+    <Declaration><![CDATA[FUNCTION_BLOCK ConcreteAssertions EXTENDS CNM_AssertionInterfaces.AbstractAssertor IMPLEMENTS CNM_AssertionInterfaceTests.IAssertorContainer
 VAR
 	wrongAssertion	:BOOL;
 END_VAR
@@ -13,7 +13,7 @@ END_VAR
       <Declaration><![CDATA[METHOD assertionWasWrong
 VAR_INPUT
 	caller			:CNM_AbstractObject.IObject;
-	message			:AssertMessage;
+	message			:CNM_AssertionInterfaces.AssertMessage;
 	additionalText	:Tc2_System.T_MaxString;
 END_VAR
 ]]></Declaration>
@@ -23,7 +23,7 @@ END_VAR
       </Implementation>
     </Method>
     <Property Name="assertor" Id="{a62cdb6e-56fd-4462-a276-71e81161234c}">
-      <Declaration><![CDATA[PROPERTY assertor : CNM_AssertionInterfaceTests.CNM_AssertionInterfaceLib.IAssertor
+      <Declaration><![CDATA[PROPERTY assertor : CNM_AssertionInterfaces.IAssertor
 ]]></Declaration>
       <Get Name="Get" Id="{9f4ac83f-a96b-44f1-b934-b437662da28e}">
         <Declaration><![CDATA[VAR

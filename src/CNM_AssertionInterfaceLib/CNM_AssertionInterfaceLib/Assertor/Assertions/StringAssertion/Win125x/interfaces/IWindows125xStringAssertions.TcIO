@@ -1,0 +1,495 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+  <Itf Name="IWindows125xStringAssertions" Id="{e98b9450-ff3e-4f05-9dc1-a0c1c6470d1e}">
+    <Declaration><![CDATA[(*
+
+## Short summary
+This interface provides assert statements for Windows-1252 and Windows-1251 strings up to 255 characters length.
+Used encoding is specified in ``Tc2_Utilities.GLOBAL_SBCS_TABLE`` global variable
+
+**Attention:** 
+	All strings are handled as null- terminated byte streams
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+INTERFACE IWindows125xStringAssertions EXTENDS __SYSTEM.IQueryInterface
+]]></Declaration>
+    <Method Name="contains" Id="{c4656b6f-7aac-407e-b280-d3e440938252}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` contains the search string.
+Processed strings must be in Windows-1252 or Windows-1251 encoding
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD contains
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:Tc2_System.T_MaxString;
+	(* string must be found in ``stringToCheck`` *)
+	searchString	:Tc2_System.T_MaxString;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+	(* used Single Byte Character Set (SBCS), is set in Tc2_Utilities.GLOBAL_SBCS_TABLE *)
+	sbcsType 		:Tc2_Utilities.E_SBCSType := Tc2_Utilities.E_SBCSType.eSBCS_WesternEuropean;
+	(* ``TRUE`` means ignore cases; ``FALSE`` means that cases must be equal too *)
+	ignoreCases		:BOOL := FALSE;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="containsNo" Id="{dda826d2-ccf0-4432-b345-626ab39b017a}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` not contains the search string.
+Processed strings must be in Windows-1252 or Windows-1251 encoding
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD containsNo
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:Tc2_System.T_MaxString;
+	(* string that must not be found in ``stringToCheck`` *)
+	searchString	:Tc2_System.T_MaxString;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+	(* used Single Byte Character Set (SBCS), is set in Tc2_Utilities.GLOBAL_SBCS_TABLE *)
+	sbcsType 		:Tc2_Utilities.E_SBCSType := Tc2_Utilities.E_SBCSType.eSBCS_WesternEuropean;
+	(* ``TRUE`` means ignore cases; ``FALSE`` means that cases must be equal too *)
+	ignoreCases		:BOOL := FALSE;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="endsWith" Id="{484bab5b-184c-49c8-8e0d-6c1c5a7a6db8}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` ends with the string ``end``.
+Processed strings must be in Windows-1252 or Windows-1251 encoding
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD endsWith
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:Tc2_System.T_MaxString;
+	(* expected end of ``stringToCheck`` *)
+	end				:Tc2_System.T_MaxString;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+	(* used Single Byte Character Set (SBCS), is set in Tc2_Utilities.GLOBAL_SBCS_TABLE *)
+	sbcsType 		:Tc2_Utilities.E_SBCSType := Tc2_Utilities.E_SBCSType.eSBCS_WesternEuropean;
+	(* ``TRUE`` means ignore cases; ``FALSE`` means that cases must be equal too *)
+	ignoreCases		:BOOL := FALSE;
+	(* ``TRUE`` means truncation of spaces on the right side of ``stringToCheck``*)
+	trim		:BOOL := FALSE;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="isEmpty" Id="{feee4359-08c6-490f-91d6-75a66bf3d1e1}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` is empty.
+Processed strings must be in Windows-1252 or Windows-1251 encoding
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isEmpty
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:Tc2_System.T_MaxString;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="isEqualTo" Id="{2e116248-eeef-4b09-a9ca-c40dc75da390}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` is equal to ``expected``.
+Processed strings must be in Windows-1252 or Windows-1251 encoding
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isEqualTo
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:Tc2_System.T_MaxString;
+	(* ``stringToCheck`` must be equal to expected *)
+	expected		:Tc2_System.T_MaxString;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+	(* used Single Byte Character Set (SBCS), is set in Tc2_Utilities.GLOBAL_SBCS_TABLE *)
+	sbcsType 		:Tc2_Utilities.E_SBCSType := Tc2_Utilities.E_SBCSType.eSBCS_WesternEuropean;
+	(* ``TRUE`` means ignore cases; ``FALSE`` means that cases must be equal too *)
+	ignoreCases		:BOOL := FALSE;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="isNotEmpty" Id="{f6860276-c203-49d9-93d6-45cb2145364b}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` is not empty.
+Processed strings must be in Windows-1252 or Windows-1251 encoding
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isNotEmpty
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:Tc2_System.T_MaxString;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="isNotEqualTo" Id="{fccf0958-4281-4d68-bbf7-9d99e919a640}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` is not equal to ``unexpected``.
+Processed strings must be in Windows-1252 or Windows-1251 encoding
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isNotEqualTo
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:Tc2_System.T_MaxString;
+	(* ``stringToCheck`` must be not equal to expected *)
+	unexpected		:Tc2_System.T_MaxString;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+	(* used Single Byte Character Set (SBCS), is set in Tc2_Utilities.GLOBAL_SBCS_TABLE *)
+	sbcsType 		:Tc2_Utilities.E_SBCSType := Tc2_Utilities.E_SBCSType.eSBCS_WesternEuropean;
+	(* ``TRUE`` means ignore cases; ``FALSE`` means that cases must be equal too *)
+	ignoreCases		:BOOL := FALSE;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="lengthIsBetween" Id="{3090babc-bc48-4738-9412-e10806aff08e}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` length is between ``minLength`` and ``maxLength``.
+Processed strings must be in UTF-8 encoding
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD lengthIsBetween
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:Tc2_System.T_MaxString;
+	(* lower limit of the string length *)
+	minLength		:USINT;
+	(* upper limit of the string length *)
+	maxLength		:USINT;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="lengthIsExact" Id="{c7a36a94-211c-4ed8-8aa2-2687ac99a2ab}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` length is equal to ``expectedLength``.
+Processed strings must be in UTF-8 encoding
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD lengthIsExact
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:Tc2_System.T_MaxString;
+	(* expected length of ``stringToCheck`` *)
+	expectedLength	:USINT;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="lengthIsMax" Id="{55c52c7a-8707-4e48-a73c-ab161887844c}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` length is equal or less than to ``maxLength``.
+Processed strings must be in UTF-8 encoding
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD lengthIsMax
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:Tc2_System.T_MaxString;
+	(* upper limit of the length of ``stringToCheck`` *)
+	maxLength		:USINT;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="lengthIsMin" Id="{d508a3ca-aa98-4044-9239-3aefa081148a}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` length is equal or grater than to ``minLength``.
+Processed strings must be in UTF-8 encoding
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD lengthIsMin
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:Tc2_System.T_MaxString;
+	(* lower limit of the length of ``stringToCheck`` *)
+	minLength		:USINT;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="setCallBack" Id="{cdbd292a-1363-4d4a-9cd0-36ff35ce8b4a}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This methods is the setter for the callback class if an assertion was false
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD setCallBack
+VAR_INPUT
+	(* the class that must be informed if an assertion is false *)
+	callBack	:IAssertCallBack;  
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="startsWith" Id="{1e4399ae-0427-40d8-8436-4978ce7f066b}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` starts with string ``start``.
+Processed strings must be in UTF-8 encoding
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD startsWith
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:Tc2_System.T_MaxString;
+	(* expected start of ``stringToCheck`` *)
+	start			:Tc2_System.T_MaxString;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+	(* used Single Byte Character Set (SBCS), is set in Tc2_Utilities.GLOBAL_SBCS_TABLE *)
+	sbcsType 		:Tc2_Utilities.E_SBCSType := Tc2_Utilities.E_SBCSType.eSBCS_WesternEuropean;
+	(* ``TRUE`` means ignore cases; ``FALSE`` means that cases must be equal too *)
+	ignoreCases		:BOOL := FALSE;
+	(* ``TRUE`` means truncation of spaces on the left side of ``stringToCheck``*)
+	trim		:BOOL := FALSE;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

@@ -3,8 +3,7 @@
   <Itf Name="I32BitTodAssertions" Id="{fdb6a884-4156-4d19-b7df-74a1c66e604f}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This interface provides assert statements for 32 bit time of day ``TOD``  
 
 .. <legal notes>
@@ -19,8 +18,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
@@ -29,8 +27,7 @@ INTERFACE I32BitTodAssertions EXTENDS __SYSTEM.IQueryInterface
     <Method Name="valueIsEqualTo" Id="{1ea23821-a9dd-4d59-8acd-f6c65b568834}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is equal to the expected value
 
 .. <legal notes>
@@ -45,8 +42,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -64,8 +60,7 @@ END_VAR
     <Method Name="valueIsGreaterThan" Id="{03cb09c7-552f-472d-b44d-2e0ab308fd85}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than the less value
 
 .. <legal notes>
@@ -80,8 +75,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -99,11 +93,10 @@ END_VAR
     <Method Name="valueIsInRangeOf" Id="{88de90b9-af3f-4874-9d76-14be6b773e77}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is inside a limit
 
-.. attention:: 
+**Attention:** 
 	limits are included: ``valueIsInRangeOf(tod#3:0:0, tod#3:0:0, tod#3:0:0)`` is a true assertion
 
 .. <legal notes>
@@ -118,8 +111,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -139,8 +131,7 @@ END_VAR
     <Method Name="valueIsLessThan" Id="{67770622-9317-4e6b-b1e5-fa320bb4caf0}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is less than the greater value
 
 .. <legal notes>
@@ -155,8 +146,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -174,8 +164,7 @@ END_VAR
     <Method Name="valueIsMax" Id="{806ca871-381f-47b0-acbb-646ad3f793b8}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is less than or equal to the maximum value
 
 .. <legal notes>
@@ -190,8 +179,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -209,8 +197,7 @@ END_VAR
     <Method Name="valueIsMin" Id="{37030d02-7c9f-4359-b3af-436c803c12e4}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than or equal to the minimum value
 
 .. <legal notes>
@@ -225,8 +212,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -244,8 +230,7 @@ END_VAR
     <Method Name="valueIsNotEqualTo" Id="{09ca0063-f958-4a1d-b592-db72019270ba}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is not equal to the unexpected value
 
 .. <legal notes>
@@ -260,8 +245,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 

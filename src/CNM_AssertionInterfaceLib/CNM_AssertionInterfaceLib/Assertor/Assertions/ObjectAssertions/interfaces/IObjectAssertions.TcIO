@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <Itf Name="IObjectAssertions" Id="{33583402-0836-4a8d-b46e-03ef7fc53412}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This interface provides assert statements for ``CNM_AbstractObject.IObjects`` 
 
 .. <legal notes>
@@ -19,8 +18,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
@@ -29,8 +27,7 @@ INTERFACE IObjectAssertions EXTENDS __SYSTEM.IQueryInterface
     <Method Name="isAfterInOrderTo" Id="{6a518e53-fd34-4528-b331-322e9a0f5959}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if ``object`` is after in order to ``objectToCompare``
 
 .. <legal notes>
@@ -45,8 +42,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -64,8 +60,7 @@ END_VAR
     <Method Name="isEqualInOrderTo" Id="{213239c6-bbb9-4df8-a5c0-3431c652b818}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if ``object``
 is at the same position in the sequence as ``objectToCompare``
 
@@ -81,8 +76,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -100,8 +94,7 @@ END_VAR
     <Method Name="isEqualTo" Id="{a105b8a9-47d2-4f93-9d0a-d3b882104642}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if ``object`` is ``objectToCompare``
 
 .. <legal notes>
@@ -116,8 +109,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -135,8 +127,7 @@ END_VAR
     <Method Name="isNotEqualTo" Id="{75927c30-bc60-4cca-9f61-ac99e878e0ec}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if ``object`` is not ``objectToCompare``
 
 .. <legal notes>
@@ -151,8 +142,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -170,8 +160,7 @@ END_VAR
     <Method Name="objectIsNull" Id="{5e7536ad-dbee-4428-9816-196d1d62c1e4}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if ``object`` is NULL
 
 .. <legal notes>
@@ -186,8 +175,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -203,13 +191,8 @@ END_VAR
     <Method Name="objectIsValid" Id="{8febbe33-dc30-42d8-b54e-739a86332b62}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if ``object`` is not NULL
-
-.. attention:: 
-	Validity of the pointer will be proofed for 32 bit systems only.
-	For other systems it's an optimistic estimate.
 
 .. <legal notes>
 
@@ -223,8 +206,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -240,8 +222,7 @@ END_VAR
     <Method Name="precedesInOrderTo" Id="{6ba6fce0-bb12-4e2b-92f4-25789afe0a9f}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if ``object``
 precedes in sequence to ``objectToCompare``
 
@@ -257,8 +238,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -276,12 +256,11 @@ END_VAR
     <Method Name="setComperator" Id="{c71c74e6-ec7b-4003-88f5-2c28e227609d}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This allows you to set your own comperator for the methods
-:ref:`IObjectAssertions.precedesInOrderTo`  
-:ref:`IObjectAssertions.isEqualInOrderTo`  
-:ref:`IObjectAssertions.isAfterInOrderTo`
+`IObjectAssertions.precedesInOrderTo`  
+`IObjectAssertions.isEqualInOrderTo`  
+`IObjectAssertions.isAfterInOrderTo`
 to clear the comperator again, just call it with 0: ``foo.setComperator(comperator := 0);``
 
 .. <legal notes>
@@ -296,8 +275,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 

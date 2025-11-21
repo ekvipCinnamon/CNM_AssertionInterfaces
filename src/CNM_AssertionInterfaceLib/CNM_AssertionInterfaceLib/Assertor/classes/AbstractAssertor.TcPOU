@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="AbstractAssertor" Id="{eb1d149f-d035-4ad3-b819-793fbe84c099}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| This abstract class provides assert statements in a `fluent interface`_ style for the most common data types. 
-| It implements the interfaces :ref:`IAssertor` and :ref:`IAssertCallBack`
-| If you need assertion statements you've to extend this class and you've to overwrite the methods
-| :ref:`AbstractAssertor.assertionWasWrong`
-| :ref:`AbstractAssertor.className`
+## Short summary
+
+This abstract class provides assert statements in a `fluent interface`_ style for the most common data types. 
+It implements the interfaces `IAssertor` and `IAssertCallBack`
+If you need assertion statements you've to extend this class and you've to overwrite the methods
+`AbstractAssertor.assertionWasWrong`
+`AbstractAssertor.className`
 
 .. _`fluent interface`: https://en.wikipedia.org/wiki/Fluent_interface
 
@@ -25,8 +25,7 @@ legal notes
 
 .. </legal notes>
 
-methods and properties
-=======================
+
 
 *)
 
@@ -44,9 +43,8 @@ END_VAR
     <Property Name="assert" Id="{b7edb731-7b91-4897-a609-0e9a7de5688e}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IAssertions`
+## Short summary
+Returns the interface `IAssertions`
 to get access to the assert statements
 
 .. <legal notes>
@@ -61,8 +59,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
@@ -81,8 +78,7 @@ END_VAR
     <Method Name="assertionWasWrong" Id="{2f4c4e00-20ff-4d94-9c14-35786b10be11}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This method is called if an assertion was ``FALSE``
 
 .. <legal notes>
@@ -97,8 +93,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -119,12 +114,11 @@ END_VAR
     <Property Name="className" Id="{ed4219ee-4da7-48db-8705-951be8999d26}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This abstract property returns the class name of the concrete object, 
 It's for debugging purpose
 
-.. attention:: 
+**Attention:** 
 	For derivations: **It is necessary that this property is overridden by the concrete class**
 
 .. <legal notes>
@@ -154,15 +148,11 @@ END_VAR
     <Method Name="FB_init" Id="{e57414db-59fa-481f-b0bd-da7711965e25}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 The constructor ``FB_init`` is needed to create an unique hash code.
-The hash code is a pseudo random number create with a xorshift_ algorithm.
+The hash code is a pseudo random number create with a [xorshift](https://en.wikipedia.org/wiki/Xorshift) algorithm.
 It can be overwritten on derivations, because it will be called implicit, ``SUPER^.FB_init()`` is not required.
-For more information check: `Behavoir with derived function blocks`_
-
-.. _Behavoir with derived function blocks: https://infosys.beckhoff.com/content/1033/tc3_plc_intro/5482088715.html?id=6983869892358031022
-.. _xorshift: https://en.wikipedia.org/wiki/Xorshift
+For more information check: [Behavoir with derived function blocks](https://infosys.beckhoff.com/content/1033/tc3_plc_intro/5482088715.html?id=6983869892358031022)
 
 .. <legal notes>
 
@@ -176,8 +166,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -190,7 +179,7 @@ VAR_INPUT
 END_VAR
 VAR
 	{attribute 'hide'}
-	newHashstate3		:Hashcode;
+	newHashstate3		:CNM_AbstractObject.Hashcode;
 END_VAR
 VAR CONSTANT
 	{attribute 'hide'}

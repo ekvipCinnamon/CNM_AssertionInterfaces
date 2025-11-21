@@ -3,8 +3,7 @@
   <DUT Name="AssertMessage" Id="{2ccdc276-75d1-44d0-ba2b-b5d547b43127}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 AssertMessage is an alias of Tc2_System.T_MaxString.
 It's just a tmeporary type to ease the change to 
 an alarm event (but there is no library for this yet)

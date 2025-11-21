@@ -1,0 +1,2007 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.13">
+  <POU Name="ObjectAssertionsTests" Id="{894b981d-f12e-4ffc-aba8-16052b5b2b02}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+short summary
+==================
+This class tests all methods of Object assertions
+with various combinations of inputs and checks expected 
+outputs are satisfied or not
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+methods and properties
+======================
+
+*)
+
+
+FUNCTION_BLOCK ObjectAssertionsTests EXTENDS AbstractAssertorTest
+VAR
+
+END_VAR
+VAR CONSTANT
+	(* prefix to unify the test names *)
+	TEST_NAME_PREFIX				:STRING := 'assert.object.';
+	(* NULL value for Assertions *)
+	{attribute 'const_replaced'}
+	{attribute 'displaymode':='hex'}
+	NULL 							:__XWORD := 0;
+	(* max value of a DWORD *)
+	{attribute 'hide'}
+	MAX_DWORD						:DWORD := 16#FFFF_FFFF;
+	(* min value of a DWORD *)
+	{attribute 'hide'}
+	MIN_DWORD						:DWORD := 16#0000_0000;
+	(* only the msb is set *)
+	{attribute 'hide'}
+	MSB_ONLY						:DWORD := 16#8000_0000;
+	(* only the msb is set *)
+	{attribute 'hide'}
+	LSB_ONLY						:DWORD := 16#0000_0001;
+	(* all bits set except the msb *)
+	{attribute 'hide'}
+	WITHOUT_MSB 					:DWORD := 16#7FFF_FFFF;
+	(* for every nibble is the msb set only *)
+	{attribute 'hide'}
+	ALL_NIBBLE_MSB					:DWORD := 16#8888_8888;
+	(* for every nibble is the msb unset only *)
+	{attribute 'hide'}
+	WITHOUT_NIBBLE_MSB				:DWORD := 16#7777_7777;
+	(* for every nibble is the lsb set only *)
+	{attribute 'hide'}
+	ALL_NIBBLE_LSB					:DWORD := 16#1111_1111;
+	(* every bit is set except the lsb *)
+	{attribute 'hide'}
+	LSB_IS_UNSET					:DWORD := 16#FFFF_FFFE;
+	(* NULL value of DWordValue *)
+	{warning disable C0228}
+	DWORDVALUE_NULL 				:DWordValue(0);
+	(* max vale of DWordValue *)
+	DWORDVALUE_MAX					:DWordValue(MAX_DWORD);
+	(* min vale of DWordValue *)
+	DWORDVALUE_MIN					:DWordValue(MIN_DWORD);
+	(* only the msb is set *)
+	DWORDVALUE_MSB_ONLY				:DWordValue(MSB_ONLY);
+	(* all bits set except the msb *)
+	DWORDVALUE_WITHOUT_MSB 			:DWordValue(WITHOUT_MSB);
+	(* for every nibble is the msb set only *)
+	DWORDVALUE_ALL_NIBBLE_MSB		:DWordValue(ALL_NIBBLE_MSB);
+	(* for every nibble is the msb unset only *)
+	DWORDVALUE_WITHOUT_NIBBLE_MSB	:DWordValue(WITHOUT_NIBBLE_MSB);
+	(* for every nibble is the lsb set only *)
+	DWORDVALUE_ALL_NIBBLE_LSB		:DWordValue(ALL_NIBBLE_LSB);	
+	(* every bit is set except the lsb *)
+	DWORDVALUE_LSB_IS_UNSET			:DWordValue(LSB_IS_UNSET);
+	(* only the msb is set *)
+	DWORDVALUE_LSB_ONLY				:DWordValue(LSB_ONLY);
+	{warning ensable C0228}
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[THIS^.runIsEqualTo();
+THIS^.runIsNotEqualTo();
+THIS^.runObjectIsValid();
+THIS^.runObjectIsNull();
+THIS^.runIsAfterInOrderTo();
+THIS^.runIsEqualInOrderTo();
+THIS^.runPrecedesInOrderTo();
+THIS^.runSetComparator();
+
+]]></ST>
+    </Implementation>
+    <Folder Name="internal" Id="{feb0044b-a17b-47fb-8b48-47e6c0b224d5}" />
+    <Folder Name="isAfterInOrderTo" Id="{53b31c2b-f940-465c-b601-4a297111ecce}" />
+    <Folder Name="isEqualInOrderTo" Id="{b204289f-2e72-4ba2-9936-25e30edaf13b}" />
+    <Folder Name="isEqualTo" Id="{70cf77e3-762d-4b16-a6e2-2bf97c72af8e}" />
+    <Folder Name="isNotEqualTo" Id="{e6b0a012-7c1b-4c16-8c8b-0d1c1f3867f1}" />
+    <Folder Name="objectIsNull" Id="{99c8527a-2864-4185-a37c-4d5b14bfec7b}" />
+    <Folder Name="objectIsValid" Id="{bf6d56df-0bba-4179-a8f3-6760b4fe61d3}" />
+    <Folder Name="precedesInOrderTo" Id="{3ac756ef-b0bb-4e73-befc-dd390b521c20}" />
+    <Folder Name="setComparator" Id="{f4316b72-ea45-4df6-acce-3f68bd258dbe}">
+      <Folder Name="ReverseOrderComparatorTests" Id="{ff1879a8-d0e2-4321-91a8-be32cbd5e65e}" />
+    </Folder>
+    <Method Name="getTestNameFor" Id="{bc353f69-8f17-43ac-aab7-58989510072d}" FolderPath="internal\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method is a helper function to create a unified test name
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+METHOD PROTECTED getTestNameFor :Tc2_System.T_MaxString
+VAR_INPUT
+	(* name of the method to test, to create a unified test name *)
+	nameOfMethodToTest	:Tc2_System.T_MaxString;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[getTestNameFor := Tc2_Standard.CONCAT(THIS^.TEST_NAME_PREFIX, nameOfMethodToTest);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runIsAfterInOrderTo" Id="{c8ffd81b-367c-45b1-b4b3-998a53896927}" FolderPath="isAfterInOrderTo\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.object.isAfterInOrderTo``
+method of CNM_AssertionInterfaces library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runIsAfterInOrderTo
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('isAfterInOrderTo')));
+
+THIS^.testIsAfterInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+THIS^.testIsAfterInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testIsAfterInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+THIS^.testIsAfterInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testIsAfterInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testIsAfterInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_ALL_NIBBLE_LSB,
+	expectedObject := THIS^.DWORDVALUE_ALL_NIBBLE_LSB
+);
+THIS^.testIsAfterInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_LSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_MSB_ONLY
+);
+THIS^.testIsAfterInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_MSB_ONLY
+);
+THIS^.testIsAfterInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_LSB_ONLY
+);
+THIS^.testIsAfterInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := 0
+);
+THIS^.testIsAfterInOrderTo(
+	objectToTest := 0,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runIsEqualInOrderTo" Id="{f84c74f2-e3cb-4184-9261-13c8391edacc}" FolderPath="isEqualInOrderTo\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.object.isEqualInOrderTo``
+method of CNM_AssertionInterfaces library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runIsEqualInOrderTo
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('isEqualInOrderTo')));
+
+THIS^.testIsEqualInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+THIS^.testIsEqualInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testIsEqualInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+THIS^.testIsEqualInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testIsEqualInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testIsEqualInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_ALL_NIBBLE_LSB,
+	expectedObject := THIS^.DWORDVALUE_ALL_NIBBLE_LSB
+);
+THIS^.testIsEqualInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_LSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_MSB_ONLY
+);
+THIS^.testIsEqualInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_MSB_ONLY
+);
+THIS^.testIsEqualInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_LSB_ONLY
+);
+THIS^.testIsEqualInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := 0
+);
+THIS^.testIsEqualInOrderTo(
+	objectToTest := 0,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runIsEqualTo" Id="{c07cdcf9-3d8b-4024-a55b-6b4cc1c63dfe}" FolderPath="isEqualTo\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.object.isEqualTo``
+method of CNM_AssertionInterfaces library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runIsEqualTo
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('isEqualTo')));
+
+THIS^.testIsEqualTo(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+THIS^.testIsEqualTo(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testIsEqualTo(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+THIS^.testIsEqualTo(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testIsEqualTo(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testIsEqualTo(
+	objectToTest := THIS^.DWORDVALUE_ALL_NIBBLE_LSB,
+	expectedObject := THIS^.DWORDVALUE_ALL_NIBBLE_LSB
+);
+THIS^.testIsEqualTo(
+	objectToTest := THIS^.DWORDVALUE_LSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_MSB_ONLY
+);
+THIS^.testIsEqualTo(
+	objectToTest := THIS^.DWORDVALUE_MSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_MSB_ONLY
+);
+THIS^.testIsEqualTo(
+	objectToTest := THIS^.DWORDVALUE_MSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_LSB_ONLY
+);
+THIS^.testIsEqualTo(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := 0
+);
+THIS^.testIsEqualTo(
+	objectToTest := 0,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runIsNotEqualTo" Id="{415b46ad-2af3-46af-b93d-372c9ae7aa37}" FolderPath="isNotEqualTo\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.object.isNotEqualTo``
+method of CNM_AssertionInterfaces library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runIsNotEqualTo
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('isNotEqualTo')));
+
+THIS^.testIsNotEqualTo(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+THIS^.testIsNotEqualTo(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testIsNotEqualTo(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+THIS^.testIsNotEqualTo(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testIsNotEqualTo(
+	objectToTest := THIS^.DWORDVALUE_ALL_NIBBLE_LSB,
+	expectedObject := THIS^.DWORDVALUE_ALL_NIBBLE_LSB
+);
+THIS^.testIsNotEqualTo(
+	objectToTest := THIS^.DWORDVALUE_LSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_MSB_ONLY
+);
+THIS^.testIsNotEqualTo(
+	objectToTest := THIS^.DWORDVALUE_MSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_MSB_ONLY
+);
+THIS^.testIsNotEqualTo(
+	objectToTest := THIS^.DWORDVALUE_MSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_LSB_ONLY
+);
+THIS^.testIsNotEqualTo(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := 0
+);
+THIS^.testIsNotEqualTo(
+	objectToTest := 0,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runObjectIsNull" Id="{a7ec27e2-c049-48d9-9e05-a0c9806f1902}" FolderPath="objectIsNull\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.object.objectIsNull``
+method of CNM_AssertionInterfaces library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runObjectIsNull
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('objectIsNull')));
+
+THIS^.testObjectIsNull(
+	objectToTest := THIS^.DWORDVALUE_MAX
+);
+THIS^.testObjectIsNull(
+	objectToTest := THIS^.DWORDVALUE_MIN
+);
+THIS^.testObjectIsNull(
+	objectToTest := THIS^.DWORDVALUE_ALL_NIBBLE_LSB
+);
+THIS^.testObjectIsNull(
+	objectToTest := THIS^.DWORDVALUE_LSB_ONLY
+);
+THIS^.testObjectIsNull(
+	objectToTest := THIS^.DWORDVALUE_MSB_ONLY
+);
+THIS^.testObjectIsNull(
+	objectToTest := 0
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runObjectIsValid" Id="{3644afb1-c815-452f-aa28-c2564ed27910}" FolderPath="objectIsValid\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.object.objectIsValid``
+method of CNM_AssertionInterfaces library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runObjectIsValid
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('objectIsValid')));
+
+THIS^.testObjectIsValid(
+	objectToTest := THIS^.DWORDVALUE_MAX
+);
+THIS^.testObjectIsValid(
+	objectToTest := THIS^.DWORDVALUE_MIN
+);
+THIS^.testObjectIsValid(
+	objectToTest := THIS^.DWORDVALUE_ALL_NIBBLE_LSB
+);
+THIS^.testObjectIsValid(
+	objectToTest := THIS^.DWORDVALUE_LSB_ONLY
+);
+THIS^.testObjectIsValid(
+	objectToTest := THIS^.DWORDVALUE_MSB_ONLY
+);
+THIS^.testObjectIsValid(
+	objectToTest := 0
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runPrecedesInOrderTo" Id="{f5070f86-a01a-4985-893d-fa2fd811379a}" FolderPath="precedesInOrderTo\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.object.precedesInOrderTo``
+method of CNM_AssertionInterfaces library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runPrecedesInOrderTo
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('precedesInOrderTo')));
+
+THIS^.testPrecedesInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+THIS^.testPrecedesInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testPrecedesInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+THIS^.testPrecedesInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testPrecedesInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testPrecedesInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_ALL_NIBBLE_LSB,
+	expectedObject := THIS^.DWORDVALUE_ALL_NIBBLE_LSB
+);
+THIS^.testPrecedesInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_LSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_MSB_ONLY
+);
+THIS^.testPrecedesInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_MSB_ONLY
+);
+THIS^.testPrecedesInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_LSB_ONLY
+);
+THIS^.testPrecedesInOrderTo(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := 0
+);
+THIS^.testPrecedesInOrderTo(
+	objectToTest := 0,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runSetComparator" Id="{53281c8b-5a2c-42b1-b01b-3c33b822785b}" FolderPath="setComparator\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.object.setComparator``
+method of CNM_AssertionInterfaces library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runSetComparator
+VAR
+	reverseOrderComparator :ReverseOrderComparator;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('setComparator')));
+
+
+THIS^.testSetComparator(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+THIS^.testSetComparator(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testSetComparator(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+THIS^.testSetComparator(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testSetComparator(
+	objectToTest := THIS^.DWORDVALUE_MAX,
+	expectedObject := THIS^.DWORDVALUE_MIN
+);
+THIS^.testSetComparator(
+	objectToTest := THIS^.DWORDVALUE_ALL_NIBBLE_LSB,
+	expectedObject := THIS^.DWORDVALUE_ALL_NIBBLE_LSB
+);
+THIS^.testSetComparator(
+	objectToTest := THIS^.DWORDVALUE_LSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_MSB_ONLY
+);
+THIS^.testSetComparator(
+	objectToTest := THIS^.DWORDVALUE_MSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_MSB_ONLY
+);
+THIS^.testSetComparator(
+	objectToTest := THIS^.DWORDVALUE_MSB_ONLY,
+	expectedObject := THIS^.DWORDVALUE_LSB_ONLY
+);
+THIS^.testSetComparator(
+	objectToTest := THIS^.DWORDVALUE_MIN,
+	expectedObject := 0
+);
+THIS^.testSetComparator(
+	objectToTest := 0,
+	expectedObject := THIS^.DWORDVALUE_MAX
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testIsAfterInOrderTo" Id="{00f64be5-af9c-48dd-9ef8-b68c0b2b7c13}" FolderPath="isAfterInOrderTo\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.object.isAfterInOrderTo``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+
+METHOD testIsAfterInOrderTo
+VAR_INPUT
+(* for the test it's the parameter ``object`` *)
+	objectToTest	:IDWord;
+	(* for the test it's the parameter ``objectToCompare`` *)
+	expectedObject	:IDWord;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* DWORD value of ``object`` as string *)
+	objectToTestAsString	:STRING(22);
+	(* DWORD value of ``objectToCompare`` as string *)
+	expectedObjectAsString	:STRING(22);
+	(* needed to call AbstractObject Methods on ´´DWordValue´´ *)
+	concreteObject 			:ConcreteObject;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+		assertionIsWrong := (objectToTest.compareTo(expectedObject) <> CNM_ReturnTypes.ComparationResult.GREATER);
+ELSIF (
+		concreteObject.isObjectValid(expectedObject)
+) THEN
+		assertionIsWrong := (expectedObject.compareTo(objectToTest) >= CNM_ReturnTypes.ComparationResult.EQUAL);
+END_IF
+
+message := SEL(
+	assertionIsWrong,
+	'object is %s objectToCompare is %s assertion must be TRUE', 
+	'object is %s objectToCompare is %s assertion must be FALSE'
+);
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+		objectToTestAsString := TO_STRING(objectToTest.value);
+ELSE
+		objectToTestAsString := 'NULL';
+END_IF
+
+IF (
+		concreteObject.isObjectValid(expectedObject)
+) THEN
+		expectedObjectAsString := TO_STRING(expectedObject.value);
+ELSE
+		expectedObjectAsString := 'NULL';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(objectToTestAsString),
+	arg2 := THIS^.AnyToArg(expectedObjectAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.object.isAfterInOrderTo(
+	object	:= objectToTest,
+	objectToCompare	:= expectedObject,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testIsAfterInOrderToReversed" Id="{5c40485c-816a-492e-a4a7-e7017ec69b87}" FolderPath="setComparator\ReverseOrderComparatorTests\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ´´ReverseOrderComparator´´ in ``assert.object.setComparator``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+
+METHOD testIsAfterInOrderToReversed
+VAR_INPUT
+(* for the test it's the parameter ``object`` *)
+	objectToTest	:IDWord;
+	(* for the test it's the parameter ``objectToCompare`` *)
+	expectedObject	:IDWord;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* DWORD value of ``object`` as string *)
+	objectToTestAsString	:STRING(22);
+	(* DWORD value of ``objectToCompare`` as string *)
+	expectedObjectAsString	:STRING(22);
+	(* needed to call AbstractObject Methods on ´´DWordValue´´ *)
+	concreteObject 			:ConcreteObject;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+	assertionIsWrong := (objectToTest.compareTo(expectedObject) <> CNM_ReturnTypes.ComparationResult.SMALLER);
+ELSIF (
+		concreteObject.isObjectValid(expectedObject)
+) THEN
+	assertionIsWrong := (expectedObject.compareTo(objectToTest) <= CNM_ReturnTypes.ComparationResult.EQUAL);
+END_IF
+
+message := SEL(
+	assertionIsWrong,
+	'object is %s objectToCompare is %s assertion must be TRUE', 
+	'object is %s objectToCompare is %s assertion must be FALSE'
+);
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+	objectToTestAsString := TO_STRING(objectToTest.value);
+ELSE
+	objectToTestAsString := 'NULL';
+END_IF
+
+IF (
+		concreteObject.isObjectValid(expectedObject)
+) THEN
+	expectedObjectAsString := TO_STRING(expectedObject.value);
+ELSE
+	expectedObjectAsString := 'NULL';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(objectToTestAsString),
+	arg2 := THIS^.AnyToArg(expectedObjectAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.object.isAfterInOrderTo(
+	object	:= objectToTest,
+	objectToCompare	:= expectedObject,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testIsEqualInOrderTo" Id="{2e426ea6-05bd-4c2d-8389-8443a6dac5b1}" FolderPath="isEqualInOrderTo\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.object.isEqualInOrderTo``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+
+METHOD testIsEqualInOrderTo
+VAR_INPUT
+(* for the test it's the parameter ``object`` *)
+	objectToTest	:IDWord;
+	(* for the test it's the parameter ``objectToCompare`` *)
+	expectedObject	:IDWord;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* DWORD value of ``object`` as string *)
+	objectToTestAsString	:STRING(22);
+	(* DWORD value of ``objectToCompare`` as string *)
+	expectedObjectAsString	:STRING(22);
+	(* needed to call AbstractObject Methods on ´´DWordValue´´ *)
+	concreteObject 			:ConcreteObject;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+	assertionIsWrong := (objectToTest.compareTo(expectedObject) <> CNM_ReturnTypes.ComparationResult.EQUAL);
+ELSIF (
+		concreteObject.isObjectValid(expectedObject)
+) THEN
+	assertionIsWrong := (expectedObject.compareTo(objectToTest) <> CNM_ReturnTypes.ComparationResult.EQUAL);
+END_IF
+
+message := SEL(
+	assertionIsWrong,
+	'object is %s objectToCompare is %s assertion must be TRUE', 
+	'object is %s objectToCompare is %s assertion must be FALSE'
+);
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+	objectToTestAsString := TO_STRING(objectToTest.value);
+ELSE
+	objectToTestAsString := 'NULL';
+END_IF
+
+IF (
+		concreteObject.isObjectValid(expectedObject)
+) THEN
+	expectedObjectAsString := TO_STRING(expectedObject.value);
+ELSE
+	expectedObjectAsString := 'NULL';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(objectToTestAsString),
+	arg2 := THIS^.AnyToArg(expectedObjectAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.object.isEqualInOrderTo(
+	object	:= objectToTest,
+	objectToCompare	:= expectedObject,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testIsEqualInOrderToReversed" Id="{5bb7836f-a3a1-4eb0-92d8-fdb6d39dbe82}" FolderPath="setComparator\ReverseOrderComparatorTests\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ´´ReverseOrderComparator´´ in ``assert.object.setComparator``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+
+METHOD testIsEqualInOrderToReversed
+VAR_INPUT
+(* for the test it's the parameter ``object`` *)
+	objectToTest	:IDWord;
+	(* for the test it's the parameter ``objectToCompare`` *)
+	expectedObject	:IDWord;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* DWORD value of ``object`` as string *)
+	objectToTestAsString	:STRING(22);
+	(* DWORD value of ``objectToCompare`` as string *)
+	expectedObjectAsString	:STRING(22);
+	(* needed to call AbstractObject Methods on ´´DWordValue´´ *)
+	concreteObject 			:ConcreteObject;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+	assertionIsWrong := (objectToTest.compareTo(expectedObject) <> CNM_ReturnTypes.ComparationResult.EQUAL);
+ELSIF (
+		concreteObject.isObjectValid(expectedObject)
+) THEN
+	assertionIsWrong := (expectedObject.compareTo(objectToTest) <> CNM_ReturnTypes.ComparationResult.EQUAL);
+END_IF
+
+message := SEL(
+	assertionIsWrong,
+	'object is %s objectToCompare is %s assertion must be TRUE', 
+	'object is %s objectToCompare is %s assertion must be FALSE'
+);
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+	objectToTestAsString := TO_STRING(objectToTest.value);
+ELSE
+	objectToTestAsString := 'NULL';
+END_IF
+
+IF (
+		concreteObject.isObjectValid(expectedObject)
+) THEN
+	expectedObjectAsString := TO_STRING(expectedObject.value);
+ELSE
+	expectedObjectAsString := 'NULL';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(objectToTestAsString),
+	arg2 := THIS^.AnyToArg(expectedObjectAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.object.isEqualInOrderTo(
+	object	:= objectToTest,
+	objectToCompare	:= expectedObject,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testIsEqualTo" Id="{e938cb20-6632-4b05-893f-3d3ee9747626}" FolderPath="isEqualTo\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.object.isEqualTo``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+
+METHOD testIsEqualTo
+VAR_INPUT
+(* for the test it's the parameter ``object`` *)
+	objectToTest	:IDWord;
+	(* for the test it's the parameter ``objectToCompare`` *)
+	expectedObject	:IDWord;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* DWORD value of ``object`` as string *)
+	objectToTestAsString	:STRING(22);
+	(* DWORD value of ``objectToCompare`` as string *)
+	expectedObjectAsString	:STRING(22);
+	(* needed to call AbstractObject Methods on ´´DWordValue´´ *)
+	concreteObject 			:ConcreteObject;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+	assertionIsWrong := (NOT objectToTest.isEqual(expectedObject));
+ELSIF (
+		concreteObject.isObjectValid(expectedObject)
+) THEN
+	assertionIsWrong := (NOT expectedObject.isEqual(objectToTest));
+END_IF
+
+message := SEL(
+	assertionIsWrong,
+	'object is %s objectToCompare is %s assertion must be TRUE', 
+	'object is %s objectToCompare is %s assertion must be FALSE'
+);
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+	objectToTestAsString := TO_STRING(objectToTest.value);
+ELSE
+	objectToTestAsString := 'NULL';
+END_IF
+
+IF (
+		concreteObject.isObjectValid(expectedObject)
+) THEN
+	expectedObjectAsString := TO_STRING(expectedObject.value);
+ELSE
+	expectedObjectAsString := 'NULL';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(objectToTestAsString),
+	arg2 := THIS^.AnyToArg(expectedObjectAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.object.isEqualTo(
+	object	:= objectToTest,
+	objectToCompare	:= expectedObject,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testIsNotEqualTo" Id="{eaaebc9d-49c9-4c88-9fc2-91962afed824}" FolderPath="isNotEqualTo\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.object.isNotEqualTo``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+
+METHOD testIsNotEqualTo
+VAR_INPUT
+(* for the test it's the parameter ``object`` *)
+	objectToTest	:IDWord;
+	(* for the test it's the parameter ``objectToCompare`` *)
+	expectedObject	:IDWord;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* DWORD value of ``object`` as string *)
+	objectToTestAsString	:STRING(22);
+	(* DWORD value of ``objectToCompare`` as string *)
+	expectedObjectAsString	:STRING(22);
+	(* needed to call AbstractObject Methods on ´´DWordValue´´ *)
+	concreteObject 			:ConcreteObject;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+	assertionIsWrong := (objectToTest.isEqual(expectedObject));
+ELSIF (concreteObject.isObjectValid(expectedObject)) THEN
+		assertionIsWrong := (expectedObject.isEqual(objectToTest));
+END_IF
+
+message := SEL(
+	assertionIsWrong,
+	'object is %s objectToCompare is %s assertion must be TRUE', 
+	'object is %s objectToCompare is %s assertion must be FALSE'
+);
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+	objectToTestAsString := TO_STRING(objectToTest.value);
+ELSE
+	objectToTestAsString := 'NULL';
+END_IF
+
+IF (
+		concreteObject.isObjectValid(expectedObject)
+) THEN
+	expectedObjectAsString := TO_STRING(expectedObject.value);
+ELSE
+	expectedObjectAsString := 'NULL';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(objectToTestAsString),
+	arg2 := THIS^.AnyToArg(expectedObjectAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.object.isNotEqualTo(
+	object	:= objectToTest,
+	objectToCompare	:= expectedObject,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testObjectIsNull" Id="{00eb5b57-1e18-4c6a-a6e3-66d58b92cb01}" FolderPath="objectIsNull\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.object.objectIsNull``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+
+METHOD testObjectIsNull
+VAR_INPUT
+(* for the test it's the parameter ``object`` *)
+	objectToTest	:IDWord;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* DWORD value of ``object`` as string *)
+	objectToTestAsString	:STRING(22);
+	(* needed to call AbstractObject Methods on ´´DWordValue´´ *)
+	concreteObject 			:ConcreteObject;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := (concreteObject.isObjectValid(objectToTest));
+
+message := SEL(
+	assertionIsWrong,
+	'object is %s expected is NOT NULL assertion must be TRUE', 
+	'object is %s expected is NULL assertion must be FALSE'
+);
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+	objectToTestAsString := TO_STRING(objectToTest.value);
+ELSE
+	objectToTestAsString := 'NULL';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(objectToTestAsString),
+);
+
+THIS^.assertorContainer.assertor.assert.object.objectIsNull(
+	object	:= objectToTest,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testObjectIsValid" Id="{a79dfcde-725f-406a-909a-661f99cd08c9}" FolderPath="objectIsValid\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.object.objectIsValid``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+
+METHOD testObjectIsValid
+VAR_INPUT
+(* for the test it's the parameter ``object`` *)
+	objectToTest	:IDWord;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* DWORD value of ``object`` as string *)
+	objectToTestAsString	:STRING(22);
+	(* needed to call AbstractObject Methods on ´´DWordValue´´ *)
+	concreteObject 			:ConcreteObject;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := (NOT concreteObject.isObjectValid(objectToTest));
+
+message := SEL(
+	assertionIsWrong,
+	'object is %s expected is NULL assertion must be TRUE', 
+	'object is %s expected is NOT NULL assertion must be FALSE'
+);
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+	objectToTestAsString := TO_STRING(objectToTest.value);
+ELSE
+	objectToTestAsString := 'NULL';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(objectToTestAsString),
+);
+
+THIS^.assertorContainer.assertor.assert.object.objectIsValid(
+	object	:= objectToTest,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testPrecedesInOrderTo" Id="{326886ec-5656-4e23-8362-6647112feb32}" FolderPath="precedesInOrderTo\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.object.precedesInOrderTo``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+
+METHOD testPrecedesInOrderTo
+VAR_INPUT
+(* for the test it's the parameter ``object`` *)
+	objectToTest	:IDWord;
+	(* for the test it's the parameter ``objectToCompare`` *)
+	expectedObject	:IDWord;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* DWORD value of ``object`` as string *)
+	objectToTestAsString	:STRING(22);
+	(* DWORD value of ``objectToCompare`` as string *)
+	expectedObjectAsString	:STRING(22);
+	(* needed to call AbstractObject Methods on ´´DWordValue´´ *)
+	concreteObject 			:ConcreteObject;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+	assertionIsWrong := (objectToTest.compareTo(expectedObject) <> CNM_ReturnTypes.ComparationResult.SMALLER);
+ELSIF (
+		concreteObject.isObjectValid(expectedObject)
+) THEN
+	assertionIsWrong := (expectedObject.compareTo(objectToTest) <= CNM_ReturnTypes.ComparationResult.EQUAL);
+END_IF
+
+message := SEL(
+	assertionIsWrong,
+	'object is %s objectToCompare is %s assertion must be TRUE', 
+	'object is %s objectToCompare is %s assertion must be FALSE'
+);
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+	objectToTestAsString := TO_STRING(objectToTest.value);
+ELSE
+	objectToTestAsString := 'NULL';
+END_IF
+
+IF (
+		concreteObject.isObjectValid(expectedObject)
+) THEN
+	expectedObjectAsString := TO_STRING(expectedObject.value);
+ELSE
+	expectedObjectAsString := 'NULL';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(objectToTestAsString),
+	arg2 := THIS^.AnyToArg(expectedObjectAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.object.precedesInOrderTo(
+	object	:= objectToTest,
+	objectToCompare	:= expectedObject,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testPrecedesInOrderToReversed" Id="{2333a9e0-f578-4920-a4c9-46734cc4c6a4}" FolderPath="setComparator\ReverseOrderComparatorTests\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ´´ReverseOrderComparator´´ in ``assert.object.setComparator``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+
+METHOD testPrecedesInOrderToReversed
+VAR_INPUT
+(* for the test it's the parameter ``object`` *)
+	objectToTest	:IDWord;
+	(* for the test it's the parameter ``objectToCompare`` *)
+	expectedObject	:IDWord;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* DWORD value of ``object`` as string *)
+	objectToTestAsString	:STRING(22);
+	(* DWORD value of ``objectToCompare`` as string *)
+	expectedObjectAsString	:STRING(22);
+	(* needed to call AbstractObject Methods on ´´DWordValue´´ *)
+	concreteObject 			:ConcreteObject;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+	assertionIsWrong := (objectToTest.compareTo(expectedObject) <> CNM_ReturnTypes.ComparationResult.GREATER);
+ELSIF (
+		concreteObject.isObjectValid(expectedObject)
+) THEN
+	assertionIsWrong := (expectedObject.compareTo(objectToTest) >= CNM_ReturnTypes.ComparationResult.EQUAL);
+END_IF
+
+message := SEL(
+	assertionIsWrong,
+	'object is %s objectToCompare is %s assertion must be TRUE', 
+	'object is %s objectToCompare is %s assertion must be FALSE'
+);
+
+IF (
+		concreteObject.isObjectValid(objectToTest)
+) THEN
+	objectToTestAsString := TO_STRING(objectToTest.value);
+ELSE
+	objectToTestAsString := 'NULL';
+END_IF
+
+IF (
+		concreteObject.isObjectValid(expectedObject)
+) THEN
+	expectedObjectAsString := TO_STRING(expectedObject.value);
+ELSE
+	expectedObjectAsString := 'NULL';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(objectToTestAsString),
+	arg2 := THIS^.AnyToArg(expectedObjectAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.object.precedesInOrderTo(
+	object	:= objectToTest,
+	objectToCompare	:= expectedObject,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testSetComparator" Id="{6efaa976-72b3-46e6-b255-bd334630c61f}" FolderPath="setComparator\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.object.setComparator``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+
+METHOD testSetComparator
+VAR_INPUT
+(* for the test it's the parameter ``object`` *)
+	objectToTest	:IDWord;
+	(* for the test it's the parameter ``objectToCompare`` *)
+	expectedObject	:IDWord;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* DWORD value of ``object`` as string *)
+	objectToTestAsString	:STRING(22);
+	(* DWORD value of ``objectToCompare`` as string *)
+	expectedObjectAsString	:STRING(22);
+	(* needed to call AbstractObject Methods on ´´DWordValue´´ *)
+	concreteObject 			:ConcreteObject;
+	(* this comparaotr will be set: compares in reversed order *)
+	reverseOrderComparator 	:ReverseOrderComparator;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+//	set ReverseOrderComparator as comparator
+THIS^.assertorContainer.assertor.assert.object.setComperator(
+	comperator := reverseOrderComparator
+);
+
+//	test if comparator was set to ReverseOrderComparator
+THIS^.testPrecedesInOrderToReversed(
+	objectToTest := objectToTest,
+	expectedObject := expectedObject
+);
+THIS^.testIsEqualInOrderToReversed(
+	objectToTest := objectToTest,
+	expectedObject := expectedObject
+);
+THIS^.testIsAfterInOrderToReversed(
+	objectToTest := objectToTest,
+	expectedObject := expectedObject
+);
+
+//	unset ReverseOrderComparator
+THIS^.assertorContainer.assertor.assert.object.setComperator(
+	comperator := 0
+);
+
+// test if comparator was reseted
+THIS^.testPrecedesInOrderTo(
+	objectToTest := objectToTest,
+	expectedObject := expectedObject
+);
+THIS^.testIsEqualInOrderTo(
+	objectToTest := objectToTest,
+	expectedObject := expectedObject
+);
+THIS^.testIsAfterInOrderTo(
+	objectToTest := objectToTest,
+	expectedObject := expectedObject
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="ObjectAssertionsTests">
+      <LineId Id="1" Count="0" />
+      <LineId Id="3" Count="3" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="10" Count="1" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.getTestNameFor">
+      <LineId Id="1" Count="1" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.runIsAfterInOrderTo">
+      <LineId Id="1" Count="41" />
+      <LineId Id="48" Count="2" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="44" Count="2" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.runIsEqualInOrderTo">
+      <LineId Id="1" Count="45" />
+      <LineId Id="48" Count="2" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.runIsEqualTo">
+      <LineId Id="1" Count="12" />
+      <LineId Id="38" Count="7" />
+      <LineId Id="18" Count="16" />
+      <LineId Id="48" Count="2" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="52" Count="2" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="35" Count="2" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.runIsNotEqualTo">
+      <LineId Id="1" Count="33" />
+      <LineId Id="39" Count="2" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="43" Count="2" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="35" Count="2" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.runObjectIsNull">
+      <LineId Id="1" Count="22" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.runObjectIsValid">
+      <LineId Id="1" Count="3" />
+      <LineId Id="6" Count="2" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="19" Count="1" />
+      <LineId Id="22" Count="2" />
+      <LineId Id="26" Count="2" />
+      <LineId Id="30" Count="2" />
+      <LineId Id="34" Count="3" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.runPrecedesInOrderTo">
+      <LineId Id="1" Count="45" />
+      <LineId Id="48" Count="2" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.runSetComparator">
+      <LineId Id="1" Count="46" />
+      <LineId Id="49" Count="2" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.testIsAfterInOrderTo">
+      <LineId Id="1" Count="0" />
+      <LineId Id="38" Count="1" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="52" Count="1" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="4" Count="5" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="54" Count="1" />
+      <LineId Id="46" Count="2" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="57" Count="1" />
+      <LineId Id="14" Count="9" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="24" Count="12" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.testIsAfterInOrderToReversed">
+      <LineId Id="1" Count="2" />
+      <LineId Id="61" Count="1" />
+      <LineId Id="4" Count="1" />
+      <LineId Id="63" Count="1" />
+      <LineId Id="6" Count="7" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="46" Count="13" />
+      <LineId Id="25" Count="13" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="40" Count="5" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.testIsEqualInOrderTo">
+      <LineId Id="1" Count="2" />
+      <LineId Id="46" Count="1" />
+      <LineId Id="4" Count="1" />
+      <LineId Id="48" Count="1" />
+      <LineId Id="6" Count="7" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="50" Count="13" />
+      <LineId Id="25" Count="6" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="33" Count="12" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.testIsEqualInOrderToReversed">
+      <LineId Id="1" Count="2" />
+      <LineId Id="60" Count="1" />
+      <LineId Id="4" Count="1" />
+      <LineId Id="62" Count="1" />
+      <LineId Id="6" Count="7" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="64" Count="13" />
+      <LineId Id="25" Count="20" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.testIsEqualTo">
+      <LineId Id="1" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="51" Count="1" />
+      <LineId Id="42" Count="1" />
+      <LineId Id="53" Count="1" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="4" Count="4" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="69" Count="13" />
+      <LineId Id="10" Count="6" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="17" Count="12" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.testIsNotEqualTo">
+      <LineId Id="1" Count="1" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="53" Count="1" />
+      <LineId Id="44" Count="3" />
+      <LineId Id="4" Count="5" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="69" Count="13" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="12" Count="5" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="18" Count="12" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.testObjectIsNull">
+      <LineId Id="1" Count="9" />
+      <LineId Id="34" Count="6" />
+      <LineId Id="17" Count="8" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="27" Count="6" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.testObjectIsValid">
+      <LineId Id="1" Count="8" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="36" Count="5" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="12" Count="16" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.testPrecedesInOrderTo">
+      <LineId Id="1" Count="2" />
+      <LineId Id="61" Count="1" />
+      <LineId Id="4" Count="1" />
+      <LineId Id="63" Count="1" />
+      <LineId Id="6" Count="7" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="79" Count="13" />
+      <LineId Id="25" Count="13" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="40" Count="5" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.testPrecedesInOrderToReversed">
+      <LineId Id="1" Count="2" />
+      <LineId Id="74" Count="1" />
+      <LineId Id="4" Count="1" />
+      <LineId Id="76" Count="1" />
+      <LineId Id="6" Count="7" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="60" Count="13" />
+      <LineId Id="25" Count="20" />
+    </LineIds>
+    <LineIds Name="ObjectAssertionsTests.testSetComparator">
+      <LineId Id="1" Count="19" />
+      <LineId Id="22" Count="19" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

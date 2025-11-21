@@ -3,12 +3,12 @@
   <Itf Name="ILongDateAndTimeAssertions" Id="{601e1489-ef8b-41a6-b23a-b519279a23e4}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| This interface provides assert statements for date and time types with 64 bit length
-| For date and time (``LDT``) use :ref:`ISimpleDateAndTimeAssertions.dateAndTime`
-| For date (``LDATE``) use  :ref:`ISimpleDateAndTimeAssertions.dateOnly`
-| For time of day (``LTOD``) use  :ref:`ISimpleDateAndTimeAssertions.timeOfDay`
+## Short summary
+
+This interface provides assert statements for date and time types with 64 bit length
+For date and time (``LDT``) use `ISimpleDateAndTimeAssertions.dateAndTime`
+For date (``LDATE``) use  `ISimpleDateAndTimeAssertions.dateOnly`
+For time of day (``LTOD``) use  `ISimpleDateAndTimeAssertions.timeOfDay`
 
 .. <legal notes>
 
@@ -22,8 +22,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
@@ -32,9 +31,8 @@ INTERFACE ILongDateAndTimeAssertions EXTENDS __SYSTEM.IQueryInterface
     <Property Name="dateAndTime" Id="{57ef4bc0-712c-45b1-8d51-48857f0c9074}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`I64BitDtAssertions` with assert statements for 64 bit date and time ``LDT``
+## Short summary
+Returns the interface `I64BitDtAssertions` with assert statements for 64 bit date and time ``LDT``
 
 .. <legal notes>
 
@@ -58,9 +56,8 @@ PROPERTY dateAndTime :I64BitDtAssertions]]></Declaration>
     <Property Name="dateOnly" Id="{d785b125-0936-4eca-9f2b-e19464be966f}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`I64BitDateAssertions` with assert statements for 64 bit date ``LDATE``
+## Short summary
+Returns the interface `I64BitDateAssertions` with assert statements for 64 bit date ``LDATE``
 
 .. <legal notes>
 
@@ -84,9 +81,8 @@ PROPERTY dateOnly :I64BitDateAssertions]]></Declaration>
     <Property Name="timeOfDay" Id="{1394d846-3b0c-4e71-a9d0-e33641467e0e}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`I64BitTodAssertions` with assert statements for 32 bit time of day ``LTOD``
+## Short summary
+Returns the interface `I64BitTodAssertions` with assert statements for 32 bit time of day ``LTOD``
 
 .. <legal notes>
 

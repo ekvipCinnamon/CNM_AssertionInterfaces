@@ -3,10 +3,11 @@
   <Itf Name="IDateAndTimeAssertions" Id="{834e8fd6-87ce-4da3-b193-2914ed40ebce}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| This interface provides assert statements for date and time types
-| For 32 bit date and time types use :ref:`IDateAndTimeAssertions.simple`
+## Short summary
+
+This interface provides assert statements for date and time types
+For 32 bit date and time types use `IDateAndTimeAssertions.simple`
+For 64 bit date and time types use `IDateAndTimeAssertions.long`
 
 .. <legal notes>
 
@@ -20,8 +21,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
@@ -30,8 +30,7 @@ INTERFACE IDateAndTimeAssertions EXTENDS __SYSTEM.IQueryInterface
     <Property Name="long" Id="{cd97ac26-075e-4ebb-a509-27c93efe4648}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 Returns an interface with assert statements for 64 bit times 
 
 .. <legal notes>
@@ -56,9 +55,8 @@ PROPERTY long :ILongDateAndTimeAssertions]]></Declaration>
     <Property Name="simple" Id="{1c022d49-7fe3-4a8e-a5e2-2d724d677952}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`ISimpleDateAndTimeAssertions` with assert statements for date and time types with 32 bit length
+## Short summary
+Returns the interface `ISimpleDateAndTimeAssertions` with assert statements for date and time types with 32 bit length
 
 .. <legal notes>
 
@@ -72,8 +70,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 

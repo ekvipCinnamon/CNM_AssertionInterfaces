@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.13">
   <POU Name="RealAssertionTests" Id="{e23c241e-ac94-4686-844e-ef6a5b49b964}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
@@ -171,7 +171,7 @@ VAR
 	{attribute 'hide'}
 	newHashstate3		:CNM_AbstractObject.Hashcode;
 	{attribute 'hide'}
-	carzyNumberPointer	:POINTER TO DWORD;	
+	binaryNumberPointer	:POINTER TO DWORD;	
 END_VAR
 VAR CONSTANT
 	{attribute 'hide'}
@@ -180,29 +180,29 @@ VAR CONSTANT
 	NUMBER_OF_LEFT_ROTATIONS	:UINT   := 45;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[carzyNumberPointer := ADR(THIS^.NAN);
-carzyNumberPointer^ := THIS^.BINARY_POSITIVE_SIGNALING_NAN;
+        <ST><![CDATA[binaryNumberPointer := ADR(THIS^.NAN);
+binaryNumberPointer^ := THIS^.BINARY_POSITIVE_SIGNALING_NAN;
 
-carzyNumberPointer := ADR(THIS^.INF);
-carzyNumberPointer^ := THIS^.BINARY_INFINITY;
+binaryNumberPointer := ADR(THIS^.INF);
+binaryNumberPointer^ := THIS^.BINARY_INFINITY;
 
-carzyNumberPointer := ADR(THIS^.MINUS_INF);
-carzyNumberPointer^ := THIS^.BINARY_NEGATIVE_INFINITY;
+binaryNumberPointer := ADR(THIS^.MINUS_INF);
+binaryNumberPointer^ := THIS^.BINARY_NEGATIVE_INFINITY;
 
-carzyNumberPointer := ADR(THIS^.MINUS_ZERO);
-carzyNumberPointer^ := THIS^.BINARY_MINUS_ZERO;
+binaryNumberPointer := ADR(THIS^.MINUS_ZERO);
+binaryNumberPointer^ := THIS^.BINARY_MINUS_ZERO;
 
-carzyNumberPointer := ADR(THIS^.MIN_SUBNORMAL);
-carzyNumberPointer^ := THIS^.BINARY_MIN_SUBNORMAL; 
+binaryNumberPointer := ADR(THIS^.MIN_SUBNORMAL);
+binaryNumberPointer^ := THIS^.BINARY_MIN_SUBNORMAL; 
 
-carzyNumberPointer := ADR(THIS^.MAX_SUBNORMAL);
-carzyNumberPointer^ := THIS^.BINARY_MAX_SUBNORMAL; 
+binaryNumberPointer := ADR(THIS^.MAX_SUBNORMAL);
+binaryNumberPointer^ := THIS^.BINARY_MAX_SUBNORMAL; 
 
-carzyNumberPointer := ADR(THIS^.SMALLEST_POSITIVE_SUBNORMAL);
-carzyNumberPointer^ := THIS^.BINARY_SMALLEST_POSITIVE_SUBNORMAL; 
+binaryNumberPointer := ADR(THIS^.SMALLEST_POSITIVE_SUBNORMAL);
+binaryNumberPointer^ := THIS^.BINARY_SMALLEST_POSITIVE_SUBNORMAL; 
 
-carzyNumberPointer := ADR(THIS^.SMALLEST_NEGATIVE_SUBNORMAL);
-carzyNumberPointer^ := THIS^.BINARY_SMALLEST_NEGATIVE_SUBNORMAL; 
+binaryNumberPointer := ADR(THIS^.SMALLEST_NEGATIVE_SUBNORMAL);
+binaryNumberPointer^ := THIS^.BINARY_SMALLEST_NEGATIVE_SUBNORMAL; 
 ]]></ST>
       </Implementation>
     </Method>
@@ -247,7 +247,7 @@ END_VAR
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsANumber``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -294,7 +294,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -715,7 +715,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsFinite``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -762,7 +762,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsGreaterThan``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -918,7 +918,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsInfinite``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -965,7 +965,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.dateAndTime.simple.dateOnly.valueIsInRangeOf``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1386,7 +1386,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsLessThan``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1542,7 +1542,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsMax``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1698,7 +1698,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsMin``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1854,7 +1854,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNaN``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1875,21 +1875,21 @@ METHOD runValueIsNaNTests
       <Implementation>
         <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('valueIsNaN')));
 
-THIS^.testValueIsANumber(THIS^.NAN);
-THIS^.testValueIsANumber(THIS^.INF);
-THIS^.testValueIsANumber(THIS^.MINUS_INF);
-THIS^.testValueIsANumber(THIS^.MAX_NON_SPECIAL);
-THIS^.testValueIsANumber(THIS^.MIN_NON_SPECIAL);
-THIS^.testValueIsANumber(THIS^.ZERO);
-THIS^.testValueIsANumber(THIS^.MINUS_ZERO);
-THIS^.testValueIsANumber(THIS^.MAX_SUBNORMAL);
-THIS^.testValueIsANumber(THIS^.MIN_SUBNORMAL);
-THIS^.testValueIsANumber(THIS^.SMALLEST_NEGATIVE_SUBNORMAL);
-THIS^.testValueIsANumber(THIS^.SMALLEST_POSITIVE_SUBNORMAL);
-THIS^.testValueIsANumber(THIS^.ONE_PERCENT);
-THIS^.testValueIsANumber(THIS^.ONE_PERMILLE);
-THIS^.testValueIsANumber(THIS^.ONE_PERCENT * -1.0);
-THIS^.testValueIsANumber(THIS^.ONE_PERMILLE * -1.0);
+THIS^.testValueIsNaN(THIS^.NAN);
+THIS^.testValueIsNaN(THIS^.INF);
+THIS^.testValueIsNaN(THIS^.MINUS_INF);
+THIS^.testValueIsNaN(THIS^.MAX_NON_SPECIAL);
+THIS^.testValueIsNaN(THIS^.MIN_NON_SPECIAL);
+THIS^.testValueIsNaN(THIS^.ZERO);
+THIS^.testValueIsNaN(THIS^.MINUS_ZERO);
+THIS^.testValueIsNaN(THIS^.MAX_SUBNORMAL);
+THIS^.testValueIsNaN(THIS^.MIN_SUBNORMAL);
+THIS^.testValueIsNaN(THIS^.SMALLEST_NEGATIVE_SUBNORMAL);
+THIS^.testValueIsNaN(THIS^.SMALLEST_POSITIVE_SUBNORMAL);
+THIS^.testValueIsNaN(THIS^.ONE_PERCENT);
+THIS^.testValueIsNaN(THIS^.ONE_PERMILLE);
+THIS^.testValueIsNaN(THIS^.ONE_PERCENT * -1.0);
+THIS^.testValueIsNaN(THIS^.ONE_PERMILLE * -1.0);
 
 TcUnit.TEST_FINISHED();
 ]]></ST>
@@ -1901,7 +1901,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNegativeInfinite``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1948,7 +1948,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNegative``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1995,7 +1995,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNegativeZero``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2042,7 +2042,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNormal``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2089,7 +2089,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2510,7 +2510,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNotNegativeInfinite``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2557,7 +2557,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNotPositiveInfinite``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2604,7 +2604,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNotSpecial``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2651,7 +2651,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsPositiveInfinite``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2698,7 +2698,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsPositive``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2745,7 +2745,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsPositiveZero``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2792,7 +2792,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsSpecial``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2839,7 +2839,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsSubnormal``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2886,7 +2886,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsANumber``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -2959,7 +2959,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3056,7 +3056,7 @@ THIS^.assertorContainer.assertor.assert.float.single.valueIsEqualTo(
 	expectedValue	:= expected,
 	tolerance       := tolerance,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -3072,7 +3072,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsFinite``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -3151,7 +3151,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsGreaterThan``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3240,7 +3240,7 @@ THIS^.assertorContainer.assertor.assert.float.single.valueIsGreaterThan(
 	currentValue	:= valueToTest,
 	lessValue		:= lessValue,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -3256,7 +3256,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsInfinite``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -3335,7 +3335,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsInRangeOf``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3463,7 +3463,7 @@ THIS^.assertorContainer.assertor.assert.float.single.valueIsInRangeOf(
 	currentValue	:= valueToTest,
 	upperLimit		:= upperLimit,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -3479,7 +3479,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsLessThan``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3565,7 +3565,7 @@ THIS^.assertorContainer.assertor.assert.float.single.valueIsLessThan(
 	currentValue	:= valueToTest,
 	greaterValue	:= greaterValue,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -3581,7 +3581,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsMax``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3667,7 +3667,7 @@ THIS^.assertorContainer.assertor.assert.float.single.valueIsMax(
 	currentValue	:= valueToTest,
 	maximumValue	:= maximumValue,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -3683,7 +3683,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsMin``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3769,7 +3769,7 @@ THIS^.assertorContainer.assertor.assert.float.single.valueIsMin(
 	currentValue	:= valueToTest,
 	minimumValue	:= minimumValue,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -3785,7 +3785,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNaN``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -3858,7 +3858,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNegative``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -3944,7 +3944,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNegativeInfinite``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4020,7 +4020,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNegativeZero``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4104,7 +4104,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNormal``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4185,7 +4185,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -4282,7 +4282,7 @@ THIS^.assertorContainer.assertor.assert.float.single.valueIsNotEqualTo(
 	unexpectedValue	:= unexpectedValue,
 	tolerance       := tolerance,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -4298,7 +4298,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNotNegativeInfinite``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4374,7 +4374,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNotPositiveInfinite``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4450,7 +4450,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsNotSpecial``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4526,7 +4526,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsPositive``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4612,7 +4612,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsPositiveInfinite``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4688,7 +4688,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsPositiveZero``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4772,7 +4772,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsSpecial``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4848,7 +4848,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.single.valueIsSubnormal``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4922,827 +4922,152 @@ THIS^.AssertEquals_BOOL(
       </Implementation>
     </Method>
     <LineIds Name="RealAssertionTests">
-      <LineId Id="61" Count="0" />
-      <LineId Id="202" Count="5" />
-      <LineId Id="1100" Count="5" />
-      <LineId Id="1107" Count="2" />
-      <LineId Id="1112" Count="0" />
-      <LineId Id="1180" Count="0" />
-      <LineId Id="1185" Count="4" />
-      <LineId Id="998" Count="0" />
+      <LineId Id="1" Count="23" />
     </LineIds>
     <LineIds Name="RealAssertionTests.FB_init">
-      <LineId Id="31" Count="0" />
-      <LineId Id="42" Count="0" />
-      <LineId Id="138" Count="0" />
-      <LineId Id="44" Count="1" />
-      <LineId Id="139" Count="0" />
-      <LineId Id="46" Count="0" />
-      <LineId Id="43" Count="0" />
-      <LineId Id="140" Count="0" />
-      <LineId Id="89" Count="0" />
-      <LineId Id="88" Count="0" />
-      <LineId Id="141" Count="0" />
-      <LineId Id="90" Count="1" />
-      <LineId Id="142" Count="0" />
-      <LineId Id="92" Count="1" />
-      <LineId Id="143" Count="0" />
-      <LineId Id="94" Count="1" />
-      <LineId Id="144" Count="0" />
-      <LineId Id="96" Count="1" />
-      <LineId Id="47" Count="0" />
+      <LineId Id="25" Count="22" />
+      <LineId Id="24" Count="0" />
     </LineIds>
     <LineIds Name="RealAssertionTests.getTestNameFor">
-      <LineId Id="5" Count="0" />
-      <LineId Id="7" Count="0" />
+      <LineId Id="1" Count="1" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsANumberTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="570" Count="13" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsEqualToTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="162" Count="3" />
-      <LineId Id="229" Count="0" />
-      <LineId Id="214" Count="4" />
-      <LineId Id="230" Count="0" />
-      <LineId Id="219" Count="4" />
-      <LineId Id="231" Count="0" />
-      <LineId Id="224" Count="4" />
-      <LineId Id="265" Count="5" />
-      <LineId Id="233" Count="0" />
-      <LineId Id="236" Count="4" />
-      <LineId Id="247" Count="17" />
-      <LineId Id="235" Count="0" />
-      <LineId Id="271" Count="4" />
-      <LineId Id="281" Count="0" />
-      <LineId Id="276" Count="4" />
-      <LineId Id="234" Count="0" />
-      <LineId Id="282" Count="34" />
-      <LineId Id="167" Count="0" />
-      <LineId Id="317" Count="35" />
-      <LineId Id="354" Count="34" />
-      <LineId Id="353" Count="0" />
-      <LineId Id="389" Count="34" />
-      <LineId Id="161" Count="0" />
-      <LineId Id="426" Count="34" />
-      <LineId Id="425" Count="0" />
-      <LineId Id="461" Count="34" />
-      <LineId Id="424" Count="0" />
-      <LineId Id="497" Count="34" />
-      <LineId Id="496" Count="0" />
-      <LineId Id="533" Count="34" />
-      <LineId Id="570" Count="35" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="393" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsFiniteTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="570" Count="13" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsGreaterThanTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="224" Count="0" />
-      <LineId Id="200" Count="2" />
-      <LineId Id="204" Count="0" />
-      <LineId Id="257" Count="0" />
-      <LineId Id="259" Count="8" />
-      <LineId Id="211" Count="3" />
-      <LineId Id="216" Count="4" />
-      <LineId Id="222" Count="0" />
-      <LineId Id="256" Count="0" />
-      <LineId Id="247" Count="8" />
-      <LineId Id="268" Count="9" />
-      <LineId Id="223" Count="0" />
-      <LineId Id="280" Count="48" />
-      <LineId Id="349" Count="9" />
-      <LineId Id="329" Count="19" />
-      <LineId Id="168" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="128" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsInfiniteTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="570" Count="13" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsInRangeOfTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="256" Count="0" />
-      <LineId Id="258" Count="388" />
-      <LineId Id="233" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="393" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsLessThanTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="243" Count="94" />
-      <LineId Id="368" Count="9" />
-      <LineId Id="338" Count="9" />
-      <LineId Id="358" Count="9" />
-      <LineId Id="168" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="128" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsMaxTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="242" Count="124" />
-      <LineId Id="168" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="128" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsMinTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="242" Count="125" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="128" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsNaNTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="570" Count="13" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsNegativeInfiniteTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="570" Count="13" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsNegativeTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="570" Count="13" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsNegativeZeroTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="570" Count="13" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsNormalTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="570" Count="13" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsNotEqualToTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="207" Count="389" />
-      <LineId Id="135" Count="1" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="393" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsNotNegativeInfiniteTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="570" Count="13" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsNotPositiveInfiniteTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="570" Count="13" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsNotSpecialTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="570" Count="13" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsPositiveInfiniteTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="570" Count="13" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsPositiveTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="570" Count="13" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsPositiveZeroTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="570" Count="13" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsSpecialTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="570" Count="13" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertionTests.runValueIsSubnormalTests">
-      <LineId Id="101" Count="0" />
-      <LineId Id="159" Count="1" />
-      <LineId Id="570" Count="13" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="19" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsANumber">
-      <LineId Id="48" Count="1" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="3" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="1" Count="27" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsEqualTo">
-      <LineId Id="3" Count="0" />
-      <LineId Id="119" Count="0" />
-      <LineId Id="268" Count="0" />
-      <LineId Id="270" Count="1" />
-      <LineId Id="269" Count="0" />
-      <LineId Id="272" Count="2" />
-      <LineId Id="285" Count="0" />
-      <LineId Id="287" Count="0" />
-      <LineId Id="275" Count="0" />
-      <LineId Id="277" Count="1" />
-      <LineId Id="276" Count="0" />
-      <LineId Id="279" Count="0" />
-      <LineId Id="284" Count="0" />
-      <LineId Id="288" Count="2" />
-      <LineId Id="292" Count="2" />
-      <LineId Id="291" Count="0" />
-      <LineId Id="295" Count="0" />
-      <LineId Id="67" Count="0" />
-      <LineId Id="72" Count="3" />
-      <LineId Id="353" Count="0" />
-      <LineId Id="347" Count="2" />
-      <LineId Id="174" Count="0" />
-      <LineId Id="68" Count="0" />
-      <LineId Id="71" Count="0" />
-      <LineId Id="76" Count="1" />
-      <LineId Id="224" Count="0" />
-      <LineId Id="79" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="166" Count="0" />
-      <LineId Id="168" Count="0" />
-      <LineId Id="223" Count="0" />
-      <LineId Id="12" Count="2" />
-      <LineId Id="20" Count="3" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="80" Count="0" />
+      <LineId Id="1" Count="54" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsFinite">
-      <LineId Id="48" Count="0" />
-      <LineId Id="98" Count="0" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="100" Count="1" />
-      <LineId Id="99" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="3" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="1" Count="31" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsGreaterThan">
-      <LineId Id="3" Count="0" />
-      <LineId Id="312" Count="0" />
-      <LineId Id="306" Count="0" />
-      <LineId Id="228" Count="0" />
-      <LineId Id="233" Count="0" />
-      <LineId Id="237" Count="0" />
-      <LineId Id="308" Count="0" />
-      <LineId Id="239" Count="0" />
-      <LineId Id="309" Count="0" />
-      <LineId Id="311" Count="0" />
-      <LineId Id="310" Count="0" />
-      <LineId Id="248" Count="0" />
-      <LineId Id="252" Count="0" />
-      <LineId Id="254" Count="6" />
-      <LineId Id="240" Count="0" />
-      <LineId Id="244" Count="1" />
-      <LineId Id="220" Count="0" />
-      <LineId Id="67" Count="0" />
-      <LineId Id="72" Count="3" />
-      <LineId Id="318" Count="0" />
-      <LineId Id="317" Count="0" />
-      <LineId Id="319" Count="0" />
-      <LineId Id="174" Count="0" />
-      <LineId Id="68" Count="0" />
-      <LineId Id="71" Count="0" />
-      <LineId Id="76" Count="1" />
-      <LineId Id="79" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="166" Count="0" />
-      <LineId Id="168" Count="0" />
-      <LineId Id="12" Count="2" />
-      <LineId Id="20" Count="3" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="80" Count="0" />
+      <LineId Id="1" Count="50" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsInfinite">
-      <LineId Id="48" Count="1" />
-      <LineId Id="96" Count="4" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="3" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="1" Count="31" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsInRangeOf">
-      <LineId Id="3" Count="0" />
-      <LineId Id="300" Count="0" />
-      <LineId Id="237" Count="2" />
-      <LineId Id="271" Count="0" />
-      <LineId Id="240" Count="1" />
-      <LineId Id="243" Count="2" />
-      <LineId Id="272" Count="0" />
-      <LineId Id="246" Count="0" />
-      <LineId Id="293" Count="0" />
-      <LineId Id="247" Count="2" />
-      <LineId Id="366" Count="5" />
-      <LineId Id="252" Count="0" />
-      <LineId Id="254" Count="0" />
-      <LineId Id="256" Count="0" />
-      <LineId Id="274" Count="0" />
-      <LineId Id="273" Count="0" />
-      <LineId Id="257" Count="0" />
-      <LineId Id="259" Count="0" />
-      <LineId Id="275" Count="4" />
-      <LineId Id="265" Count="1" />
-      <LineId Id="294" Count="0" />
-      <LineId Id="296" Count="0" />
-      <LineId Id="295" Count="0" />
-      <LineId Id="280" Count="6" />
-      <LineId Id="297" Count="2" />
-      <LineId Id="268" Count="2" />
-      <LineId Id="120" Count="0" />
-      <LineId Id="67" Count="0" />
-      <LineId Id="72" Count="3" />
-      <LineId Id="307" Count="3" />
-      <LineId Id="174" Count="0" />
-      <LineId Id="68" Count="0" />
-      <LineId Id="71" Count="0" />
-      <LineId Id="76" Count="1" />
-      <LineId Id="190" Count="0" />
-      <LineId Id="79" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="166" Count="0" />
-      <LineId Id="178" Count="0" />
-      <LineId Id="168" Count="0" />
-      <LineId Id="12" Count="2" />
-      <LineId Id="20" Count="3" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="80" Count="0" />
+      <LineId Id="1" Count="83" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsLessThan">
-      <LineId Id="3" Count="0" />
-      <LineId Id="216" Count="0" />
-      <LineId Id="219" Count="0" />
-      <LineId Id="223" Count="0" />
-      <LineId Id="225" Count="0" />
-      <LineId Id="229" Count="5" />
-      <LineId Id="236" Count="0" />
-      <LineId Id="240" Count="1" />
-      <LineId Id="243" Count="0" />
-      <LineId Id="247" Count="1" />
-      <LineId Id="250" Count="2" />
-      <LineId Id="120" Count="0" />
-      <LineId Id="67" Count="0" />
-      <LineId Id="72" Count="3" />
-      <LineId Id="261" Count="1" />
-      <LineId Id="174" Count="0" />
-      <LineId Id="263" Count="0" />
-      <LineId Id="68" Count="0" />
-      <LineId Id="71" Count="0" />
-      <LineId Id="76" Count="1" />
-      <LineId Id="79" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="166" Count="0" />
-      <LineId Id="168" Count="0" />
-      <LineId Id="12" Count="2" />
-      <LineId Id="20" Count="3" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="80" Count="0" />
+      <LineId Id="1" Count="47" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsMax">
-      <LineId Id="3" Count="0" />
-      <LineId Id="258" Count="0" />
-      <LineId Id="220" Count="0" />
-      <LineId Id="224" Count="0" />
-      <LineId Id="226" Count="0" />
-      <LineId Id="230" Count="5" />
-      <LineId Id="237" Count="0" />
-      <LineId Id="241" Count="1" />
-      <LineId Id="244" Count="0" />
-      <LineId Id="248" Count="1" />
-      <LineId Id="251" Count="2" />
-      <LineId Id="120" Count="0" />
-      <LineId Id="67" Count="0" />
-      <LineId Id="72" Count="3" />
-      <LineId Id="263" Count="2" />
-      <LineId Id="174" Count="0" />
-      <LineId Id="68" Count="0" />
-      <LineId Id="71" Count="0" />
-      <LineId Id="76" Count="1" />
-      <LineId Id="79" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="166" Count="0" />
-      <LineId Id="168" Count="0" />
-      <LineId Id="12" Count="2" />
-      <LineId Id="20" Count="3" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="80" Count="0" />
+      <LineId Id="1" Count="47" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsMin">
-      <LineId Id="3" Count="0" />
-      <LineId Id="255" Count="0" />
-      <LineId Id="217" Count="0" />
-      <LineId Id="221" Count="0" />
-      <LineId Id="223" Count="0" />
-      <LineId Id="227" Count="5" />
-      <LineId Id="234" Count="0" />
-      <LineId Id="238" Count="1" />
-      <LineId Id="241" Count="0" />
-      <LineId Id="245" Count="1" />
-      <LineId Id="248" Count="2" />
-      <LineId Id="120" Count="0" />
-      <LineId Id="67" Count="0" />
-      <LineId Id="72" Count="3" />
-      <LineId Id="260" Count="1" />
-      <LineId Id="263" Count="0" />
-      <LineId Id="174" Count="0" />
-      <LineId Id="68" Count="0" />
-      <LineId Id="71" Count="0" />
-      <LineId Id="76" Count="1" />
-      <LineId Id="79" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="166" Count="0" />
-      <LineId Id="168" Count="0" />
-      <LineId Id="12" Count="2" />
-      <LineId Id="20" Count="3" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="80" Count="0" />
+      <LineId Id="1" Count="47" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsNaN">
-      <LineId Id="48" Count="1" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="3" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="1" Count="27" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsNegative">
-      <LineId Id="48" Count="0" />
-      <LineId Id="85" Count="0" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="96" Count="0" />
-      <LineId Id="92" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="86" Count="0" />
-      <LineId Id="97" Count="0" />
-      <LineId Id="88" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="3" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="91" Count="0" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="1" Count="34" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsNegativeInfinite">
-      <LineId Id="48" Count="0" />
-      <LineId Id="89" Count="1" />
-      <LineId Id="139" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="3" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="1" Count="28" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsNegativeZero">
-      <LineId Id="48" Count="0" />
-      <LineId Id="85" Count="0" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="96" Count="0" />
-      <LineId Id="92" Count="0" />
-      <LineId Id="97" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="3" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="91" Count="0" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="1" Count="32" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsNormal">
-      <LineId Id="48" Count="0" />
-      <LineId Id="85" Count="0" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="97" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="98" Count="0" />
-      <LineId Id="100" Count="0" />
-      <LineId Id="147" Count="0" />
-      <LineId Id="99" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="3" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="1" Count="33" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsNotEqualTo">
-      <LineId Id="3" Count="0" />
-      <LineId Id="268" Count="22" />
-      <LineId Id="120" Count="0" />
-      <LineId Id="67" Count="0" />
-      <LineId Id="72" Count="3" />
-      <LineId Id="301" Count="0" />
-      <LineId Id="303" Count="2" />
-      <LineId Id="174" Count="0" />
-      <LineId Id="68" Count="0" />
-      <LineId Id="71" Count="0" />
-      <LineId Id="76" Count="1" />
-      <LineId Id="223" Count="0" />
-      <LineId Id="79" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="166" Count="0" />
-      <LineId Id="168" Count="0" />
-      <LineId Id="224" Count="0" />
-      <LineId Id="12" Count="2" />
-      <LineId Id="20" Count="3" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="80" Count="0" />
+      <LineId Id="1" Count="54" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsNotNegativeInfinite">
-      <LineId Id="48" Count="0" />
-      <LineId Id="85" Count="0" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="3" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="1" Count="28" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsNotPositiveInfinite">
-      <LineId Id="48" Count="0" />
-      <LineId Id="85" Count="0" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="3" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="1" Count="28" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsNotSpecial">
-      <LineId Id="48" Count="1" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="96" Count="0" />
-      <LineId Id="98" Count="0" />
-      <LineId Id="97" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="3" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="1" Count="30" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsPositive">
-      <LineId Id="48" Count="0" />
-      <LineId Id="85" Count="0" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="96" Count="0" />
-      <LineId Id="92" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="86" Count="0" />
-      <LineId Id="143" Count="0" />
-      <LineId Id="88" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="3" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="91" Count="0" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="1" Count="34" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsPositiveInfinite">
-      <LineId Id="48" Count="0" />
-      <LineId Id="89" Count="1" />
-      <LineId Id="142" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="3" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="1" Count="28" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsPositiveZero">
-      <LineId Id="48" Count="0" />
-      <LineId Id="85" Count="0" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="96" Count="0" />
-      <LineId Id="92" Count="0" />
-      <LineId Id="97" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="3" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="91" Count="0" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="1" Count="32" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsSpecial">
-      <LineId Id="48" Count="1" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="97" Count="1" />
-      <LineId Id="96" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="3" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="1" Count="30" />
     </LineIds>
     <LineIds Name="RealAssertionTests.testValueIsSubnormal">
-      <LineId Id="48" Count="0" />
-      <LineId Id="85" Count="0" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="97" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="98" Count="1" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="3" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="1" Count="31" />
     </LineIds>
   </POU>
 </TcPlcObject>

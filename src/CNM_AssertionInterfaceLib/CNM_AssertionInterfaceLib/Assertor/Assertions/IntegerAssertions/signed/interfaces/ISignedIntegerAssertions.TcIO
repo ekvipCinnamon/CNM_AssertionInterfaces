@@ -3,14 +3,14 @@
   <Itf Name="ISignedIntegerAssertions" Id="{637cd7b1-41f2-4b19-8a1e-cab47c68c582}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| This interface provides assert statements for signed integers from 8~64 bit length 
-| For 8 bit intgers use :ref:`ISignedIntegerAssertions.short`
-| For 16 bit intgers use :ref:`ISignedIntegerAssertions.simple`
-| For 32 bit intgers use :ref:`ISignedIntegerAssertions.double`
-| For 64 bit intgers use :ref:`ISignedIntegerAssertions.long`
-| For integers in register length use :ref:`ISignedIntegerAssertions.x`
+## Short summary
+
+This interface provides assert statements for signed integers from 8~64 bit length 
+For 8 bit intgers use `ISignedIntegerAssertions.short`
+For 16 bit intgers use `ISignedIntegerAssertions.simple`
+For 32 bit intgers use `ISignedIntegerAssertions.double`
+For 64 bit intgers use `ISignedIntegerAssertions.long`
+For integers in register length use `ISignedIntegerAssertions.x`
 
 .. <legal notes>
 
@@ -34,9 +34,8 @@ INTERFACE ISignedIntegerAssertions EXTENDS __SYSTEM.IQueryInterface
     <Property Name="double" Id="{eaa89ec6-67c0-4acf-93ed-bf061ae0dcda}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IDintAssertions` with assert statements for signed 32 bit integers 
+## Short summary
+Returns the interface `IDintAssertions` with assert statements for signed 32 bit integers 
 
 .. <legal notes>
 
@@ -60,9 +59,8 @@ PROPERTY double :IDintAssertions]]></Declaration>
     <Property Name="long" Id="{32faab82-2192-4a5c-9379-e7a7e1550021}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`ILintAssertions` with assert statements for signed 64 bit integers 
+## Short summary
+Returns the interface `ILintAssertions` with assert statements for signed 64 bit integers 
 
 .. <legal notes>
 
@@ -86,9 +84,8 @@ PROPERTY long :ILintAssertions]]></Declaration>
     <Property Name="short" Id="{e292d4f4-824f-4b0c-8ad9-2c519f616974}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`ISintAssertions` with assert statements for signed 8 bit integers 
+## Short summary
+Returns the interface `ISintAssertions` with assert statements for signed 8 bit integers 
 
 .. <legal notes>
 
@@ -112,9 +109,8 @@ PROPERTY short :ISintAssertions]]></Declaration>
     <Property Name="simple" Id="{aa0ed2ee-99b7-4e2a-ab3b-d51308b5c3da}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IIntAssertions` with assert statements for signed 16 bit integers 
+## Short summary
+Returns the interface `IIntAssertions` with assert statements for signed 16 bit integers 
 
 .. <legal notes>
 
@@ -138,9 +134,8 @@ PROPERTY simple :IIntAssertions]]></Declaration>
     <Property Name="x" Id="{7a1fb43c-5930-4a28-b9e1-ddcc56932764}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IXintAssertions` with assert statements for signed integers register length 
+## Short summary
+Returns the interface `IXintAssertions` with assert statements for signed integers register length 
 
 .. <legal notes>
 

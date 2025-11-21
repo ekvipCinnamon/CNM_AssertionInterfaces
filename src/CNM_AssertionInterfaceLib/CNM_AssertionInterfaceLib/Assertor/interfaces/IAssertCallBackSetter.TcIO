@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <Itf Name="IAssertCallBackSetter" Id="{3489801d-af42-4d34-a3c2-39cea7630e9d}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This interface provides the possibilty to set a callback class 
 
 .. <legal notes>
@@ -19,8 +18,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
@@ -29,8 +27,7 @@ INTERFACE IAssertCallBackSetter EXTENDS CNM_AbstractObject.IObject
     <Method Name="setCallBack" Id="{048900c0-bc4c-4c63-b26e-a53208c68c59}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This methods is the setter for the callback class if an assertion was false
 
 .. <legal notes>
@@ -45,15 +42,14 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
 METHOD setCallBack
 VAR_INPUT
 	(* the class that must be informed if an assertion is false *)
-	callBack	:IAssertCallback;  
+	callBack	:IAssertCallBack;  
 END_VAR
 ]]></Declaration>
     </Method>

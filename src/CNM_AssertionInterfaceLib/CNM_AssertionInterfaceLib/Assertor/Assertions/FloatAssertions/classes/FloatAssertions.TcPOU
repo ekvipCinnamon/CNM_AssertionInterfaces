@@ -1,14 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="FloatAssertions" Id="{6f765fb2-52a4-4a47-8cd7-95a9639a21cd}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| This class provides assert statements for floatings (``REAL`` and ``LREAL``)
-| It implements :ref:`IFloatAssertions`
-| For 32 bit floats (``REAL``) use :ref:`FloatAssertions.single`
-| For 64 bit floats (``LREAL``) use :ref:`FloatAssertions.double`
+## Short summary
+
+This class provides assert statements for floatings (``REAL`` and ``LREAL``)
+For 32 bit floats (``REAL``) use `FloatAssertions.single`
+For 64 bit floats (``LREAL``) use `FloatAssertions.double`
 
 .. <legal notes>
 
@@ -22,8 +21,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
@@ -33,7 +31,7 @@ VAR
 	(* class to handle assert statements for 32 bit floats *)
 	realAssertions	:RealAssertions();
 	(* class to handle assert statements for 64 bit floats *)
-	lRealAssertions	:LRealAssertions();
+	lRealAssertions	:LrealAssertions();
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -42,8 +40,7 @@ END_VAR
     <Property Name="className" Id="{bce5ed82-c66d-4d67-b4a1-d5fbfdaf6587}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This abstract property returns the class name of the concrete object, 
 It's for debugging purpose
 
@@ -67,7 +64,7 @@ PROPERTY className :CNM_AbstractObject.ClassName]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[className := 'CNM_AssertionInterfaceLib.FloatAssertions';
+          <ST><![CDATA[className := 'CNM_Assertor.FloatAssertions';
 ]]></ST>
         </Implementation>
       </Get>
@@ -75,9 +72,8 @@ END_VAR
     <Property Name="double" Id="{05de71a9-9a57-4df4-8c4c-378583055d17}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`ILrealAssertions` with assert statements for 64 bit floatings (``LREAL``)
+## Short summary
+Returns the interface `ILrealAssertions` with assert statements for 64 bit floatings (``LREAL``)
 
 .. <legal notes>
 
@@ -100,7 +96,7 @@ PROPERTY double :ILrealAssertions
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[double := THIS^.lrealAssertions;
+          <ST><![CDATA[double := THIS^.lRealAssertions;
 ]]></ST>
         </Implementation>
       </Get>
@@ -108,8 +104,7 @@ END_VAR
     <Method Name="setCallBack" Id="{9709eb1f-8e3f-403d-a41a-b1be19956e61}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This methods is the setter for the callback class if an assertion was false
 
 .. <legal notes>
@@ -124,15 +119,14 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
 METHOD setCallBack
 VAR_INPUT
 	(* the class that must be informed if an assertion is false *)
-	callBack	:IAssertCallback;  
+	callBack	:IAssertCallBack;  
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -144,9 +138,8 @@ THIS^.lRealAssertions.setCallBack(callBack);
     <Property Name="single" Id="{2a735a7e-95c4-491b-8de1-8ac0c930d87b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IRealAssertions` with assert statements for 32 bit floatings (``REAL``)
+## Short summary
+Returns the interface `IRealAssertions` with assert statements for 32 bit floatings (``REAL``)
 
 .. <legal notes>
 

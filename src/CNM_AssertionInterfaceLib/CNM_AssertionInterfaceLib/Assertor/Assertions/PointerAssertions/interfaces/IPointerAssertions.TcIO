@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <Itf Name="IPointerAssertions" Id="{0dcedde9-5073-479c-8c95-0c0cd4d1ae6e}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This interface provides assert statements for pointers  
 
 .. <legal notes>
@@ -19,19 +18,79 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
 INTERFACE IPointerAssertions EXTENDS __SYSTEM.IQueryInterface
 ]]></Declaration>
+    <Method Name="isAligned" Id="{d58a8430-2f07-4ec2-8a04-f64c8e9578d1}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if pointer is aligned with register size.
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2025 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isAligned
+VAR_INPUT
+	(* memory address *)
+	address		:PVOID;
+	(* message if the assertion is false *)
+	message		:AssertMessage;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="isDwordAligned" Id="{b03b5544-b204-4d2b-92ed-f99a280c4be5}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if pointer is aligned with DWord size.
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2025 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isDwordAligned
+VAR_INPUT
+	(* memory address *)
+	address		:PVOID;
+	(* message if the assertion is false *)
+	message		:AssertMessage;
+END_VAR
+]]></Declaration>
+    </Method>
     <Method Name="isEqualTo" Id="{c0748b8d-1e27-4ef7-87b4-4d1d02547335}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-This assertion method checks if ``address1`` and ``address2`` refer to the same object
+## Short summary
+This assertion method checks if ``address1`` and ``address2`` refer to the same address
 
 .. <legal notes>
 
@@ -45,8 +104,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -61,12 +119,42 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
+    <Method Name="isLwordAligned" Id="{3e48c448-e799-43b0-9d35-67c48ea7769d}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if pointer is aligned with Lword size.
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2025 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isLwordAligned
+VAR_INPUT
+	(* memory address *)
+	address		:PVOID;
+	(* message if the assertion is false *)
+	message		:AssertMessage;
+END_VAR
+]]></Declaration>
+    </Method>
     <Method Name="isNotEqualTo" Id="{d73b28b3-a8ee-4e4e-a6e5-d5b66c480076}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-This assertion method checks if ``address1`` and ``address2`` refer not to the same object
+## Short summary
+This assertion method checks if ``address1`` and ``address2`` refer not to the same address
 
 .. <legal notes>
 
@@ -80,8 +168,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -99,8 +186,7 @@ END_VAR
     <Method Name="isNotNull" Id="{8a14cc32-0203-46dc-8978-674b4c122f13}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer is not null
 
 .. <legal notes>
@@ -115,8 +201,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -129,11 +214,47 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
+    <Method Name="isNotOverlapping" Id="{6f53ab87-6706-4f8b-beb3-8f3c8dd16b54}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if memory areas are overlapping
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isNotOverlapping
+VAR_INPUT
+	(* memory address *)
+	address1	:PVOID;
+	(* memory address *)
+	address2	:PVOID;
+	(*the size of the memory area identified by address1*)
+	sizeInBytes1		:UDINT;
+	(*the size of the memory area identified by address2*)
+	sizeInBytes2		:UDINT;
+	(* message if the assertion is false *)
+	message		:AssertMessage;
+END_VAR
+]]></Declaration>
+    </Method>
     <Method Name="isNull" Id="{fe3aa613-6cf4-4504-a06a-0fc2c620c0f3}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer is null
 
 .. <legal notes>
@@ -148,8 +269,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -162,16 +282,52 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
+    <Method Name="isOverlapping" Id="{863e91c6-46a5-4666-8502-509a7381777b}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if memory areas are overlapping
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isOverlapping
+VAR_INPUT
+	(* memory address *)
+	address1	:PVOID;
+	(* memory address *)
+	address2	:PVOID;
+	(*the size of the memory area identified by address1*)
+	sizeInBytes1		:UDINT;
+	(*the size of the memory area identified by address2*)
+	sizeInBytes2		:UDINT;
+	(* message if the assertion is false *)
+	message		:AssertMessage;
+END_VAR
+]]></Declaration>
+    </Method>
     <Method Name="isValid" Id="{956f9b95-e669-433f-87de-2e0a8f79c970}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer is valid.
 That means the pointer is not zero,
 the pointer is not in the memory area unknown.
 
-.. attention:: 
+**Attention:** 
 	A pointer to a variable on the stack is also in an unknown area of memory, but it is a valid pointer.
 	That means the method does not work for pointers to stack variables
 
@@ -187,8 +343,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -203,11 +358,41 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
+    <Method Name="isWordAligned" Id="{143ea8f5-f2d2-4962-9962-a9e7f0a9c68e}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if pointer is aligned with word size.
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2025 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isWordAligned
+VAR_INPUT
+	(* memory address *)
+	address		:PVOID;
+	(* message if the assertion is false *)
+	message		:AssertMessage;
+END_VAR
+]]></Declaration>
+    </Method>
     <Method Name="memoryAreaIsCnc" Id="{636ff844-6133-4f20-b9bc-b31a160fdf0b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer refers to cnc area
 
 .. <legal notes>
@@ -222,8 +407,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -241,8 +425,7 @@ END_VAR
     <Method Name="memoryAreaIsDynamic" Id="{1f772c36-abaa-4c4d-8d98-c11c8dcc673e}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer refers to dynamic area
 
 .. <legal notes>
@@ -257,8 +440,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -276,8 +458,7 @@ END_VAR
     <Method Name="memoryAreaIsNotCnc" Id="{04e253cc-c481-4759-a798-b171944357b1}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer refers not to cnc area
 
 .. <legal notes>
@@ -292,8 +473,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -311,8 +491,7 @@ END_VAR
     <Method Name="memoryAreaIsNotDynamic" Id="{2f63edd5-2073-45e9-84e8-e644fe6467d0}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer refers not to dynamic area
 
 .. <legal notes>
@@ -327,8 +506,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -346,8 +524,7 @@ END_VAR
     <Method Name="memoryAreaIsNotStatic" Id="{e8c31a9a-8c45-47d3-89c0-23d127edb669}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer refers not to static area
 
 .. <legal notes>
@@ -362,8 +539,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -381,8 +557,7 @@ END_VAR
     <Method Name="memoryAreaIsNotUnkown" Id="{72567fe8-617c-4776-8e01-bdf8ae474ef0}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer is not at memory area unknown
 
 .. <legal notes>
@@ -397,8 +572,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -416,8 +590,7 @@ END_VAR
     <Method Name="memoryAreaIsStatic" Id="{7da4ecda-4f0a-40df-9e41-93c790a02429}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer refers to static area
 
 .. <legal notes>
@@ -432,8 +605,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -451,8 +623,7 @@ END_VAR
     <Method Name="memoryAreaIsUnkown" Id="{1093015b-5b6d-4664-b345-36ccd0ec9c73}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer refers not to an unknown area
 
 .. <legal notes>
@@ -467,8 +638,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 

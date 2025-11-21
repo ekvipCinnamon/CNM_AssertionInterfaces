@@ -14,3 +14,9 @@ include:
   - project: 'ttr/ci-configs'
     ref: HEAD
     file: '/tc-unittest-manual.yml'
+    # load config that creates a documentation of the project
+  - project: 'ci/twincat-ci-configs'
+    ref: HEAD
+    file: '/tc-docugen.yml'
+    inputs:
+      sln_path: './src/CNM_AssertionInterfaceLib/CNM_AssertionInterfaceLib.sln'

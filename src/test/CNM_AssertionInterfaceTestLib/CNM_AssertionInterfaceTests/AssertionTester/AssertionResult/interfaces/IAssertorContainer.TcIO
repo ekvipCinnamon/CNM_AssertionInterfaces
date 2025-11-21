@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.13">
   <Itf Name="IAssertorContainer" Id="{0aa55e67-a447-43ff-a4d9-4d283ae67d0e}">
     <Declaration><![CDATA[(*
 
@@ -27,7 +27,7 @@ properties
 
 INTERFACE IAssertorContainer //EXTENDS CNM_AbstractObject.IObject]]></Declaration>
     <Property Name="assertor" Id="{ac0f499e-7899-424e-837d-50966f5c899a}">
-      <Declaration><![CDATA[PROPERTY assertor :CNM_AssertionInterfaceLib.IAssertor]]></Declaration>
+      <Declaration><![CDATA[PROPERTY assertor :CNM_AssertionInterfaces.IAssertor]]></Declaration>
       <Get Name="Get" Id="{d089bdfb-6d59-4676-92d8-3a7d61f5dcf5}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>

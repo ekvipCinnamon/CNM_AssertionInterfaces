@@ -3,8 +3,7 @@
   <Itf Name="IUsintAssertions" Id="{d82640fe-dfbd-4d17-981f-138d3a9907c3}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This interface provides assert statements for unsigned short integers (``USINT``)
 
 .. <legal notes>
@@ -19,8 +18,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
@@ -29,8 +27,7 @@ INTERFACE IUsintAssertions EXTENDS __SYSTEM.IQueryInterface
     <Method Name="valueIsEqualTo" Id="{b5e8744c-134f-4991-ae08-9c1a4bb3c59b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is equal to the expected value
 
 .. <legal notes>
@@ -45,8 +42,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -64,8 +60,7 @@ END_VAR
     <Method Name="valueIsEven" Id="{d84e35b2-1263-4898-adb4-ac29c1a3148b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is even
 
 .. <legal notes>
@@ -80,8 +75,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -97,8 +91,7 @@ END_VAR
     <Method Name="valueIsGreaterThan" Id="{b3d18761-3349-4b9b-9df3-0ecdf9edbe23}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than the less value
 
 .. <legal notes>
@@ -113,8 +106,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -132,11 +124,10 @@ END_VAR
     <Method Name="valueIsInRangeOf" Id="{5d4a5eb6-5178-4e54-8c73-ecb502438eff}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is inside a limit
 
-.. attention:: 
+**Attention:** 
 	limits are included: ``valueIsInRangeOf(3, 3, 3)`` is a true assertion
 
 .. <legal notes>
@@ -151,8 +142,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -172,8 +162,7 @@ END_VAR
     <Method Name="valueIsLessThan" Id="{976a6228-cf1b-419e-9917-2b6b34e3fd40}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is less than the greater value
 
 .. <legal notes>
@@ -188,8 +177,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -207,8 +195,7 @@ END_VAR
     <Method Name="valueIsMax" Id="{3dab1dc3-5dbb-4aaf-9e5d-f6482aec35a0}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is less than or equal to the maximum value
 
 .. <legal notes>
@@ -223,8 +210,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -242,8 +228,7 @@ END_VAR
     <Method Name="valueIsMin" Id="{40fbf137-7a04-4d26-8c9e-13bcbb514ca3}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than or equal to the minimum value
 
 .. <legal notes>
@@ -258,8 +243,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -277,8 +261,7 @@ END_VAR
     <Method Name="valueIsNotEqualTo" Id="{a6597abd-ae08-420f-a3ee-95ede6427347}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is not equal to the unexpected value
 
 .. <legal notes>
@@ -293,8 +276,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -312,8 +294,7 @@ END_VAR
     <Method Name="valueIsOdd" Id="{cf488b62-6271-4c1b-97cb-d6c301f715d3}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is odd
 
 .. <legal notes>
@@ -328,8 +309,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 

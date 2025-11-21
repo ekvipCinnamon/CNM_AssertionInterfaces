@@ -3,11 +3,10 @@
   <Itf Name="ITimeAssertions" Id="{8deb3fdf-8e80-4673-b402-5f6d488ddd4a}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This interface provides assert statements for times
-For ``LTIME`` assertions use the property :ref:`ITimeAssertions.long`.
-For ``TIME`` assertions use the property :ref:`ITimeAssertions.simple`.
+For ``LTIME`` assertions use the property `ITimeAssertions.long`.
+For ``TIME`` assertions use the property `ITimeAssertions.simple`.
 .. <legal notes>
 
 legal notes
@@ -20,8 +19,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
@@ -30,8 +28,7 @@ INTERFACE ITimeAssertions EXTENDS __SYSTEM.IQueryInterface
     <Property Name="long" Id="{74e15394-1d52-45c6-bf5c-6f8ec91c4912}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 Returns an interface with assert statements for 64 bit times 
 
 .. <legal notes>
@@ -56,8 +53,7 @@ PROPERTY long :I64BitTimeAssertions]]></Declaration>
     <Property Name="simple" Id="{c801510a-1f96-4735-a4d2-5ba37f80050c}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 Returns an interface with assert statements for 32 bit times 
 
 .. <legal notes>

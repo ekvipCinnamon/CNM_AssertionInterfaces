@@ -1,0 +1,1301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.13">
+  <POU Name="LDateAssertionTests" Id="{e05b4513-3c44-4b67-ae2d-be81232a7954}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK LDateAssertionTests EXTENDS AbstractAssertorTest
+
+VAR
+	
+END_VAR
+
+VAR CONSTANT
+	(* prefix to unify the test names *)
+	TEST_NAME_PREFIX			:STRING := 'assert.dateAndTime.long.dateOnly.';
+	(* max value of a LWORD *)
+	{attribute 'hide'}
+	MAX_LWORD					:LWORD := 16#FFFF_FFFF_FFFF_FFFF;
+	(* min value of a LWORD *)
+	{attribute 'hide'}
+	MIN_LWORD					:LWORD := 16#0000_0000_0000_0000;
+	(* only the msb is set *)
+	{attribute 'hide'}
+	MSB_ONLY					:LWORD := 16#8000_0000_0000_0000;
+	(* only the msb is set *)
+	{attribute 'hide'}
+	LSB_ONLY					:LWORD := 16#0000_0000_0000_0001;
+	(* all bits set except the msb *)
+	{attribute 'hide'}
+	WITHOUT_MSB 				:LWORD := 16#7FFF_FFFF_FFFF_FFFF;
+	(* for every nibble is the msb set only *)
+	{attribute 'hide'}
+	ALL_NIBBLE_MSB				:LWORD := 16#8888_8888_8888_8888;
+	(* for every nibble is the msb unset only *)
+	{attribute 'hide'}
+	WITHOUT_NIBBLE_MSB			:LWORD := 16#7777_7777_7777_7777;
+	(* for every nibble is the lsb set only *)
+	{attribute 'hide'}
+	ALL_NIBBLE_LSB				:LWORD := 16#1111_1111_111_111;
+	(* every bit is set except the lsb *)
+	{attribute 'hide'}
+	LSB_IS_UNSET				:LWORD := 16#FFFF_FFFE_FFFF_FFFF;
+	(* max vale of date and time *)
+	LDATE_MAX					:LDATE := TO_LDATE(MAX_LWORD);
+	(* min vale of date and time *)
+	LDATE_MIN					:LDATE := TO_LDATE(MIN_LWORD);
+	(* only the msb is set *)
+	LDATE_MSB_ONLY				:LDATE := TO_LDATE(MSB_ONLY);
+	(* all bits set except the msb *)
+	LDATE_WITHOUT_MSB 			:LDATE := TO_LDATE(WITHOUT_MSB);
+	(* for every nibble is the msb set only *)
+	LDATE_ALL_NIBBLE_MSB		:LDATE := TO_LDATE(ALL_NIBBLE_MSB);
+	(* for every nibble is the msb unset only *)
+	LDATE_WITHOUT_NIBBLE_MSB	:LDATE := TO_LDATE(WITHOUT_NIBBLE_MSB);
+	(* for every nibble is the lsb set only *)
+	LDATE_ALL_NIBBLE_LSB		:LDATE := TO_LDATE(ALL_NIBBLE_LSB);	
+	(* every bit is set except the lsb *)
+	LDATE_LSB_IS_UNSET			:LDATE := TO_LDATE(LSB_IS_UNSET);
+	(* only the msb is set *)
+	LDATE_LSB_ONLY				:LDATE := TO_LDATE(LSB_ONLY);
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[THIS^.runValueIsEqualToTests();
+THIS^.runValueIsGreaterThanTests();
+THIS^.runValueIsInRangeOfTests();
+THIS^.runValueIsLessThanTests();
+THIS^.runValueIsMaxTests();
+THIS^.runValueIsMinTests();
+THIS^.runValueIsNotEqualToTests();]]></ST>
+    </Implementation>
+    <Folder Name="internal" Id="{5a8fa261-0380-42b4-8ca5-1200d4e72f6e}" />
+    <Folder Name="valueIsEqualTo" Id="{680f990e-4247-43a6-820e-7a4243c49df9}" />
+    <Folder Name="valueIsGreaterThan" Id="{d09673ff-532d-4f4b-8051-60b9755eabcc}" />
+    <Folder Name="valueIsInRangeOf" Id="{929a3781-2af1-4d3f-b34c-c35fa39176ee}" />
+    <Folder Name="valueIsLessThan" Id="{a8386326-f201-45c7-90c1-4be9c8e8bccb}" />
+    <Folder Name="valueIsMax" Id="{4ab0228e-d63d-4b8a-a89f-ca19d53835d1}" />
+    <Folder Name="valueIsMin" Id="{f4125be9-4b17-4de2-8da2-1e1e89c71585}" />
+    <Folder Name="valueIsNotEqualTo" Id="{0f3f41b3-d89b-4f58-be68-3e97a5d58b75}" />
+    <Method Name="getTestNameFor" Id="{a88157e0-3c8f-49af-a08a-7ad0f449f0d0}" FolderPath="internal\">
+      <Declaration><![CDATA[METHOD getTestNameFor : Tc2_System.t_MaxString
+
+VAR_INPUT
+	(* name of the method to test, to create a unified test name *)
+	nameOfMethodToTest	:Tc2_System.T_MaxString;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[getTestNameFor := Tc2_Standard.CONCAT(THIS^.TEST_NAME_PREFIX, nameOfMethodToTest);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runValueIsEqualToTests" Id="{65e3bf7d-6717-4b76-a7bb-d1c097be8a54}" FolderPath="valueIsEqualTo\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.dateAndTime.long.dateOnly.valueIsEqualTo``
+method of CNM_AssertionInterfaces library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+METHOD runValueIsEqualToTests]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('valueIsEqualTo')));
+
+THIS^.testValueIsEqualTo(
+	valueToTest := THIS^.LDATE_MAX,
+	expected := THIS^.LDATE_MAX
+);
+THIS^.testValueIsEqualTo(
+	valueToTest := THIS^.LDATE_MIN,
+	expected := THIS^.LDATE_MIN
+);
+THIS^.testValueIsEqualTo(
+	valueToTest := THIS^.LDATE_MIN,
+	expected := THIS^.LDATE_MAX
+);
+THIS^.testValueIsEqualTo(
+	valueToTest := THIS^.LDATE_MAX,
+	expected := THIS^.LDATE_MIN
+);
+THIS^.testValueIsEqualTo(
+	valueToTest := THIS^.LDATE_ALL_NIBBLE_LSB,
+	expected := THIS^.LDATE_ALL_NIBBLE_LSB
+);
+THIS^.testValueIsEqualTo(
+	valueToTest := THIS^.LDATE_LSB_ONLY,
+	expected := THIS^.LDATE_MSB_ONLY
+);
+THIS^.testValueIsEqualTo(
+	valueToTest := THIS^.LDATE_MSB_ONLY,
+	expected := THIS^.LDATE_MSB_ONLY
+);
+THIS^.testValueIsEqualTo(
+	valueToTest := THIS^.LDATE_MSB_ONLY,
+	expected := THIS^.LDATE_LSB_ONLY
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runValueIsGreaterThanTests" Id="{fa97eac7-f459-4e73-bb0b-b38e2f945f59}" FolderPath="valueIsGreaterThan\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.dateAndTime.long.dateOnly.valueIsGreaterThan``
+method of CNM_AssertionInterfaces library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+METHOD runValueIsGreaterThanTests
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('valueIsGreaterThan')));
+
+THIS^.testValueIsGreaterThan(
+	valueToTest := THIS^.LDATE_MAX,
+	lessValue := THIS^.LDATE_MAX
+);
+THIS^.testValueIsGreaterThan(
+	valueToTest := THIS^.LDATE_MIN,
+	lessValue := THIS^.LDATE_MIN
+);
+THIS^.testValueIsGreaterThan(
+	valueToTest := THIS^.LDATE_MIN,
+	lessValue := THIS^.LDATE_MAX
+);
+THIS^.testValueIsGreaterThan(
+	valueToTest := THIS^.LDATE_MAX,
+	lessValue := THIS^.LDATE_MIN
+);
+THIS^.testValueIsGreaterThan(
+	valueToTest := THIS^.LDATE_ALL_NIBBLE_LSB,
+	lessValue := THIS^.LDATE_ALL_NIBBLE_LSB
+);
+THIS^.testValueIsGreaterThan(
+	valueToTest := THIS^.LDATE_ALL_NIBBLE_MSB,
+	lessValue := THIS^.LDATE_ALL_NIBBLE_LSB
+);
+THIS^.testValueIsGreaterThan(
+	valueToTest := THIS^.LDATE_ALL_NIBBLE_LSB,
+	lessValue := THIS^.LDATE_ALL_NIBBLE_MSB
+);
+THIS^.testValueIsGreaterThan(
+	valueToTest := THIS^.LDATE_LSB_ONLY,
+	lessValue := THIS^.LDATE_MSB_ONLY
+);
+THIS^.testValueIsGreaterThan(
+	valueToTest := THIS^.LDATE_MSB_ONLY,
+	lessValue := THIS^.LDATE_MSB_ONLY
+);
+THIS^.testValueIsGreaterThan(
+	valueToTest := THIS^.LDATE_MSB_ONLY,
+	lessValue := THIS^.LDATE_LSB_ONLY
+);
+THIS^.testValueIsGreaterThan(
+	valueToTest := THIS^.LDATE_LSB_IS_UNSET,
+	lessValue := THIS^.LDATE_MAX
+);
+THIS^.testValueIsGreaterThan(
+	valueToTest := THIS^.LDATE_MAX,
+	lessValue := THIS^.LDATE_LSB_IS_UNSET
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runValueIsInRangeOfTests" Id="{0d850e6b-1aec-4283-8372-2ac1f6129d65}" FolderPath="valueIsInRangeOf\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.dateAndTime.long.dateOnly.valueIsInRangeOf``
+method of CNM_AssertionInterfaces library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+METHOD runValueIsInRangeOfTests
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('valueIsInRangeOf')));
+
+THIS^.testValueIsInRangeOf(
+	lowerLimit := THIS^.LDATE_MIN,
+	valueToTest := THIS^.LDATE_MAX,
+	upperLimit	:= THIS^.LDATE_MAX
+);
+THIS^.testValueIsInRangeOf(
+	lowerLimit := THIS^.LDATE_MIN,
+	valueToTest := THIS^.LDATE_MIN,
+	upperLimit	:= THIS^.LDATE_MAX
+);
+THIS^.testValueIsInRangeOf(
+	lowerLimit := THIS^.LDATE_MAX,
+	valueToTest := THIS^.LDATE_MAX,
+	upperLimit	:= THIS^.LDATE_MIN
+);
+THIS^.testValueIsInRangeOf(
+	lowerLimit := THIS^.LDATE_MAX,
+	valueToTest := THIS^.LDATE_MIN,
+	upperLimit	:= THIS^.LDATE_MIN
+);
+THIS^.testValueIsInRangeOf(
+	lowerLimit := THIS^.LDATE_LSB_IS_UNSET,
+	valueToTest := THIS^.LDATE_MIN,
+	upperLimit	:= THIS^.LDATE_MAX
+);
+THIS^.testValueIsInRangeOf(
+	lowerLimit := THIS^.LDATE_MIN,
+	valueToTest := THIS^.LDATE_LSB_IS_UNSET,
+	upperLimit	:= THIS^.LDATE_MAX
+);
+THIS^.testValueIsInRangeOf(
+	lowerLimit := THIS^.LDATE_LSB_IS_UNSET,
+	valueToTest := THIS^.LDATE_LSB_IS_UNSET,
+	upperLimit	:= THIS^.LDATE_LSB_IS_UNSET
+);
+THIS^.testValueIsInRangeOf(
+	lowerLimit := THIS^.LDATE_ALL_NIBBLE_LSB,
+	valueToTest := THIS^.LDATE_LSB_IS_UNSET,
+	upperLimit	:= THIS^.LDATE_ALL_NIBBLE_MSB
+);
+THIS^.testValueIsInRangeOf(
+	lowerLimit := THIS^.LDATE_LSB_IS_UNSET,
+	valueToTest := THIS^.LDATE_ALL_NIBBLE_LSB,
+	upperLimit	:= THIS^.LDATE_ALL_NIBBLE_MSB
+);
+THIS^.testValueIsInRangeOf(
+	lowerLimit := THIS^.LDATE_LSB_ONLY,
+	valueToTest := THIS^.LDATE_WITHOUT_MSB,
+	upperLimit	:= THIS^.LDATE_MSB_ONLY
+);
+THIS^.testValueIsInRangeOf(
+	lowerLimit := THIS^.LDATE_WITHOUT_MSB,
+	valueToTest := THIS^.LDATE_LSB_ONLY,
+	upperLimit	:= THIS^.LDATE_MSB_ONLY
+);
+THIS^.testValueIsInRangeOf(
+	lowerLimit := THIS^.LDATE_WITHOUT_NIBBLE_MSB,
+	valueToTest := THIS^.LDATE_MAX,
+	upperLimit	:= THIS^.LDATE_ALL_NIBBLE_MSB
+);
+THIS^.testValueIsInRangeOf(
+	lowerLimit := THIS^.LDATE_WITHOUT_NIBBLE_MSB,
+	valueToTest := THIS^.LDATE_MIN,
+	upperLimit	:= THIS^.LDATE_ALL_NIBBLE_MSB
+);
+THIS^.testValueIsInRangeOf(
+	lowerLimit := THIS^.LDATE_WITHOUT_NIBBLE_MSB,
+	valueToTest := THIS^.LDATE_WITHOUT_NIBBLE_MSB,
+	upperLimit	:= THIS^.LDATE_ALL_NIBBLE_MSB
+);
+THIS^.testValueIsInRangeOf(
+	lowerLimit := THIS^.LDATE_WITHOUT_NIBBLE_MSB,
+	valueToTest := THIS^.LDATE_ALL_NIBBLE_MSB,
+	upperLimit	:= THIS^.LDATE_ALL_NIBBLE_MSB
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runValueIsLessThanTests" Id="{4bc7ecdf-0866-49ba-bdef-762a98d5ef03}" FolderPath="valueIsLessThan\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.dateAndTime.long.dateOnly.valueIsLessThan``
+method of CNM_AssertionInterfaces library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+METHOD runValueIsLessThanTests
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('valueIsLessThan')));
+
+THIS^.testValueIsLessThan(
+	valueToTest := THIS^.LDATE_MAX,
+	greaterValue := THIS^.LDATE_MAX
+);
+THIS^.testValueIsLessThan(
+	valueToTest := THIS^.LDATE_MIN,
+	greaterValue := THIS^.LDATE_MIN
+);
+THIS^.testValueIsLessThan(
+	valueToTest := THIS^.LDATE_MIN,
+	greaterValue := THIS^.LDATE_MAX
+);
+THIS^.testValueIsLessThan(
+	valueToTest := THIS^.LDATE_MAX,
+	greaterValue := THIS^.LDATE_MIN
+);
+THIS^.testValueIsLessThan(
+	valueToTest := THIS^.LDATE_ALL_NIBBLE_LSB,
+	greaterValue := THIS^.LDATE_ALL_NIBBLE_LSB
+);
+THIS^.testValueIsLessThan(
+	valueToTest := THIS^.LDATE_ALL_NIBBLE_MSB,
+	greaterValue := THIS^.LDATE_ALL_NIBBLE_LSB
+);
+THIS^.testValueIsLessThan(
+	valueToTest := THIS^.LDATE_ALL_NIBBLE_LSB,
+	greaterValue := THIS^.LDATE_ALL_NIBBLE_MSB
+);
+THIS^.testValueIsLessThan(
+	valueToTest := THIS^.LDATE_LSB_ONLY,
+	greaterValue := THIS^.LDATE_MSB_ONLY
+);
+THIS^.testValueIsLessThan(
+	valueToTest := THIS^.LDATE_MSB_ONLY,
+	greaterValue := THIS^.LDATE_MSB_ONLY
+);
+THIS^.testValueIsLessThan(
+	valueToTest := THIS^.LDATE_MSB_ONLY,
+	greaterValue := THIS^.LDATE_LSB_ONLY
+);
+THIS^.testValueIsLessThan(
+	valueToTest := THIS^.LDATE_LSB_IS_UNSET,
+	greaterValue := THIS^.LDATE_MAX
+);
+THIS^.testValueIsLessThan(
+	valueToTest := THIS^.LDATE_MAX,
+	greaterValue := THIS^.LDATE_LSB_IS_UNSET
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runValueIsMaxTests" Id="{9240e6b8-a079-4406-ae1c-1091797d0729}" FolderPath="valueIsMax\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.dateAndTime.long.dateOnly.valueIsMax``
+method of CNM_AssertionInterfaces library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+METHOD runValueIsMaxTests
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('valueIsMax')));
+
+THIS^.testValueIsMax(
+	valueToTest := THIS^.LDATE_MAX,
+	maximumValue := THIS^.LDATE_MAX
+);
+THIS^.testValueIsMax(
+	valueToTest := THIS^.LDATE_MIN,
+	maximumValue := THIS^.LDATE_MIN
+);
+THIS^.testValueIsMax(
+	valueToTest := THIS^.LDATE_MIN,
+	maximumValue := THIS^.LDATE_MAX
+);
+THIS^.testValueIsMax(
+	valueToTest := THIS^.LDATE_MAX,
+	maximumValue := THIS^.LDATE_MIN
+);
+THIS^.testValueIsMax(
+	valueToTest := THIS^.LDATE_ALL_NIBBLE_LSB,
+	maximumValue := THIS^.LDATE_ALL_NIBBLE_LSB
+);
+THIS^.testValueIsMax(
+	valueToTest := THIS^.LDATE_ALL_NIBBLE_MSB,
+	maximumValue := THIS^.LDATE_ALL_NIBBLE_LSB
+);
+THIS^.testValueIsMax(
+	valueToTest := THIS^.LDATE_ALL_NIBBLE_LSB,
+	maximumValue := THIS^.LDATE_ALL_NIBBLE_MSB
+);
+THIS^.testValueIsMax(
+	valueToTest := THIS^.LDATE_LSB_ONLY,
+	maximumValue := THIS^.LDATE_MSB_ONLY
+);
+THIS^.testValueIsMax(
+	valueToTest := THIS^.LDATE_MSB_ONLY,
+	maximumValue := THIS^.LDATE_MSB_ONLY
+);
+THIS^.testValueIsMax(
+	valueToTest := THIS^.LDATE_MSB_ONLY,
+	maximumValue := THIS^.LDATE_LSB_ONLY
+);
+THIS^.testValueIsMax(
+	valueToTest := THIS^.LDATE_LSB_IS_UNSET,
+	maximumValue := THIS^.LDATE_MAX
+);
+THIS^.testValueIsMax(
+	valueToTest := THIS^.LDATE_MAX,
+	maximumValue := THIS^.LDATE_LSB_IS_UNSET
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runValueIsMinTests" Id="{b96feaf8-74cc-4f87-b7c4-a5cbda41497c}" FolderPath="valueIsMin\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.dateAndTime.long.dateOnly.valueIsMin``
+method of CNM_AssertionInterfaces library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+METHOD runValueIsMinTests
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('valueIsMin')));
+
+THIS^.testValueIsMin(
+	valueToTest := THIS^.LDATE_MAX,
+	minimumValue := THIS^.LDATE_MAX
+);
+THIS^.testValueIsMin(
+	valueToTest := THIS^.LDATE_MIN,
+	minimumValue := THIS^.LDATE_MIN
+);
+THIS^.testValueIsMin(
+	valueToTest := THIS^.LDATE_MIN,
+	minimumValue := THIS^.LDATE_MAX
+);
+THIS^.testValueIsMin(
+	valueToTest := THIS^.LDATE_MAX,
+	minimumValue := THIS^.LDATE_MIN
+);
+THIS^.testValueIsMin(
+	valueToTest := THIS^.LDATE_ALL_NIBBLE_LSB,
+	minimumValue := THIS^.LDATE_ALL_NIBBLE_LSB
+);
+THIS^.testValueIsMin(
+	valueToTest := THIS^.LDATE_ALL_NIBBLE_MSB,
+	minimumValue := THIS^.LDATE_ALL_NIBBLE_LSB
+);
+THIS^.testValueIsMin(
+	valueToTest := THIS^.LDATE_ALL_NIBBLE_LSB,
+	minimumValue := THIS^.LDATE_ALL_NIBBLE_MSB
+);
+THIS^.testValueIsMin(
+	valueToTest := THIS^.LDATE_LSB_ONLY,
+	minimumValue := THIS^.LDATE_MSB_ONLY
+);
+THIS^.testValueIsMin(
+	valueToTest := THIS^.LDATE_MSB_ONLY,
+	minimumValue := THIS^.LDATE_MSB_ONLY
+);
+THIS^.testValueIsMin(
+	valueToTest := THIS^.LDATE_MSB_ONLY,
+	minimumValue := THIS^.LDATE_LSB_ONLY
+);
+THIS^.testValueIsMin(
+	valueToTest := THIS^.LDATE_LSB_IS_UNSET,
+	minimumValue := THIS^.LDATE_MAX
+);
+THIS^.testValueIsMin(
+	valueToTest := THIS^.LDATE_MAX,
+	minimumValue := THIS^.LDATE_LSB_IS_UNSET
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runValueIsNotEqualToTests" Id="{bc04f442-dc44-4e01-9d52-7a78079d07cb}" FolderPath="valueIsNotEqualTo\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.dateAndTime.long.dateOnly.valueIsNotEqualTo``
+method of CNM_AssertionInterfaces library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+METHOD runValueIsNotEqualToTests
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('valueIsNotEqualTo')));
+
+THIS^.testValueIsNotEqualTo(
+	valueToTest := THIS^.LDATE_MAX,
+	unexpectedValue := THIS^.LDATE_MAX
+);
+THIS^.testValueIsNotEqualTo(
+	valueToTest := THIS^.LDATE_MIN,
+	unexpectedValue := THIS^.LDATE_MIN
+);
+THIS^.testValueIsNotEqualTo(
+	valueToTest := THIS^.LDATE_MIN,
+	unexpectedValue := THIS^.LDATE_MAX
+);
+THIS^.testValueIsNotEqualTo(
+	valueToTest := THIS^.LDATE_MAX,
+	unexpectedValue := THIS^.LDATE_MIN
+);
+THIS^.testValueIsNotEqualTo(
+	valueToTest := THIS^.LDATE_ALL_NIBBLE_LSB,
+	unexpectedValue := THIS^.LDATE_ALL_NIBBLE_LSB
+);
+THIS^.testValueIsNotEqualTo(
+	valueToTest := THIS^.LDATE_LSB_ONLY,
+	unexpectedValue := THIS^.LDATE_MSB_ONLY
+);
+THIS^.testValueIsNotEqualTo(
+	valueToTest := THIS^.LDATE_MSB_ONLY,
+	unexpectedValue := THIS^.LDATE_MSB_ONLY
+);
+THIS^.testValueIsNotEqualTo(
+	valueToTest := THIS^.LDATE_MSB_ONLY,
+	unexpectedValue := THIS^.LDATE_LSB_ONLY
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testValueIsEqualTo" Id="{db02bb57-bba2-493f-af93-98328c77353a}" FolderPath="valueIsEqualTo\">
+      <Declaration><![CDATA[
+(*
+
+short summary
+==================
+This test method tests ``assert.dateAndTime.long.dateOnly.valueIsEqualTo``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+METHOD testValueIsEqualTo
+VAR_INPUT
+	(* for the test it's the parameter ``currentValue`` *)
+	valueToTest	:LDATE;
+	(* for the test it's the parameter ``expectedValue`` *)
+	expected	:LDATE;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* LDATE value of ``currentValue`` as string *)
+	currentValueAsString	:STRING(22);
+	(* LDATE value of ``expectedValue`` as string *)
+	expectedValueAsString	:STRING(22);
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := (valueToTest <> expected);
+
+message := SEL(
+	assertionIsWrong,
+	'currentValue is %s expectedValue is %s assertion must be TRUE', 
+	'currentValue is %s expectedValue is %s assertion must be FALSE'
+);
+currentValueAsString := TO_STRING(valueToTest);
+expectedValueAsString := TO_STRING(expected);
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(currentValueAsString),
+	arg2 := THIS^.AnyToArg(expectedValueAsString)
+);
+
+THIS^.assertorContainer.assertor.assert.dateAndTime.long.dateOnly.valueIsEqualTo(
+	currentValue	:= valueToTest,
+	expectedValue	:= expected,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testValueIsGreaterThan" Id="{5d467e95-e856-4792-b0c8-3610a57df5fb}" FolderPath="valueIsGreaterThan\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.dateAndTime.long.dateOnly.valueIsGreaterThan``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+METHOD testValueIsGreaterThan 
+VAR_INPUT
+	(* for the test it's the parameter ``currentValue`` *)
+	valueToTest	:LDATE;
+	(* for the test it's the parameter ``lessValue`` *)
+	lessValue	:LDATE;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* LDATE value of ``currentValue`` as string *)
+	currentValueAsString	:STRING(22);
+	(* LDATE value of ``lessValue`` as string *)
+	lessValueAsString		:STRING(22);
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := (valueToTest <= lessValue);
+
+message := SEL(
+	assertionIsWrong,
+	'currentValue is %s lessValue is %s assertion must be TRUE', 
+	'currentValue is %s lessValue is %s assertion must be FALSE'
+);
+currentValueAsString := TO_STRING(valueToTest);
+lessValueAsString := TO_STRING(lessValue);
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(currentValueAsString),
+	arg2 := THIS^.AnyToArg(lessValueAsString)
+);
+
+THIS^.assertorContainer.assertor.assert.dateAndTime.long.dateOnly.valueIsGreaterThan(
+	currentValue	:= valueToTest,
+	lessValue		:= lessValue,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testValueIsInRangeOf" Id="{28e81d50-dacf-4ac1-ba2a-e9db0d5e926b}" FolderPath="valueIsInRangeOf\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.dateAndTime.long.dateOnly.valueIsInRangeOf``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+METHOD testValueIsInRangeOf 
+VAR_INPUT
+	(* for the test it's the parameter ``lowerLimit`` *)
+	lowerLimit	:LDATE;
+	(* for the test it's the parameter ``currentValue`` *)
+	valueToTest	:LDATE;
+	(* for the test it's the parameter ``upperLimit`` *)
+	upperLimit	:LDATE;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* LDATE value of ``lowerLimit`` as string *)
+	lowerLimitAsString		:STRING(22);
+	(* LDATE value of ``currentValue`` as string *)
+	currentValueAsString	:STRING(22);
+	(* LDATE value of ``upperLimit`` as string *)
+	upperLimitAsString		:STRING(22);
+
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := ((
+		valueToTest < lowerLimit
+	) OR (	
+		valueToTest > upperLimit
+	)
+);
+
+message := SEL(
+	assertionIsWrong,
+	'lowerLimit is %s currentValue is %s upperLimit is %s assertion must be TRUE', 
+	'lowerLimit is %s currentValue is %s upperLimit is %s assertion must be FALSE'
+);
+lowerLimitAsString		:= TO_STRING(lowerLimit);
+currentValueAsString	:= TO_STRING(valueToTest);
+upperLimitAsString		:= TO_STRING(upperLimit);
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(lowerLimitAsString),
+	arg2 := THIS^.AnyToArg(currentValueAsString),
+	arg3 := THIS^.AnyToArg(upperLimitAsString)
+);
+
+THIS^.assertorContainer.assertor.assert.dateAndTime.long.dateOnly.valueIsInRangeOf(
+	lowerLimit		:= lowerLimit,
+	currentValue	:= valueToTest,
+	upperLimit		:= upperLimit,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testValueIsLessThan" Id="{18ac79e9-3784-4299-a350-a541192c075d}" FolderPath="valueIsLessThan\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.dateAndTime.long.dateOnly.valueIsLessThan``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+METHOD testValueIsLessThan 
+VAR_INPUT
+	(* for the test it's the parameter ``currentValue`` *)
+	valueToTest		:LDATE;
+	(* for the test it's the parameter ``greaterValue`` *)
+	greaterValue	:LDATE;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* LDATE value of ``currentValue`` as string *)
+	currentValueAsString	:STRING(22);
+	(* LDATE value of ``greaterValue`` as string *)
+	greaterValueAsString	:STRING(22);
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := (valueToTest >= greaterValue);
+
+message := SEL(
+	assertionIsWrong,
+	'currentValue is %s greaterValue is %s assertion must be TRUE', 
+	'currentValue is %s greaterValue is %s assertion must be FALSE'
+);
+currentValueAsString := TO_STRING(valueToTest);
+greaterValueAsString := TO_STRING(greaterValue);
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(currentValueAsString),
+	arg2 := THIS^.AnyToArg(greaterValueAsString)
+);
+
+THIS^.assertorContainer.assertor.assert.dateAndTime.long.dateOnly.valueIsLessThan(
+	currentValue	:= valueToTest,
+	greaterValue	:= greaterValue,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testValueIsMax" Id="{0f13cb85-eeaf-4196-b54e-f6570fca761f}" FolderPath="valueIsMax\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.dateAndTime.long.dateOnly.valueIsMax``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+METHOD testValueIsMax 
+VAR_INPUT
+	(* for the test it's the parameter ``currentValue`` *)
+	valueToTest		:LDATE;
+	(* for the test it's the parameter ``greaterValue`` *)
+	maximumValue	:LDATE;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* LDATE value of ``currentValue`` as string *)
+	currentValueAsString	:STRING(22);
+	(* LDATE value of ``maximumValue`` as string *)
+	maximumValueAsString	:STRING(22);
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := (valueToTest > maximumValue);
+
+message := SEL(
+	assertionIsWrong,
+	'currentValue is %s maximumValue is %s assertion must be TRUE', 
+	'currentValue is %s maximumValue is %s assertion must be FALSE'
+);
+currentValueAsString := TO_STRING(valueToTest);
+maximumValueAsString := TO_STRING(maximumValue);
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(currentValueAsString),
+	arg2 := THIS^.AnyToArg(maximumValueAsString)
+);
+
+THIS^.assertorContainer.assertor.assert.dateAndTime.long.dateOnly.valueIsMax(
+	currentValue	:= valueToTest,
+	maximumValue	:= maximumValue,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testValueIsMin" Id="{7ec1a2c0-123c-4028-a5df-d30c4165cfc0}" FolderPath="valueIsMin\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.dateAndTime.long.dateOnly.valueIsMin``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+METHOD testValueIsMin 
+VAR_INPUT
+	(* for the test it's the parameter ``currentValue`` *)
+	valueToTest		:LDATE;
+	(* for the test it's the parameter ``greaterValue`` *)
+	minimumValue	:LDATE;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* LDATE value of ``currentValue`` as string *)
+	currentValueAsString	:STRING(22);
+	(* LDATE value of ``minimumValue`` as string *)
+	minimumValueAsString	:STRING(22);
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := (valueToTest < minimumValue);
+
+message := SEL(
+	assertionIsWrong,
+	'currentValue is %s minimumValue is %s assertion must be TRUE', 
+	'currentValue is %s minimumValue is %s assertion must be FALSE'
+);
+currentValueAsString := TO_STRING(valueToTest);
+minimumValueAsString := TO_STRING(minimumValue);
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(currentValueAsString),
+	arg2 := THIS^.AnyToArg(minimumValueAsString)
+);
+
+THIS^.assertorContainer.assertor.assert.dateAndTime.long.dateOnly.valueIsMin(
+	currentValue	:= valueToTest,
+	minimumValue	:= minimumValue,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testValueIsNotEqualTo" Id="{5d2967e3-5d56-41b6-830b-aefd795eec40}" FolderPath="valueIsNotEqualTo\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method tests ``assert.dateAndTime.long.dateOnly.valueIsNotEqualTo``
+method of CNM_AssertionInterfaces library, 
+it provides the possibility to handover test data via parameter 
+
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+METHOD testValueIsNotEqualTo 
+VAR_INPUT
+	(* for the test it's the parameter ``currentValue`` *)
+	valueToTest		:LDATE;
+	(* for the test it's the parameter ``unexpectedValue`` *)
+	unexpectedValue	:LDATE;
+END_VAR
+VAR
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+	(* LDATE value of ``currentValue`` as string *)
+	currentValueAsString	:STRING(22);
+	(* LDATE value of ``unexpectedValue`` as string *)
+	unexpectedValueAsString	:STRING(22);
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := (valueToTest = unexpectedValue);
+message := SEL(
+	assertionIsWrong,
+	'currentValue is %s expectedValue is %s assertion must be TRUE', 
+	'currentValue is %s expectedValue is %s assertion must be FALSE'
+);
+currentValueAsString := TO_STRING(valueToTest);
+unexpectedValueAsString := TO_STRING(unexpectedValue);
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.AnyToArg(currentValueAsString),
+	arg2 := THIS^.AnyToArg(unexpectedValueAsString)
+);
+
+THIS^.assertorContainer.assertor.assert.dateAndTime.long.dateOnly.valueIsNotEqualTo(
+	currentValue	:= valueToTest,
+	unexpectedValue	:= unexpectedValue,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="LDateAssertionTests">
+      <LineId Id="6" Count="5" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="LDateAssertionTests.getTestNameFor">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="LDateAssertionTests.runValueIsEqualToTests">
+      <LineId Id="1" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="3" Count="34" />
+    </LineIds>
+    <LineIds Name="LDateAssertionTests.runValueIsGreaterThanTests">
+      <LineId Id="1" Count="49" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="51" Count="1" />
+    </LineIds>
+    <LineIds Name="LDateAssertionTests.runValueIsInRangeOfTests">
+      <LineId Id="1" Count="76" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="78" Count="1" />
+    </LineIds>
+    <LineIds Name="LDateAssertionTests.runValueIsLessThanTests">
+      <LineId Id="1" Count="49" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="51" Count="1" />
+    </LineIds>
+    <LineIds Name="LDateAssertionTests.runValueIsMaxTests">
+      <LineId Id="1" Count="49" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="51" Count="1" />
+    </LineIds>
+    <LineIds Name="LDateAssertionTests.runValueIsMinTests">
+      <LineId Id="1" Count="49" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="51" Count="1" />
+    </LineIds>
+    <LineIds Name="LDateAssertionTests.runValueIsNotEqualToTests">
+      <LineId Id="1" Count="33" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="36" Count="1" />
+    </LineIds>
+    <LineIds Name="LDateAssertionTests.testValueIsEqualTo">
+      <LineId Id="1" Count="2" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="4" Count="25" />
+    </LineIds>
+    <LineIds Name="LDateAssertionTests.testValueIsGreaterThan">
+      <LineId Id="1" Count="2" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="4" Count="25" />
+    </LineIds>
+    <LineIds Name="LDateAssertionTests.testValueIsInRangeOf">
+      <LineId Id="1" Count="2" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="4" Count="20" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="26" Count="6" />
+    </LineIds>
+    <LineIds Name="LDateAssertionTests.testValueIsLessThan">
+      <LineId Id="1" Count="2" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="4" Count="25" />
+    </LineIds>
+    <LineIds Name="LDateAssertionTests.testValueIsMax">
+      <LineId Id="1" Count="2" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="4" Count="17" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="23" Count="4" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="29" Count="0" />
+    </LineIds>
+    <LineIds Name="LDateAssertionTests.testValueIsMin">
+      <LineId Id="1" Count="2" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="4" Count="25" />
+    </LineIds>
+    <LineIds Name="LDateAssertionTests.testValueIsNotEqualTo">
+      <LineId Id="1" Count="28" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

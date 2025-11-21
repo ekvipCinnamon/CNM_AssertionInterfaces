@@ -1,12 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="UlintAssertions" Id="{e149b608-379b-4273-a121-1794917e4a03}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This class provides assert statements for unsigned long integers  (``ULINT``)
-It implements the interface :ref:`IUlintAssertions`
 
 .. <legal notes>
 
@@ -20,14 +18,14 @@ legal notes
 
 .. </legal notes>
 
-methods and properties
-=======================
-
 *)
 
 {attribute 'reflection'}
-FUNCTION_BLOCK INTERNAL UlintAssertions EXTENDS AbstactAssertion IMPLEMENTS IUlintAssertions
+FUNCTION_BLOCK INTERNAL UlintAssertions EXTENDS AbstractAssertion IMPLEMENTS IUlintAssertions
 VAR
+END_VAR
+VAR CONSTANT
+	LSB_MASK :ULINT := 1;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -36,8 +34,7 @@ END_VAR
     <Property Name="className" Id="{2843acda-b4c8-4c9f-b14f-864af8a6574b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This abstract property returns the class name of the concrete object, 
 It's for debugging purpose
 
@@ -61,7 +58,7 @@ PROPERTY className :CNM_AbstractObject.ClassName]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[className := 'CNM_AssertionInterfaceLib.UlintAssertions';
+          <ST><![CDATA[className := 'CNM_Assertor.UlintAssertions';
 ]]></ST>
         </Implementation>
       </Get>
@@ -69,8 +66,7 @@ END_VAR
     <Method Name="valueIsEqualTo" Id="{9d3de41f-56b2-4255-9daf-140a8cb78ec7}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is equal to the expected value
 
 .. <legal notes>
@@ -85,8 +81,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -110,8 +105,7 @@ END_IF
     <Method Name="valueIsEven" Id="{34852db0-242a-40d6-94a9-537a8c5f7ad3}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is even
 
 .. <legal notes>
@@ -126,8 +120,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -140,7 +133,7 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF ((currentValue MOD 2) <> 0) THEN
+        <ST><![CDATA[IF ((currentValue AND THIS^.LSB_MASK) <> 0) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsEven'));
 END_IF
 ]]></ST>
@@ -149,8 +142,7 @@ END_IF
     <Method Name="valueIsGreaterThan" Id="{280d18ec-34e5-4509-828c-04253da264be}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than the less value
 
 .. <legal notes>
@@ -165,8 +157,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -190,11 +181,10 @@ END_IF
     <Method Name="valueIsInRangeOf" Id="{32c2ec55-58cd-456d-ae58-19d071897fa0}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is inside a limit
 
-.. attention:: 
+**Attention:** 
 	limits are included: ``valueIsInRangeOf(3, 3, 3)`` is a true assertion
 
 .. <legal notes>
@@ -209,8 +199,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -229,7 +218,7 @@ END_VAR
       <Implementation>
         <ST><![CDATA[IF (
 	(currentValue < lowerLimit)
-	OR (currentValue > upperLimit)
+	OR_ELSE (currentValue > upperLimit)
 ) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsInRangeOf'));
 END_IF
@@ -239,8 +228,7 @@ END_IF
     <Method Name="valueIsLessThan" Id="{b1837875-d4e5-467b-934b-03805e58dfc9}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is less than the greater value
 
 .. <legal notes>
@@ -255,8 +243,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -280,8 +267,7 @@ END_IF
     <Method Name="valueIsMax" Id="{80020489-587b-4589-b199-7f23abb436d9}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is less than or equal to the maximum value
 
 .. <legal notes>
@@ -296,8 +282,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -321,8 +306,7 @@ END_IF
     <Method Name="valueIsMin" Id="{0c788082-dab6-4459-9f4b-13c54e0e04ba}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than or equal to the minimum value
 
 .. <legal notes>
@@ -337,8 +321,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -362,8 +345,7 @@ END_IF
     <Method Name="valueIsNotEqualTo" Id="{7ce590ef-5d34-4af9-b9b3-79b813abb956}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is not equal to the unexpected value
 
 .. <legal notes>
@@ -378,8 +360,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -403,8 +384,7 @@ END_IF
     <Method Name="valueIsOdd" Id="{4ee4d4e7-fa4c-4664-aebe-99806c74eeab}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is odd
 
 .. <legal notes>
@@ -419,8 +399,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -433,7 +412,7 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF ((currentValue MOD 2) = 0) THEN
+        <ST><![CDATA[IF ((currentValue AND THIS^.LSB_MASK) = 0) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('valueIsOdd'));
 END_IF
 ]]></ST>
@@ -453,9 +432,7 @@ END_IF
       <LineId Id="38" Count="0" />
     </LineIds>
     <LineIds Name="UlintAssertions.valueIsEven">
-      <LineId Id="32" Count="0" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="34" Count="0" />
+      <LineId Id="37" Count="2" />
       <LineId Id="36" Count="0" />
     </LineIds>
     <LineIds Name="UlintAssertions.valueIsGreaterThan">
@@ -487,7 +464,7 @@ END_IF
       <LineId Id="34" Count="0" />
     </LineIds>
     <LineIds Name="UlintAssertions.valueIsOdd">
-      <LineId Id="33" Count="2" />
+      <LineId Id="36" Count="2" />
       <LineId Id="32" Count="0" />
     </LineIds>
   </POU>

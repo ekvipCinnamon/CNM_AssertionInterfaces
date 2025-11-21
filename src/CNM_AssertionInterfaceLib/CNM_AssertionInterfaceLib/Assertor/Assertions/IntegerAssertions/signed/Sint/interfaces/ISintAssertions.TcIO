@@ -3,8 +3,7 @@
   <Itf Name="ISintAssertions" Id="{47266fb0-e1a8-414f-b2a6-4b13ffc2437e}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This interface provides assert statements for signed short integers (``SINT``)
 
 .. <legal notes>
@@ -19,8 +18,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
@@ -29,8 +27,7 @@ INTERFACE ISintAssertions EXTENDS __SYSTEM.IQueryInterface
     <Method Name="valueIsEqualTo" Id="{f96090b6-fc0e-4c05-864a-a5de804b5677}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is equal to the expected value
 
 .. <legal notes>
@@ -45,8 +42,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -64,8 +60,7 @@ END_VAR
     <Method Name="valueIsEven" Id="{ac73c31a-2ecd-498e-b8c3-da57b95ba40e}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is even
 
 .. <legal notes>
@@ -80,8 +75,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -97,8 +91,7 @@ END_VAR
     <Method Name="valueIsGreaterThan" Id="{b494e96d-dcd0-4c80-83da-19d0acccbe8b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than the less value
 
 .. <legal notes>
@@ -113,8 +106,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -132,11 +124,10 @@ END_VAR
     <Method Name="valueIsInRangeOf" Id="{ca841da7-be76-43cc-86fe-6a9c45d85070}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is inside a limit
 
-.. attention:: 
+**Attention:** 
 	limits are included: ``valueIsInRangeOf(3, 3, 3)`` is a true assertion
 
 .. <legal notes>
@@ -151,8 +142,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -172,8 +162,7 @@ END_VAR
     <Method Name="valueIsLessThan" Id="{f50616e5-556a-4c3f-adf5-24734681c543}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is less than the greater value
 
 .. <legal notes>
@@ -188,8 +177,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -207,8 +195,7 @@ END_VAR
     <Method Name="valueIsMax" Id="{069a1906-d247-4ae1-bb33-23fff09f2351}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is less than or equal to the maximum value
 
 .. <legal notes>
@@ -223,8 +210,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -242,8 +228,7 @@ END_VAR
     <Method Name="valueIsMin" Id="{fa66fafa-eeae-42ab-98e3-9a5aa7c0376d}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than or equal to the minimum value
 
 .. <legal notes>
@@ -258,8 +243,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -277,8 +261,7 @@ END_VAR
     <Method Name="valueIsNegative" Id="{fe4e21e0-0635-4be5-9fae-4d3bd27e3198}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is negative
 
 .. <legal notes>
@@ -293,8 +276,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -310,8 +292,7 @@ END_VAR
     <Method Name="valueIsNotEqualTo" Id="{56572aa7-46f5-4355-ac95-c3cf2cac2f44}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is not equal to the unexpected value
 
 .. <legal notes>
@@ -326,8 +307,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -345,8 +325,7 @@ END_VAR
     <Method Name="valueIsOdd" Id="{76e97b60-cfb4-4e26-9e30-f8dd52b4f7d6}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is odd
 
 .. <legal notes>
@@ -361,8 +340,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -378,8 +356,7 @@ END_VAR
     <Method Name="valueIsPositive" Id="{8c6b205e-7c21-4061-b461-9536519e4fdd}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is positve
 
 .. <legal notes>
@@ -394,8 +371,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 

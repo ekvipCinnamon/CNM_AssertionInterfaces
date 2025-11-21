@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.13">
   <POU Name="LRealAssertionTests" Id="{4cdef9f6-aea7-47e1-a973-1a1e625cb7d9}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
@@ -178,7 +178,7 @@ VAR
 	{attribute 'hide'}
 	newHashstate3		:CNM_AbstractObject.Hashcode;
 	{attribute 'hide'}
-	carzyNumberPointer	:POINTER TO LWORD;	
+	binaryNumberPointer	:POINTER TO LWORD;	
 END_VAR
 VAR CONSTANT
 	{attribute 'hide'}
@@ -187,29 +187,29 @@ VAR CONSTANT
 	NUMBER_OF_LEFT_ROTATIONS	:UINT   := 45;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[carzyNumberPointer := ADR(THIS^.NAN.value);
-carzyNumberPointer^ := THIS^.BINARY_POSITIVE_SIGNALING_NAN;
+        <ST><![CDATA[binaryNumberPointer := ADR(THIS^.NAN.value);
+binaryNumberPointer^ := THIS^.BINARY_POSITIVE_SIGNALING_NAN;
 
-carzyNumberPointer := ADR(THIS^.INF.value);
-carzyNumberPointer^ := THIS^.BINARY_INFINITY;
+binaryNumberPointer := ADR(THIS^.INF.value);
+binaryNumberPointer^ := THIS^.BINARY_INFINITY;
 
-carzyNumberPointer := ADR(THIS^.MINUS_INF.value);
-carzyNumberPointer^ := THIS^.BINARY_NEGATIVE_INFINITY;
+binaryNumberPointer := ADR(THIS^.MINUS_INF.value);
+binaryNumberPointer^ := THIS^.BINARY_NEGATIVE_INFINITY;
 
-carzyNumberPointer := ADR(THIS^.MINUS_ZERO.value);
-carzyNumberPointer^ := THIS^.BINARY_MINUS_ZERO;
+binaryNumberPointer := ADR(THIS^.MINUS_ZERO.value);
+binaryNumberPointer^ := THIS^.BINARY_MINUS_ZERO;
 
-carzyNumberPointer := ADR(THIS^.MIN_SUBNORMAL.value);
-carzyNumberPointer^ := THIS^.BINARY_MIN_SUBNORMAL; 
+binaryNumberPointer := ADR(THIS^.MIN_SUBNORMAL.value);
+binaryNumberPointer^ := THIS^.BINARY_MIN_SUBNORMAL; 
 
-carzyNumberPointer := ADR(THIS^.MAX_SUBNORMAL.value);
-carzyNumberPointer^ := THIS^.BINARY_MAX_SUBNORMAL; 
+binaryNumberPointer := ADR(THIS^.MAX_SUBNORMAL.value);
+binaryNumberPointer^ := THIS^.BINARY_MAX_SUBNORMAL; 
 
-carzyNumberPointer := ADR(THIS^.SMALLEST_POSITIVE_SUBNORMAL.value);
-carzyNumberPointer^ := THIS^.BINARY_SMALLEST_POSITIVE_SUBNORMAL; 
+binaryNumberPointer := ADR(THIS^.SMALLEST_POSITIVE_SUBNORMAL.value);
+binaryNumberPointer^ := THIS^.BINARY_SMALLEST_POSITIVE_SUBNORMAL; 
 
-carzyNumberPointer := ADR(THIS^.SMALLEST_NEGATIVE_SUBNORMAL.value);
-carzyNumberPointer^ := THIS^.BINARY_SMALLEST_NEGATIVE_SUBNORMAL; 
+binaryNumberPointer := ADR(THIS^.SMALLEST_NEGATIVE_SUBNORMAL.value);
+binaryNumberPointer^ := THIS^.BINARY_SMALLEST_NEGATIVE_SUBNORMAL; 
 ]]></ST>
       </Implementation>
     </Method>
@@ -254,7 +254,7 @@ END_VAR
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsANumber``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -301,7 +301,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -722,7 +722,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsFinite``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -769,7 +769,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsGreaterThan``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -925,7 +925,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsInfinite``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -972,7 +972,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.dateAndTime.simple.dateOnly.valueIsInRangeOf``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1393,7 +1393,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsLessThan``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1549,7 +1549,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsMax``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1705,7 +1705,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsMin``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1861,7 +1861,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNaN``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1882,21 +1882,21 @@ METHOD runValueIsNaNTests
       <Implementation>
         <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('valueIsNaN')));
 
-THIS^.testValueIsANumber(THIS^.NAN);
-THIS^.testValueIsANumber(THIS^.INF);
-THIS^.testValueIsANumber(THIS^.MINUS_INF);
-THIS^.testValueIsANumber(THIS^.MAX_NON_SPECIAL);
-THIS^.testValueIsANumber(THIS^.MIN_NON_SPECIAL);
-THIS^.testValueIsANumber(THIS^.ZERO);
-THIS^.testValueIsANumber(THIS^.MINUS_ZERO);
-THIS^.testValueIsANumber(THIS^.MAX_SUBNORMAL);
-THIS^.testValueIsANumber(THIS^.MIN_SUBNORMAL);
-THIS^.testValueIsANumber(THIS^.SMALLEST_NEGATIVE_SUBNORMAL);
-THIS^.testValueIsANumber(THIS^.SMALLEST_POSITIVE_SUBNORMAL);
-THIS^.testValueIsANumber(THIS^.ONE_PERCENT);
-THIS^.testValueIsANumber(THIS^.ONE_PERMILLE);
-THIS^.testValueIsANumber(THIS^.MINUS_ONE_PERCENT);
-THIS^.testValueIsANumber(THIS^.MINUS_ONE_PERMILLE);
+THIS^.testValueIsNaN(THIS^.NAN);
+THIS^.testValueIsNaN(THIS^.INF);
+THIS^.testValueIsNaN(THIS^.MINUS_INF);
+THIS^.testValueIsNaN(THIS^.MAX_NON_SPECIAL);
+THIS^.testValueIsNaN(THIS^.MIN_NON_SPECIAL);
+THIS^.testValueIsNaN(THIS^.ZERO);
+THIS^.testValueIsNaN(THIS^.MINUS_ZERO);
+THIS^.testValueIsNaN(THIS^.MAX_SUBNORMAL);
+THIS^.testValueIsNaN(THIS^.MIN_SUBNORMAL);
+THIS^.testValueIsNaN(THIS^.SMALLEST_NEGATIVE_SUBNORMAL);
+THIS^.testValueIsNaN(THIS^.SMALLEST_POSITIVE_SUBNORMAL);
+THIS^.testValueIsNaN(THIS^.ONE_PERCENT);
+THIS^.testValueIsNaN(THIS^.ONE_PERMILLE);
+THIS^.testValueIsNaN(THIS^.MINUS_ONE_PERCENT);
+THIS^.testValueIsNaN(THIS^.MINUS_ONE_PERMILLE);
 
 TcUnit.TEST_FINISHED();
 ]]></ST>
@@ -1908,7 +1908,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNegativeInfinite``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1955,7 +1955,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNegative``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2002,7 +2002,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNegativeZero``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2049,7 +2049,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNormal``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2096,7 +2096,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2517,7 +2517,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNotNegativeInfinite``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2564,7 +2564,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNotPositiveInfinite``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2611,7 +2611,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNotSpecial``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2658,7 +2658,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsPositiveInfinite``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2705,7 +2705,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsPositive``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2752,7 +2752,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsPositiveZero``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2799,7 +2799,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsSpecial``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2846,7 +2846,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsSubnormal``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -2893,7 +2893,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsANumber``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -2966,7 +2966,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3063,7 +3063,7 @@ THIS^.assertorContainer.assertor.assert.float.double.valueIsEqualTo(
 	expectedValue	:= expected.value,
 	tolerance       := tolerance.value,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -3079,7 +3079,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsFinite``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -3158,7 +3158,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsGreaterThan``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3247,7 +3247,7 @@ THIS^.assertorContainer.assertor.assert.float.double.valueIsGreaterThan(
 	currentValue	:= valueToTest.value,
 	lessValue		:= lessValue.value,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -3263,7 +3263,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsInfinite``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -3342,7 +3342,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsInRangeOf``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3473,7 +3473,7 @@ THIS^.assertorContainer.assertor.assert.float.double.valueIsInRangeOf(
 	currentValue	:= valueToTest.value,
 	upperLimit		:= upperLimit.value,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -3489,7 +3489,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsLessThan``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3587,7 +3587,7 @@ THIS^.assertorContainer.assertor.assert.float.double.valueIsLessThan(
 	currentValue	:= valueToTest.value,
 	greaterValue	:= greaterValue.value,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -3603,7 +3603,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsMax``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3701,7 +3701,7 @@ THIS^.assertorContainer.assertor.assert.float.double.valueIsMax(
 	currentValue	:= valueToTest.value,
 	maximumValue	:= maximumValue.value,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -3717,7 +3717,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsMin``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3815,7 +3815,7 @@ THIS^.assertorContainer.assertor.assert.float.double.valueIsMin(
 	currentValue	:= valueToTest.value,
 	minimumValue	:= minimumValue.value,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -3831,7 +3831,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNaN``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -3904,7 +3904,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNegative``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -3990,7 +3990,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNegativeInfinite``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4066,7 +4066,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNegativeZero``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4150,7 +4150,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNormal``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4231,7 +4231,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -4331,7 +4331,7 @@ THIS^.assertorContainer.assertor.assert.float.double.valueIsNotEqualTo(
 	unexpectedValue	:= unexpectedValue.value,
 	tolerance       := tolerance.value,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -4347,7 +4347,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNotNegativeInfinite``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4423,7 +4423,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNotPositiveInfinite``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4499,7 +4499,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsNotSpecial``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4575,7 +4575,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsPositive``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4661,7 +4661,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsPositiveInfinite``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4737,7 +4737,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsPositiveZero``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4821,7 +4821,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsSpecial``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4897,7 +4897,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.float.double.valueIsSubnormal``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 .. <legal notes>
@@ -4983,24 +4983,7 @@ THIS^.AssertEquals_BOOL(
       <LineId Id="1353" Count="1" />
     </LineIds>
     <LineIds Name="LRealAssertionTests.FB_init">
-      <LineId Id="31" Count="0" />
-      <LineId Id="42" Count="0" />
-      <LineId Id="138" Count="0" />
-      <LineId Id="44" Count="1" />
-      <LineId Id="139" Count="0" />
-      <LineId Id="46" Count="0" />
-      <LineId Id="43" Count="0" />
-      <LineId Id="140" Count="0" />
-      <LineId Id="89" Count="0" />
-      <LineId Id="88" Count="0" />
-      <LineId Id="141" Count="0" />
-      <LineId Id="90" Count="1" />
-      <LineId Id="142" Count="0" />
-      <LineId Id="92" Count="1" />
-      <LineId Id="143" Count="0" />
-      <LineId Id="94" Count="1" />
-      <LineId Id="144" Count="0" />
-      <LineId Id="96" Count="1" />
+      <LineId Id="145" Count="22" />
       <LineId Id="47" Count="0" />
     </LineIds>
     <LineIds Name="LRealAssertionTests.getTestNameFor">

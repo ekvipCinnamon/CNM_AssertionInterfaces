@@ -3,8 +3,7 @@
   <Itf Name="IBooleanAssertion" Id="{3884a5fe-844d-4647-b096-3f0db78d954b}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This interface provides assert statements for booleans 
 
 .. <legal notes>
@@ -19,8 +18,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
@@ -29,8 +27,7 @@ INTERFACE IBooleanAssertion EXTENDS __SYSTEM.IQueryInterface
     <Method Name="valueIsEqualTo" Id="{d97fdcf6-7fea-46a4-bea7-2fcb746da995}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is equal to the expected value
 
 .. <legal notes>
@@ -45,8 +42,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -64,8 +60,7 @@ END_VAR
     <Method Name="valueIsFalse" Id="{12de8ec1-514b-4dda-ab01-3f22cf3a4b6c}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is ``FALSE``
 
 .. <legal notes>
@@ -80,8 +75,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -97,8 +91,7 @@ END_VAR
     <Method Name="valueIsNotEqualTo" Id="{5e3bcd93-8617-481b-868f-31a87b02d61c}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is not equal to the unexpected value
 
 .. <legal notes>
@@ -113,8 +106,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -132,8 +124,7 @@ END_VAR
     <Method Name="valueIsTrue" Id="{534edc49-58d7-4ccf-bb09-38b6b8a22337}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is ``TRUE``
 
 .. <legal notes>
@@ -148,8 +139,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 

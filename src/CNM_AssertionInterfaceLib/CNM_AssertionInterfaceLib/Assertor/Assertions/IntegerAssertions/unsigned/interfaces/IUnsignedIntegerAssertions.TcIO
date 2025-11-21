@@ -3,14 +3,14 @@
   <Itf Name="IUnsignedIntegerAssertions" Id="{0cba6680-1533-4cd0-a404-59a0f6e3eca8}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| This interface provides assert statements for unsigned integers from 8~64 bit length 
-| For 8 bit intgers use :ref:`IUnsignedIntegerAssertions.short`
-| For 16 bit intgers use :ref:`IUnsignedIntegerAssertions.simple`
-| For 32 bit intgers use :ref:`IUnsignedIntegerAssertions.double`
-| For 64 bit intgers use :ref:`IUnsignedIntegerAssertions.long`
-| For integers in register length use :ref:`IUnsignedIntegerAssertions.x`
+## Short summary
+
+This interface provides assert statements for unsigned integers from 8~64 bit length 
+For 8 bit intgers use `IUnsignedIntegerAssertions.short`
+For 16 bit intgers use `IUnsignedIntegerAssertions.simple`
+For 32 bit intgers use `IUnsignedIntegerAssertions.double`
+For 64 bit intgers use `IUnsignedIntegerAssertions.long`
+For integers in register length use `IUnsignedIntegerAssertions.x`
 
 .. <legal notes>
 
@@ -34,9 +34,8 @@ INTERFACE IUnsignedIntegerAssertions EXTENDS __SYSTEM.IQueryInterface
     <Property Name="double" Id="{273792b5-5e7a-4b0d-9043-ab778443ffbe}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IUdintAssertions` with assert statements for unsigned 32 bit integers 
+## Short summary
+Returns the interface `IUdintAssertions` with assert statements for unsigned 32 bit integers 
 
 .. <legal notes>
 
@@ -60,9 +59,8 @@ PROPERTY double :IUdintAssertions]]></Declaration>
     <Property Name="long" Id="{895fb603-fb4e-499e-ab17-7bc0a365ad52}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IUlintAssertions` with assert statements for unsigned 64 bit integers 
+## Short summary
+Returns the interface `IUlintAssertions` with assert statements for unsigned 64 bit integers 
 
 .. <legal notes>
 
@@ -86,9 +84,8 @@ PROPERTY long :IUlintAssertions]]></Declaration>
     <Property Name="short" Id="{0cf007e4-e4ed-475e-b2d4-ee6821b94946}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IUsintAssertions` with assert statements for unsigned 8 bit integers 
+## Short summary
+Returns the interface `IUsintAssertions` with assert statements for unsigned 8 bit integers 
 
 .. <legal notes>
 
@@ -112,9 +109,8 @@ PROPERTY short :IUsintAssertions]]></Declaration>
     <Property Name="simple" Id="{5447d31b-e232-42ed-9ea6-8c152ddc451b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IUintAssertions` with assert statements for unsigned 16 bit integers 
+## Short summary
+Returns the interface `IUintAssertions` with assert statements for unsigned 16 bit integers 
 
 .. <legal notes>
 
@@ -138,9 +134,8 @@ PROPERTY simple :IUintAssertions]]></Declaration>
     <Property Name="x" Id="{ccdfe4b9-20b2-4c9b-8b38-fe6e898cd001}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IUxintAssertions` with assert statements for unsigned integers register length 
+## Short summary
+Returns the interface `IUxintAssertions` with assert statements for unsigned integers register length 
 
 .. <legal notes>
 

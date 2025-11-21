@@ -3,8 +3,7 @@
   <Itf Name="IBinaryAssertions" Id="{a8b017fa-c5ac-4e37-b936-16a361f2970b}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This interface provides assert statements for binaries
 e.g. structures, arrays etc...  
 
@@ -20,8 +19,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
@@ -30,16 +28,15 @@ INTERFACE IBinaryAssertions EXTENDS __SYSTEM.IQueryInterface
     <Method Name="isEqualTo" Id="{9d9e5d51-fc8b-4223-8807-1302c72bc476}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if all bytes of memory of
 ``data`` and ``dataToCompare`` are equal
 
-.. attention:: 
+**Attention:** 
 	Binary comparison means it compares values byte by byte, regardless of type information (signs, ``REAL`` etc...)
 	and it compares padding bytes, too.
 
-.. attention:: 
+**Attention:** 
 	``STRING`` and ``WSTRING`` is null terminated
 	that means TwinCAT sets null byte/word at the end of the string and touches nothing else
 	For example ``foo :STRING(3) := 'foo';`` looks binary 16#66 16#6F 16#6F 16#00.
@@ -57,8 +54,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -76,18 +72,17 @@ END_VAR
     <Method Name="isGreaterThan" Id="{d5694fb2-5625-4007-91fc-4ce428bd9d88}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks the bytes of memory of
 ``data`` and ``dataToCompare`` if the content of the first unequal
 ``data`` byte is greater than the byte of ``dataToCompare``
 the assertion is true
 
-.. attention:: 
+**Attention:** 
 	Binary comparison means it compares values byte by byte, regardless of type information (signs, ``REAL`` etc...)
 	and it compares padding bytes, too.
 
-.. attention:: 
+**Attention:** 
 	``STRING`` and ``WSTRING`` is null terminated
 	that means TwinCAT sets null byte/word at the end of the string and touches nothing else
 	For example ``foo :STRING(3) := 'foo';`` looks binary 16#66 16#6F 16#6F 16#00.
@@ -105,8 +100,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -124,18 +118,17 @@ END_VAR
     <Method Name="isLessThan" Id="{51a060ee-17eb-42d5-95e5-9701ebefeb24}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks the bytes of memory of
 ``data`` and ``dataToCompare`` if the content of the first unequal
 ``data`` byte is less than the byte of ``dataToCompare``
 the assertion is true
 
-.. attention:: 
+**Attention:** 
 	Binary comparison means it compares values byte by byte, regardless of type information (signs, ``REAL`` etc...)
 	and it compares padding bytes, too.
 
-.. attention:: 
+**Attention:** 
 	``STRING`` and ``WSTRING`` is null terminated
 	that means TwinCAT sets null byte/word at the end of the string and touches nothing else
 	For example ``foo :STRING(3) := 'foo';`` looks binary 16#66 16#6F 16#6F 16#00.
@@ -153,8 +146,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -172,16 +164,15 @@ END_VAR
     <Method Name="isNotEqualTo" Id="{bdfd9c34-0648-442c-88a5-fbcad02c868c}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if minimal one byte of memory of
 ``data`` and ``dataToCompare`` is not equal
 
-.. attention:: 
+**Attention:** 
 	Binary comparison means it compares values byte by byte, regardless of type information (signs, ``REAL`` etc...)
 	and it compares padding bytes, too.
 
-.. attention:: 
+**Attention:** 
 	``STRING`` and ``WSTRING`` is null terminated
 	that means TwinCAT sets null byte/word at the end of the string and touches nothing else
 	For example ``foo :STRING(3) := 'foo';`` looks binary 16#66 16#6F 16#6F 16#00.
@@ -199,8 +190,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 

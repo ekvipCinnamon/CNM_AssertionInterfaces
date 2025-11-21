@@ -1,13 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <Itf Name="IFloatAssertions" Id="{2fd29953-0530-4853-9ac7-509f41ef4bc7}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| This interface provides assert statements for floatings (``REAL`` and ``LREAL``)
-| For 32 bit floats (``REAL``) use :ref:`IFloatAssertions.single`
-| For 64 bit floats (``LREAL``) use :ref:`IFloatAssertions.double`
+## Short summary
+This interface provides assert statements for floatings (``REAL`` and ``LREAL``)
+For 32 bit floats (``REAL``) use `IFloatAssertions.single`
+For 64 bit floats (``LREAL``) use `IFloatAssertions.double`
 
 .. <legal notes>
 
@@ -21,8 +20,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
@@ -31,9 +29,8 @@ INTERFACE IFloatAssertions EXTENDS __SYSTEM.IQueryInterface
     <Property Name="double" Id="{53c39a10-3241-4905-a595-6ec1c7255a30}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`ILrealAssertions` with assert statements for 64 bit floatings (``LREAL``)
+## Short summary
+Returns the interface `ILrealAssertions` with assert statements for 64 bit floatings (``LREAL``)
 
 .. <legal notes>
 
@@ -57,9 +54,8 @@ PROPERTY double :ILrealAssertions]]></Declaration>
     <Property Name="single" Id="{4b05eb65-ef33-4f48-ba0c-65484232ed25}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IRealAssertions` with assert statements for 32 bit floatings (``REAL``)
+## Short summary
+Returns the interface `IRealAssertions` with assert statements for 32 bit floatings (``REAL``)
 
 .. <legal notes>
 

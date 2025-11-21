@@ -3,17 +3,17 @@
   <DUT Name="BitNumberXWord" Id="{ce4a3e5e-da34-4e13-9e2d-e089539fb970}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| BitNumberXWord is
-| for 32 bit machines an alias of ``USINT(0..31)``
-| for 64 bit machines an alias of ``USINT(0..63)``
-| This data type exists so that no one can provoke an overflow of the bit numbers.
-| It's used as parameter of 
-| :ref:`IXWordAssertions.bitXIsEqualTo` 
-| :ref:`IXWordAssertions.bitXIsNotEqualTo` 
-| :ref:`IXWordAssertions.bitXIsSet` 
-| :ref:`IXWordAssertions.bitXIsUnset` 
+## Short summary
+
+BitNumberXWord is
+for 32 bit machines an alias of ``USINT(0..31)``
+for 64 bit machines an alias of ``USINT(0..63)``
+This data type exists so that no one can provoke an overflow of the bit numbers.
+It's used as parameter of 
+`IXWordAssertions.bitXIsEqualTo` 
+`IXWordAssertions.bitXIsNotEqualTo` 
+`IXWordAssertions.bitXIsSet` 
+`IXWordAssertions.bitXIsUnset` 
 
 .. <legal notes>
 

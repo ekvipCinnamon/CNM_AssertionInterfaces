@@ -3,8 +3,7 @@
   <Itf Name="IAssertCallBack" Id="{3912fe76-4ec6-496a-9029-725f9b7caa18}">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This interface provides the a callback
 method for which is called if an assertions
 is worng
@@ -21,8 +20,7 @@ legal notes
 
 .. </legal notes>
 
-methods
-==================
+
 
 *)
 
@@ -31,8 +29,7 @@ INTERFACE IAssertCallBack EXTENDS CNM_AbstractObject.IObject
     <Method Name="assertionWasWrong" Id="{e88f80a5-b816-4c89-9d3d-b7847450c15f}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This method is called if an assertion was ``FALSE``
 
 .. <legal notes>
@@ -47,8 +44,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 

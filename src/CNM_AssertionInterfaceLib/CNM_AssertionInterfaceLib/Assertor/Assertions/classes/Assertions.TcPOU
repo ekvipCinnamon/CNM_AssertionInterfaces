@@ -1,22 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="Assertions" Id="{6a4a64d5-6ec4-4b4b-aade-c47eac3c5641}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| This class provides assert statements the most common data:
-| It implements the interface :ref:`IAssertions`
-| For ``STRUCT``, ``ARRAY``, ``FUNCTION BLOCK``, ``ENUM``  use :ref:`Assertions.binary`
-| For ``BYTE``, ``WORD``, ``DWORD``, ``LWORD``, ``__XWORD`` use :ref:`Assertions.bitNumber`
-| For ``BOOL`` use :ref:`Assertions.boolean`
-| For ``DT``, ``TOD``, ``DATE`` use :ref:`Assertions.dateAndTime`
-| For ``REAL``, ``LREAL`` use :ref:`Assertions.float`
-| For ``SINT``, ``INT``, ``DINT``, ``LINT``, ``__XINT`` use :ref:`Assertions.integer`
-| For ``CNM_AbsrtractObject.IObject`` use :ref:`Assertions.object`
-| For ``POINTER`` use :ref:`Assertions.pointers`
-| For ``STRING``, ``WSTRING`` use :ref:`Assertions.strings`
-| For ``TIME``, ``LTIME`` use :ref:`Assertions.times`
+## Short summary
+
+This class provides assert statements the most common data:
+It implements the interface `IAssertions`
+For ``STRUCT``, ``ARRAY``, ``FUNCTION BLOCK``, ``ENUM``  use `Assertions.binary`
+For ``BYTE``, ``WORD``, ``DWORD``, ``LWORD``, ``__XWORD`` use `Assertions.bitNumber`
+For ``BOOL`` use `Assertions.boolean`
+For ``DT``, ``TOD``, ``DATE`` use `Assertions.dateAndTime`
+For ``REAL``, ``LREAL`` use `Assertions.float`
+For ``SINT``, ``INT``, ``DINT``, ``LINT``, ``__XINT`` use `Assertions.integer`
+For ``CNM_AbsrtractObject.IObject`` use `Assertions.object`
+For ``POINTER`` use `Assertions.pointers`
+For ``STRING``, ``WSTRING`` use `Assertions.strings`
+For ``TIME``, ``LTIME`` use `Assertions.times`
 
 .. <legal notes>
 
@@ -30,8 +30,7 @@ legal notes
 
 .. </legal notes>
 
-methods and properties
-=======================
+
 
 *)
 
@@ -49,7 +48,7 @@ VAR
 	(* class to handle float assertions *)
 	floatAssertions		:FloatAssertions();
 	(* class to handle integer assertions *)
-	intgerAssertions	:IntergerAssertions();
+	integerAssertions	:IntegerAssertions();
 	(* class to handle object assertions *)
 	objectAssertions	:ObjectAssertions();
 	(* class to handle pointer assertions *)
@@ -66,9 +65,8 @@ END_VAR
     <Property Name="binary" Id="{142c926b-7501-4ccc-8f69-6a247de43135}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IBinaryAssertions`
+## Short summary
+Returns the interface `IBinaryAssertions`
 with assert statements for binary data 
 
 .. <legal notes>
@@ -100,9 +98,8 @@ END_VAR
     <Property Name="bitNumber" Id="{4ec29991-655d-4950-a714-b3d8ba0255ee}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IBitNumberAssertions`
+## Short summary
+Returns the interface `IBitNumberAssertions`
 with assert statements for bit numbers 
 
 .. <legal notes>
@@ -134,9 +131,8 @@ END_VAR
     <Property Name="boolean" Id="{acd9bbbe-07df-4677-bb51-c2cdfa44c9d6}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IBooleanAssertion`
+## Short summary
+Returns the interface `IBooleanAssertion`
 with assert statements for booleans
 
 .. <legal notes>
@@ -168,8 +164,7 @@ END_VAR
     <Property Name="className" Id="{86f6a553-7cca-4892-be2a-c6d1aced52d5}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This abstract property returns the class name of the concrete object, 
 It's for debugging purpose
 
@@ -193,7 +188,7 @@ PROPERTY className :CNM_AbstractObject.ClassName]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[className := 'CNM_AssertionInterfaceLib.Assertions';
+          <ST><![CDATA[className := 'CNM_Assertor.Assertions';
 ]]></ST>
         </Implementation>
       </Get>
@@ -201,9 +196,8 @@ END_VAR
     <Property Name="dateAndTime" Id="{55de2bbc-cb36-431d-9a9e-da75b292109b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IDateAndTimeAssertions`
+## Short summary
+Returns the interface `IDateAndTimeAssertions`
 with assert statements for date and time data types
 
 .. <legal notes>
@@ -235,9 +229,8 @@ END_VAR
     <Property Name="float" Id="{9218355c-182a-4f47-b7f0-8992a0809776}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IFloatAssertions`
+## Short summary
+Returns the interface `IFloatAssertions`
 with assert statements for floatings
 
 .. <legal notes>
@@ -269,9 +262,8 @@ END_VAR
     <Property Name="integer" Id="{b65a6d6b-b495-4f3b-95a2-c7861bb5407d}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IIntergerAssertions`
+## Short summary
+Returns the interface `IIntergerAssertions`
 with assert statements for integers
 
 .. <legal notes>
@@ -288,14 +280,14 @@ legal notes
 
 *)
 
-PROPERTY integer :IIntergerAssertions
+PROPERTY integer :IIntegerAssertions
 ]]></Declaration>
       <Get Name="Get" Id="{cbc086f1-96e9-43ab-ab5f-e9f32d1cea0c}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[integer := THIS^.intgerAssertions;
+          <ST><![CDATA[integer := THIS^.integerAssertions;
 ]]></ST>
         </Implementation>
       </Get>
@@ -303,9 +295,8 @@ END_VAR
     <Property Name="object" Id="{7bf60662-43d8-4e19-adbd-cccbf5d058bf}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IObjectAssertions`
+## Short summary
+Returns the interface `IObjectAssertions`
 with assert statements for ``CNM_AbstractObject.IObject``
 
 .. <legal notes>
@@ -337,9 +328,8 @@ END_VAR
     <Property Name="pointers" Id="{6724e1cf-e6cb-4515-9765-00eb60337b3b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IPointerAssertions`
+## Short summary
+Returns the interface `IPointerAssertions`
 with assert statements for pointers
 
 .. <legal notes>
@@ -371,8 +361,7 @@ END_VAR
     <Method Name="setCallBack" Id="{3f4eb8e9-9028-4ea0-b455-29d500d57685}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This methods is the setter for the callback class if an assertion was false
 
 .. <legal notes>
@@ -387,15 +376,14 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
 METHOD setCallBack
 VAR_INPUT
 	(* the class that must be informed if an assertion is false *)
-	callBack	:IAssertCallback;  
+	callBack	:IAssertCallBack;  
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -404,7 +392,7 @@ THIS^.bitNumberAssertions.setCallBack(callBack);
 THIS^.booleanAssertions.setCallBack(callBack);
 THIS^.dateTimeAssertions.setCallBack(callBack);
 THIS^.floatAssertions.setCallBack(callBack);
-THIS^.intgerAssertions.setCallBack(callBack);
+THIS^.integerAssertions.setCallBack(callBack);
 THIS^.objectAssertions.setCallBack(callBack);
 THIS^.pointerAssertions.setCallBack(callBack);
 THIS^.stringAssertions.setCallBack(callBack);
@@ -415,9 +403,8 @@ THIS^.timeAssertions.setCallBack(callBack);
     <Property Name="strings" Id="{63ab39da-e661-4a29-8ea2-a177aebf05fb}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IStringAssertions`
+## Short summary
+Returns the interface `IStringAssertions`
 with assert statements for windows-1252 and UTF-16 strings
 
 .. <legal notes>
@@ -449,9 +436,8 @@ END_VAR
     <Property Name="times" Id="{07e8307b-c360-425a-acd8-547c6726db30}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`ITimeAssertions`
+## Short summary
+Returns the interface `ITimeAssertions`
 with assert statements for time data types
 
 .. <legal notes>

@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="BitNumberAssertions" Id="{2ead55c8-2e4c-4015-a504-fca6cfad9f9a}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-| This class provides assert statements for bit numbers:
-| It implements the interface :ref:`IBitNumberAssertions`
-| For ``BYTE`` use :ref:`BitNumberAssertions.short`
-| For ``WORD`` use :ref:`BitNumberAssertions.simple`
-| For ``DWORD`` use :ref:`BitNumberAssertions.double`
-| For ``LWORD`` use :ref:`BitNumberAssertions.long`
-| For ``__XWORD`` use :ref:`BitNumberAssertions.x`
+## Short summary
+
+ This class provides assert statements for bit numbers:
+ It implements the interface `IBitNumberAssertions`
+ For ``BYTE`` use `BitNumberAssertions.short`
+ For ``WORD`` use `BitNumberAssertions.simple`
+ For ``DWORD`` use `BitNumberAssertions.double`
+ For ``LWORD`` use `BitNumberAssertions.long`
+ For ``__XWORD`` use `BitNumberAssertions.x`
 
 .. <legal notes>
 
@@ -25,8 +25,7 @@ legal notes
 
 .. </legal notes>
 
-methods and properties
-=======================
+
 
 *)
 
@@ -53,8 +52,7 @@ END_VAR
     <Property Name="className" Id="{9abb6fe9-b2a9-4679-9967-bc9e41c50911}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This abstract property returns the class name of the concrete object, 
 It's for debugging purpose
 
@@ -78,7 +76,7 @@ PROPERTY className :CNM_AbstractObject.ClassName]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[className := 'CNM_AssertionInterfaceLib.BitNumberAssertions';
+          <ST><![CDATA[className := 'CNM_Assertor.BitNumberAssertions';
 ]]></ST>
         </Implementation>
       </Get>
@@ -86,9 +84,8 @@ END_VAR
     <Property Name="double" Id="{63de1f3c-a05a-405a-928b-1d33431d394f}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IDwordAssertions`
+## Short summary
+Returns the interface `IDwordAssertions`
 with assert statements for double words ``DWORD`` 
 
 .. <legal notes>
@@ -120,9 +117,8 @@ END_VAR
     <Property Name="long" Id="{061674f5-1b27-48e0-89b5-d84e08998a56}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`ILwordAssertions`
+## Short summary
+Returns the interface `ILwordAssertions`
 with assert statements for long words ``LWORD`` 
 
 .. <legal notes>
@@ -154,8 +150,7 @@ END_VAR
     <Method Name="setCallBack" Id="{d7a0802a-9fa3-4bc2-93e7-fcefe8940580}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This methods is the setter for the callback class if an assertion was false
 
 .. <legal notes>
@@ -170,15 +165,14 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
 METHOD setCallBack
 VAR_INPUT
 	(* the class that must be informed if an assertion is false *)
-	callBack	:IAssertCallback;  
+	callBack	:IAssertCallBack;  
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -193,9 +187,8 @@ THIS^.xwordAssertions.setCallBack(callBack);
     <Property Name="short" Id="{78bcc1e5-6812-459a-bcda-8272509f0579}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IByteAssertions`
+## Short summary
+Returns the interface `IByteAssertions`
 with assert statements for bytes
 
 .. <legal notes>
@@ -227,9 +220,8 @@ END_VAR
     <Property Name="simple" Id="{9865352b-6ff3-47b1-9160-6c4dc2c87cc0}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IWordAssertions`
+## Short summary
+Returns the interface `IWordAssertions`
 with assert statements for words 
 
 .. <legal notes>
@@ -261,9 +253,8 @@ END_VAR
     <Property Name="x" Id="{e9f29fdf-fd4d-42ad-a399-bb25f4312c4a}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-Returns the interface :ref:`IXwordAssertions`
+## Short summary
+Returns the interface `IXwordAssertions`
 with assert statements for register length words ``__XWORD``
 
 .. <legal notes>

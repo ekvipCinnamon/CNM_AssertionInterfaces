@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.13">
   <POU Name="ByteAssertionTests" Id="{9466f570-522a-45ca-9701-984d5251dfaf}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
@@ -153,7 +153,7 @@ END_VAR
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.andMaskIsEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -241,7 +241,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.andMaskIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -331,7 +331,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.bitXIsEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -350,7 +350,7 @@ legal notes
 METHOD runBitXIsEqualToTests
 VAR
 	(* this is the number of the bit to test *)
-	bitNumberToTest	:CNM_AssertionInterfaceLib.BitNumberByte;
+	bitNumberToTest	:CNM_AssertionInterfaces.BitNumberByte;
 	(* it's just part of the test data *)
 	valueToTest		:BYTE;
 END_VAR
@@ -395,7 +395,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.bitXIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -414,7 +414,7 @@ legal notes
 METHOD runBitXIsNotEqualToTests
 VAR
 	(* this is the number of the bit to test *)
-	bitNumberToTest	:CNM_AssertionInterfaceLib.BitNumberByte;
+	bitNumberToTest	:CNM_AssertionInterfaces.BitNumberByte;
 	(* it's just part of the test data *)
 	valueToTest		:BYTE;
 END_VAR
@@ -458,7 +458,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.bitXIsSet`` 
-of CNM_AssertionInterfaceLib library with various inputs
+of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -477,7 +477,7 @@ legal notes
 METHOD runBitXIsSetTests
 VAR
 	(* this is the number of the bit to test *)
-	bitNumberToTest	:CNM_AssertionInterfaceLib.BitNumberByte;
+	bitNumberToTest	:CNM_AssertionInterfaces.BitNumberByte;
 	(* it's just part of the test data *)
 	valueToTest		:BYTE;
 END_VAR
@@ -515,7 +515,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.bitXIsUnset``
-of CNM_AssertionInterfaceLib library with various inputs
+of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -534,7 +534,7 @@ legal notes
 METHOD runBitXIsUnsetTests
 VAR
 	(* this is the number of the bit to test *)
-	bitNumberToTest	:CNM_AssertionInterfaceLib.BitNumberByte;
+	bitNumberToTest	:CNM_AssertionInterfaces.BitNumberByte;
 	(* it's just part of the test data *)
 	valueToTest		:BYTE;
 END_VAR
@@ -572,7 +572,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.lsbIsEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -640,7 +640,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.lsbIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -708,7 +708,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.lsbIsSet``
-of CNM_AssertionInterfaceLib library with various inputs
+of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -759,7 +759,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.lsbIsUnset``
-of CNM_AssertionInterfaceLib library with various inputs
+of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -810,7 +810,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.msbIsEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -887,7 +887,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.msbIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -953,7 +953,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.msbIsSet``
-of CNM_AssertionInterfaceLib library with various inputs
+of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1004,7 +1004,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.msbIsUnset``
-of CNM_AssertionInterfaceLib library with various inputs
+of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1055,7 +1055,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.orMaskIsEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1141,7 +1141,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.orMaskIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1227,7 +1227,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.valueIsEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1291,7 +1291,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.valueIsGreaterThan``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1352,6 +1352,7 @@ THIS^.testValueIsGreater(
 	valueToTest := THIS^.MSB_ONLY,
 	less := THIS^.ALL_BITS_SET
 );
+
 TcUnit.TEST_FINISHED();
 ]]></ST>
       </Implementation>
@@ -1362,7 +1363,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.valueIsInRangeOf``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1419,7 +1420,7 @@ TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.valueIsLessThan``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1491,7 +1492,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.valueIsMax``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1567,7 +1568,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.valueIsMin``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1643,7 +1644,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.valueIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1707,7 +1708,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.xorMaskIsEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1793,7 +1794,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.xorMaskIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library with various inputs
+method of CNM_AssertionInterfaces library with various inputs
 
 .. <legal notes>
 
@@ -1890,7 +1891,7 @@ TcUnit.TEST_FINISHED();
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.andMaskIsEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -1954,7 +1955,7 @@ THIS^.assertorContainer.assertor.assert.bitNumber.short.andMaskIsEqualTo(
 	mask 			:= mask,
 	expectedValue	:= expected,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -1970,7 +1971,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.andMaskIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -2035,7 +2036,7 @@ THIS^.assertorContainer.assertor.assert.bitNumber.short.andMaskIsNotEqualTo(
 	mask 			:= mask,
 	unexpectedValue	:= unexpected,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -2051,7 +2052,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.bitXIsEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -2077,7 +2078,7 @@ VAR_INPUT
 	(* for the test it's the parameter ``currentValue`` *)
 	valueToTest			:BYTE;
 	(* the bit number to check in this test, it's the parameter ``number``*)
-	bitNumberToCheck	:CNM_AssertionInterfaceLib.BitNumberByte;
+	bitNumberToCheck	:CNM_AssertionInterfaces.BitNumberByte;
 	(* this is the expected value of the bit ``bitNumberToCheck``, it's the parameter ``expectedValue`` *)
 	bitIsSet			:BOOL;
 END_VAR
@@ -2145,7 +2146,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.bitXIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -2171,7 +2172,7 @@ VAR_INPUT
 	(* for the test it's the parameter ``currentValue`` *)
 	valueToTest			:BYTE;
 	(* the bit number to check in this test, it's the parameter ``number``*)
-	bitNumberToCheck	:CNM_AssertionInterfaceLib.BitNumberByte;
+	bitNumberToCheck	:CNM_AssertionInterfaces.BitNumberByte;
 	(* this is the unexpected value of the bit ``bitNumberToCheck``, it's the parameter ``unexpectedValue`` *)
 	bitIsSet			:BOOL;
 END_VAR
@@ -2238,7 +2239,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.bitXIsSet``
-of CNM_AssertionInterfaceLib library, 
+of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -2264,7 +2265,7 @@ VAR_INPUT
 	(* for the test it's the parameter ``currentValue`` *)
 	valueToTest			:BYTE;
 	(* the bit number to check in this test, it's the parameter ``number``*)
-	bitNumberToCheck	:CNM_AssertionInterfaceLib.BitNumberByte;
+	bitNumberToCheck	:CNM_AssertionInterfaces.BitNumberByte;
 END_VAR
 VAR
 	(* just the expectation if the assertion to test must be worng or true *)
@@ -2312,7 +2313,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.bitXIsUnset``
-of CNM_AssertionInterfaceLib library, 
+of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -2338,7 +2339,7 @@ VAR_INPUT
 	(* for the test it's the parameter ``currentValue`` *)
 	valueToTest			:BYTE;
 	(* the bit number to check in this test, it's the parameter ``number``*)
-	bitNumberToCheck	:CNM_AssertionInterfaceLib.BitNumberByte;
+	bitNumberToCheck	:CNM_AssertionInterfaces.BitNumberByte;
 END_VAR
 VAR
 	(* just the expectation if the assertion to test must be worng or true *)
@@ -2386,7 +2387,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.lsbIsEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -2463,7 +2464,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.lsbIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -2540,7 +2541,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.lsbIsSet``
-of CNM_AssertionInterfaceLib library, 
+of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -2601,7 +2602,6 @@ THIS^.AssertEquals_BOOL(
 	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
 	Message 	:= messageStringBuilder.sOut
 );
-
 ]]></ST>
       </Implementation>
     </Method>
@@ -2612,7 +2612,7 @@ short summary
 ==================
 This test method tests ``assert.bitNumber.short.lsbIsUnset``
 and ``assert.bitNumber.short.lsbIsUnset``
-of CNM_AssertionInterfaceLib library, 
+of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -2673,7 +2673,6 @@ THIS^.AssertEquals_BOOL(
 	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
 	Message 	:= messageStringBuilder.sOut
 );
-
 ]]></ST>
       </Implementation>
     </Method>
@@ -2683,7 +2682,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.msbIsEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -2761,7 +2760,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.msbIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -2830,7 +2829,8 @@ THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
 	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
 	Message 	:= messageStringBuilder.sOut
-);]]></ST>
+);
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="testMsbIsSet" Id="{f471606a-e6fb-478b-b89e-0a41bf5fe9c3}" FolderPath="msbIsSet\">
@@ -2839,7 +2839,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.msbIsSet``
-of CNM_AssertionInterfaceLib library, 
+of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -2900,7 +2900,6 @@ THIS^.AssertEquals_BOOL(
 	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
 	Message 	:= messageStringBuilder.sOut
 );
-
 ]]></ST>
       </Implementation>
     </Method>
@@ -2910,7 +2909,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.msbIsUnset``
-of CNM_AssertionInterfaceLib library, 
+of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -2971,7 +2970,6 @@ THIS^.AssertEquals_BOOL(
 	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
 	Message 	:= messageStringBuilder.sOut
 );
-
 ]]></ST>
       </Implementation>
     </Method>
@@ -2981,7 +2979,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.orMaskIsEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3045,7 +3043,7 @@ THIS^.assertorContainer.assertor.assert.bitNumber.short.orMaskIsEqualTo(
 	mask 			:= mask,
 	expectedValue	:= expected,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -3061,7 +3059,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.orMaskIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3126,7 +3124,7 @@ THIS^.assertorContainer.assertor.assert.bitNumber.short.orMaskIsNotEqualTo(
 	mask 			:= mask,
 	unexpectedValue	:= unexpected,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -3142,7 +3140,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.valueIsEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3215,7 +3213,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.valueIsGreaterThan``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3287,7 +3285,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.valueIsInRangeOf``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3365,7 +3363,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.valueIsLessThan``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3427,7 +3425,8 @@ THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
 	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
 	Message 	:= messageStringBuilder.sOut
-);]]></ST>
+);
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="testValueIsMax" Id="{8a3ff529-64e4-4029-be9f-7f1f0276853c}" FolderPath="valueIsMax\">
@@ -3436,7 +3435,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.valueIsMax``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3508,7 +3507,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.valueIsMin``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3580,7 +3579,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.valueIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3652,7 +3651,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.xorMaskIsEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3716,7 +3715,7 @@ THIS^.assertorContainer.assertor.assert.bitNumber.short.xorMaskIsEqualTo(
 	mask 			:= mask,
 	expectedValue	:= expected,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -3732,7 +3731,7 @@ THIS^.AssertEquals_BOOL(
 short summary
 ==================
 This test method tests ``assert.bitNumber.short.xorMaskIsNotEqualTo``
-method of CNM_AssertionInterfaceLib library, 
+method of CNM_AssertionInterfaces library, 
 it provides the possibility to handover test data via parameter 
 
 
@@ -3796,7 +3795,7 @@ THIS^.assertorContainer.assertor.assert.bitNumber.short.xorMaskIsNotEqualTo(
 	mask 			:= mask,
 	unexpectedValue	:= unexpected,
 	message			:= ''
-   );
+);
 
 THIS^.AssertEquals_BOOL(
 	Expected 	:= assertionIsWrong,
@@ -4000,7 +3999,9 @@ THIS^.AssertEquals_BOOL(
       <LineId Id="101" Count="0" />
       <LineId Id="91" Count="7" />
       <LineId Id="105" Count="2" />
-      <LineId Id="99" Count="1" />
+      <LineId Id="99" Count="0" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="100" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="ByteAssertionTests.runValueIsInRangeOfTests">
@@ -4157,7 +4158,7 @@ THIS^.AssertEquals_BOOL(
       <LineId Id="119" Count="1" />
       <LineId Id="109" Count="0" />
       <LineId Id="113" Count="5" />
-      <LineId Id="39" Count="1" />
+      <LineId Id="39" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="ByteAssertionTests.testLsbIsUnset">
@@ -4166,7 +4167,7 @@ THIS^.AssertEquals_BOOL(
       <LineId Id="119" Count="1" />
       <LineId Id="109" Count="0" />
       <LineId Id="113" Count="5" />
-      <LineId Id="39" Count="1" />
+      <LineId Id="39" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="ByteAssertionTests.testMsbIsEqualTo">
@@ -4181,15 +4182,16 @@ THIS^.AssertEquals_BOOL(
       <LineId Id="97" Count="0" />
       <LineId Id="69" Count="25" />
       <LineId Id="2" Count="0" />
+      <LineId Id="98" Count="0" />
     </LineIds>
     <LineIds Name="ByteAssertionTests.testMsbIsSet">
       <LineId Id="88" Count="23" />
-      <LineId Id="38" Count="1" />
+      <LineId Id="38" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="ByteAssertionTests.testMsbIsUnset">
       <LineId Id="88" Count="23" />
-      <LineId Id="38" Count="1" />
+      <LineId Id="38" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="ByteAssertionTests.testOrMaskIsEqualTo">
@@ -4238,6 +4240,7 @@ THIS^.AssertEquals_BOOL(
     <LineIds Name="ByteAssertionTests.testValueIsLessThan">
       <LineId Id="70" Count="23" />
       <LineId Id="2" Count="0" />
+      <LineId Id="94" Count="0" />
     </LineIds>
     <LineIds Name="ByteAssertionTests.testValueIsMax">
       <LineId Id="70" Count="23" />

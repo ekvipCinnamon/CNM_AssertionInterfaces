@@ -1,0 +1,2028 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.13">
+  <POU Name="Utf16StringPointerAssertions" Id="{70556877-f748-47a1-af10-6185891a58f8}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+## Short summary
+This class provides assert statements for UTF-16 strings
+
+**Attention:** 
+	All strings are handled as null terminated word streams.
+	For UTF-16 is end of the string 16#00_00
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+{attribute 'reflection'}
+FUNCTION_BLOCK INTERNAL Utf16StringPointerAssertions EXTENDS AbstractStringPointerAssertions IMPLEMENTS IUtf16StringPointerAssertions
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="className" Id="{d82c78a1-99b3-4d45-b85b-86b5388f94ad}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This abstract property returns the class name of the concrete object, 
+It's for debugging purpose
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+PROPERTY className :CNM_AbstractObject.ClassName]]></Declaration>
+      <Get Name="Get" Id="{e2caa609-0912-478b-b9ad-4bc5af571b3a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[className := 'CNM_Assertor.Utf16StringPointerAssertions';
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="contains" Id="{4966fca1-d72c-4a77-9b8e-956da0768a1a}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method for UTF-16 strings checks if the current string ``stringToCheck`` contains the search string ``searchString``
+
+**Attention:** 
+	All strings are handled as null terminated word streams.
+	For UTF-16 is end of the string 16#00_00
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+{attribute 'analysis' := '-130'}
+METHOD contains
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:POINTER TO WORD;
+	(* string must be found in ``stringToCheck`` *)
+	searchString	:POINTER TO WORD;
+	(* ``TRUE`` means ignore cases; ``FALSE`` means cases must be equal too *)
+	ignoreCases		:BOOL;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+	(*normalize both strings for check*)
+	normalizeStrings :BOOL := TRUE;
+END_VAR
+VAR
+	(* length of ``stringToCheck`` in characters *)
+	lengthStringToCheck			:UDINT;
+	(* length of ``stringToCheck`` in bytes *)
+	lengthStringToCheckInByte	:UDINT;
+	(* length of ``stringToCheck`` in words *)
+	lengthStringToCheckInWord	:UDINT;
+	(* length of ``searchString`` *)
+	lengthSearchString			:UDINT;
+	(* length of ``searchString`` in bytes *)
+	lengthSearchStringInByte	:UDINT;
+	(* length of ``searchString`` in words *)
+	lengthSearchStringInWord	:UDINT;
+	(* character index for the comperation *)
+	codePointIndex					:UDINT;
+	usedCodePointsToCheck, 
+    usedSearchCodePoints, 
+	normalizedUsedCodePointsToCheck,
+	normalizedUsedSearchCodePoints  :POINTER TO CNM_UnicodeUtilities.UnicodeCodePoint;
+	usedCodePointToCheckCount, usedSearchCodePointCount :UDINT;
+	maxSearchIndex :LINT;
+END_VAR
+VAR CONSTANT
+	(*After decomposition one codepoint can extend up to 4 codepoint*)
+	NORMALIZATION_FACTOR :UDINT := 4;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CNM_UnicodeUtilities.GetUtf16StringLength(
+	utf16StringAddress := stringToCheck,
+	wordCount => lengthStringToCheckInWord
+);
+lengthStringToCheckInByte := 2*lengthStringToCheckInWord;
+ 
+CNM_UnicodeUtilities.GetUtf16StringLength(
+	utf16StringAddress := searchString,
+	wordCount => lengthSearchStringInWord
+);
+lengthSearchStringInByte := 2*lengthSearchStringInWord;
+
+RETURN (((
+			NOT normalizeStrings 
+		) OR_ELSE (
+			lengthSearchStringInWord = 0
+		)
+	) AND_THEN (
+		NOT THIS^.isContainsCheckNecessary(
+			stringToCheck		:= stringToCheck,
+			searchString		:= searchString,
+			lengthStringToCheck	:= lengthStringToCheckInWord,
+			lengthSearchString	:= lengthSearchStringInWord,
+			additionalText		:= THIS^.getDebugInfo('utf16Contains'),
+			message				:= message
+		) 
+	)
+); 
+
+usedCodePointsToCheck := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthStringToCheckInWord+1));
+IF (usedCodePointsToCheck = 0) THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16Contains, malloc failed'));
+	RETURN;
+END_IF
+
+usedSearchCodePoints := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthSearchStringInWord+1));
+IF (usedSearchCodePoints = 0) THEN
+	__DELETE(usedCodePointsToCheck);
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16Contains, malloc failed'));
+	RETURN;
+END_IF
+
+(* convert ``stringToCheck`` to code points *)
+CNM_UnicodeUtilities.GetCodepointsFromUtf16String(
+	utf16StringAddress := stringToCheck, 
+	utf16StringWordCount := lengthStringToCheckInWord, 
+	codepointBuffer := usedCodePointsToCheck,
+	bufferSize := SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)*(lengthStringToCheckInWord+1), 
+	codePointCount => usedCodePointToCheckCount
+);
+
+(* convert ``searchString`` to code points *)
+CNM_UnicodeUtilities.GetCodepointsFromUtf16String(
+	utf16StringAddress 	:= searchString, 
+	utf16StringWordCount := lengthSearchStringInWord, 
+	codepointBuffer	:= usedSearchCodePoints,
+	bufferSize :=  SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)*(lengthSearchStringInWord+1),
+	codePointCount => usedSearchCodePointCount
+);
+
+
+IF normalizeStrings THEN
+	normalizedUsedCodePointsToCheck := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthStringToCheckInWord * NORMALIZATION_FACTOR));
+	IF (normalizedUsedCodePointsToCheck = 0) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16Contains, malloc failed'));
+		__DELETE(usedCodePointsToCheck);
+		__DELETE(usedSearchCodePoints);
+		RETURN;
+	END_IF
+	
+	normalizedUsedSearchCodePoints := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthSearchStringInWord * NORMALIZATION_FACTOR));
+	IF (normalizedUsedSearchCodePoints = 0) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16Contains, malloc failed'));
+		__DELETE(usedCodePointsToCheck);
+		__DELETE(usedSearchCodePoints);
+		__DELETE(normalizedUsedCodePointsToCheck);	
+		RETURN;
+	END_IF
+
+	CNM_UnicodeUtilities.NormalizeCodepointsFormD(
+		codePoints := usedCodePointsToCheck,
+		codePointsCount := usedCodePointToCheckCount,
+		normalizedCodepoints := normalizedUsedCodePointsToCheck,
+		bufferSize := (lengthStringToCheckInWord * NORMALIZATION_FACTOR) * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint),
+		normalizedCodepointsCount => usedCodePointToCheckCount
+	);
+	__DELETE(usedCodePointsToCheck);
+	usedCodePointsToCheck := normalizedUsedCodePointsToCheck;
+	
+	CNM_UnicodeUtilities.NormalizeCodepointsFormD(
+		codePoints := usedSearchCodePoints,
+		codePointsCount := usedSearchCodePointCount,
+		normalizedCodepoints := normalizedUsedSearchCodePoints,
+		bufferSize := (lengthSearchStringInWord * NORMALIZATION_FACTOR) * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint),
+		normalizedCodepointsCount => usedSearchCodePointCount
+	);
+	__DELETE(usedSearchCodePoints);
+	usedSearchCodePoints := normalizedUsedSearchCodePoints;
+END_IF
+
+IF (ignoreCases) THEN
+	CNM_UnicodeUtilities.GetUpperCaseForCodepoint(usedCodePointsToCheck, usedCodePointToCheckCount);
+	CNM_UnicodeUtilities.GetUpperCaseForCodepoint(usedSearchCodePoints, usedSearchCodePointCount);
+END_IF
+maxSearchIndex := TO_LINT(usedCodePointToCheckCount) - TO_LINT(usedSearchCodePointCount);
+WHILE (codePointIndex <= maxSearchIndex) DO
+	IF (
+		Tc2_System.MEMCMP(
+			ADR(usedCodePointsToCheck[codePointIndex]), 
+			usedSearchCodePoints, 
+			usedSearchCodePointCount*SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)
+		) = CNM_ReturnTypes.ComparationResult.EQUAL
+	) THEN	
+		__DELETE(usedCodePointsToCheck);
+		__DELETE(usedSearchCodePoints);
+		
+		RETURN;
+	END_IF;
+
+	codePointIndex := codePointIndex + 1;
+END_WHILE
+
+THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16contains'));
+
+__DELETE(usedCodePointsToCheck);
+__DELETE(usedSearchCodePoints);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="containsNo" Id="{e5697763-da75-48b1-b6a2-a7de6f308147}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method for UTF-16 strings checks if the current string ``stringToCheck`` contains not the search string ``searchString``
+
+**Attention:** 
+	All strings are handled as null terminated word streams.
+	For UTF-16 is end of the string 16#00_00
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+{attribute 'analysis' := '-130'}
+METHOD containsNo
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:POINTER TO WORD;
+	(* string must be found in ``stringToCheck`` *)
+	searchString	:POINTER TO WORD;
+	(* ``TRUE`` means ignore cases; ``FALSE`` means cases must be equal too *)
+	ignoreCases		:BOOL;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+	(*normalize both strings for check*)
+	normalizeStrings :BOOL := TRUE;
+END_VAR
+VAR
+	(* length of ``stringToCheck`` in characters *)
+	lengthStringToCheck			:UDINT;
+	(* length of ``stringToCheck`` in words *)
+	lengthStringToCheckInWord	:UDINT;
+	(* length of ``searchString`` *)
+	lengthSearchString			:UDINT;
+	(* length of ``searchString`` in words *)
+	lengthSearchStringInWord	:UDINT;
+	maxSearchIndex :LINT;
+	codePointIndex :UDINT;
+	usedCodePointsToCheck, 
+    usedSearchCodePoints,
+	normalizedUsedCodePointsToCheck,
+	normalizedUsedSearchCodePoints :POINTER TO CNM_UnicodeUtilities.UnicodeCodePoint;
+	usedCodePointToCheckCount, usedSearchCodePointCount :UDINT;
+END_VAR
+VAR CONSTANT
+	(*After decomposition one codepoint can extend up to 4 codepoints*)
+	NORMALIZATION_FACTOR :UDINT := 4;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CNM_UnicodeUtilities.GetUtf16StringLength(
+	utf16StringAddress := stringToCheck,
+	wordCount => lengthStringToCheckInWord
+);
+ 
+CNM_UnicodeUtilities.GetUtf16StringLength(
+	utf16StringAddress := searchString,
+	wordCount => lengthSearchStringInWord
+);
+
+RETURN ((( 
+			NOT normalizeStrings 
+		) OR_ELSE (
+			lengthSearchStringInWord = 0 
+		) OR_ELSE (
+			lengthStringToCheckInWord = 0
+		)
+	) AND_THEN (
+		NOT THIS^.isContainsNoCheckNecessary(
+			stringToCheck		:= stringToCheck,
+			searchString		:= searchString,
+			lengthStringToCheck	:= lengthStringToCheckInWord,
+			lengthSearchString	:= lengthSearchStringInWord,
+			additionalText		:= THIS^.getDebugInfo('utf16ContainsNo'),
+			message				:= message
+		) 	
+	)
+);
+
+usedCodePointsToCheck := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthStringToCheckInWord+1));
+IF (usedCodePointsToCheck = 0) THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16ContainsNo, malloc failed'));
+	RETURN;
+END_IF
+
+usedSearchCodePoints := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthSearchStringInWord+1));
+IF (usedSearchCodePoints = 0) THEN
+	__DELETE(usedCodePointsToCheck);
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16ContainsNo, malloc failed'));
+	RETURN;
+END_IF
+
+(* convert ``stringToCheck`` to code points *)
+CNM_UnicodeUtilities.GetCodepointsFromUtf16String(
+	utf16StringAddress := stringToCheck, 
+	utf16StringWordCount := lengthStringToCheckInWord, 
+	codepointBuffer := usedCodePointsToCheck,
+	bufferSize := SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)*(lengthStringToCheckInWord+1), 
+	codePointCount => usedCodePointToCheckCount);
+
+(* convert ``searchString`` to code points *)
+CNM_UnicodeUtilities.GetCodepointsFromUtf16String(
+	utf16StringAddress 	:= searchString, 
+	utf16StringWordCount := lengthSearchStringInWord, 
+	codepointBuffer	:= usedSearchCodePoints,
+	bufferSize :=  SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)*(lengthSearchStringInWord+1),
+	codePointCount => usedSearchCodePointCount);
+
+
+IF normalizeStrings THEN
+	normalizedUsedCodePointsToCheck := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthStringToCheckInWord*4));
+	IF (normalizedUsedCodePointsToCheck = 0) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16ContainsNo , malloc failed'));
+		__DELETE(usedCodePointsToCheck);
+		__DELETE(usedSearchCodePoints);
+		RETURN;
+	END_IF
+	
+	normalizedUsedSearchCodePoints := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthSearchStringInWord*4));
+	IF (normalizedUsedSearchCodePoints = 0) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16ContainsNo, malloc failed'));
+		__DELETE(usedCodePointsToCheck);
+		__DELETE(usedSearchCodePoints);
+		__DELETE(normalizedUsedCodePointsToCheck);	
+		RETURN;
+	END_IF
+
+	CNM_UnicodeUtilities.NormalizeCodepointsFormD(
+		codePoints := usedCodePointsToCheck,
+		codePointsCount := usedCodePointToCheckCount,
+		normalizedCodepoints := normalizedUsedCodePointsToCheck,
+		bufferSize := (lengthStringToCheckInWord * NORMALIZATION_FACTOR) * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint),
+		normalizedCodepointsCount => usedCodePointToCheckCount
+	);
+	__DELETE(usedCodePointsToCheck);
+	usedCodePointsToCheck := normalizedUsedCodePointsToCheck;
+	
+	CNM_UnicodeUtilities.NormalizeCodepointsFormD(
+		codePoints := usedSearchCodePoints,
+		codePointsCount := usedSearchCodePointCount,
+		normalizedCodepoints := normalizedUsedSearchCodePoints,
+		bufferSize := (lengthSearchStringInWord * NORMALIZATION_FACTOR) * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint),
+		normalizedCodepointsCount => usedSearchCodePointCount
+	);
+	__DELETE(usedSearchCodePoints);
+	usedSearchCodePoints := normalizedUsedSearchCodePoints;
+END_IF
+
+IF (ignoreCases) THEN
+	CNM_UnicodeUtilities.GetUpperCaseForCodepoint(usedCodePointsToCheck, usedCodePointToCheckCount);
+	CNM_UnicodeUtilities.GetUpperCaseForCodepoint(usedSearchCodePoints, usedSearchCodePointCount);
+END_IF
+
+codePointIndex := 0;
+maxSearchIndex := TO_LINT(usedCodePointToCheckCount) - TO_LINT(usedSearchCodePointCount);
+WHILE (codePointIndex <= maxSearchIndex) DO
+	IF (
+		Tc2_System.MEMCMP(
+			ADR(usedCodePointsToCheck[codePointIndex]), 
+			usedSearchCodePoints, 
+			usedSearchCodePointCount*SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)
+		) = CNM_ReturnTypes.ComparationResult.EQUAL
+	) THEN	
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16ContainsNo'));	
+	
+		__DELETE(usedCodePointsToCheck);
+		__DELETE(usedSearchCodePoints);
+		
+		RETURN;
+	END_IF;
+
+	codePointIndex := codePointIndex + 1;
+END_WHILE
+
+__DELETE(usedCodePointsToCheck);
+__DELETE(usedSearchCodePoints);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="endsWith" Id="{e91439b5-8a5f-47ec-916d-35ab73cce1fb}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method for UTF-16 strings checks if the current string ``stringToCheck`` ends with the string ``end``
+
+**Attention:** 
+	All strings are handled as null terminated word streams.
+	For UTF-16 is end of the string 16#00_00
+
+**Attention:** 
+	end of the string is **ALWAYS** the right side of the string 
+	even for writings which written from right to left like Hebrew or Arabic
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD endsWith
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:POINTER TO WORD;
+	(* string must be the end of ``stringToCheck`` *)
+	end				:POINTER TO WORD;
+	(* ``TRUE`` means ignore cases; ``FALSE`` means cases must be equal too *)
+	ignoreCases		:BOOL;
+	(* ``TRUE`` means truncation of spaces on the right side of ``stringToCheck``*)
+	trim			:BOOL;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+	(*normalize both strings for check*)
+	normalizeStrings :BOOL := TRUE;
+END_VAR
+VAR
+	(* length of ``stringToCheck`` in characters *)
+	lengthStringToCheck			:UDINT;
+	(* length of ``stringToCheck`` in words *)
+	lengthStringToCheckInWord	:UDINT;
+	(* length of ``searchString`` *)
+	lengthEndString			:UDINT;
+	(* length of ``searchString`` in words *)
+	lengthEndStringInWord	:UDINT;
+	
+	(* DWORD array we use to check *)
+	usedCodePointsToCheck, normalizedUsedCodePointsToCheck :POINTER TO CNM_UnicodeUtilities.UnicodeCodePoint;
+	usedCodePointToCheckCount	:UDINT;
+	
+	(* DWORD array we use to compare *)
+	usedEndCodePoints, normalizedUsedEndCodePoints :POINTER TO CNM_UnicodeUtilities.UnicodeCodePoint;
+	usedEndCodePointCount		:UDINT;
+END_VAR
+VAR CONSTANT
+	(*After decomposition one codepoint can extend up to 4 codepoints*)
+	NORMALIZATION_FACTOR :UDINT := 4;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CNM_UnicodeUtilities.GetUtf16StringLength(
+	utf16StringAddress := stringToCheck,
+	wordCount => lengthStringToCheckInWord
+);
+ 
+CNM_UnicodeUtilities.GetUtf16StringLength(
+	utf16StringAddress := end,
+	wordCount => lengthEndStringInWord
+);
+
+usedCodePointsToCheck := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthStringToCheckInWord+1));
+IF (usedCodePointsToCheck = 0) THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16endsWith, malloc failed'));
+	RETURN;
+END_IF
+
+usedEndCodePoints := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthEndStringInWord+1));
+IF (usedEndCodePoints = 0) THEN
+	__DELETE(usedCodePointsToCheck);
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16endsWith, malloc failed'));
+	RETURN;
+END_IF
+
+(* convert ``stringToCheck`` to code points *)
+CNM_UnicodeUtilities.GetCodepointsFromUtf16String(
+	utf16StringAddress := stringToCheck, 
+	utf16StringWordCount := lengthStringToCheckInWord, 
+	codepointBuffer := usedCodePointsToCheck,
+	bufferSize := SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)*(lengthStringToCheckInWord+1), 
+	codePointCount => usedCodePointToCheckCount);
+
+(* convert ``searchString`` to code points *)
+CNM_UnicodeUtilities.GetCodepointsFromUtf16String(
+	utf16StringAddress 	:= end, 
+	utf16StringWordCount := lengthEndStringInWord, 
+	codepointBuffer	:= usedEndCodePoints,
+	bufferSize :=  SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)*(lengthEndStringInWord+1),
+	codePointCount => usedEndCodePointCount);
+	
+IF (((
+			NOT normalizeStrings 
+		) OR_ELSE ( 
+			(lengthEndStringInWord = 0) OR_ELSE (lengthStringToCheckInWord = 0)
+		)
+	) AND_THEN ( 
+		NOT THIS^.isContainsCheckNecessary(
+			stringToCheck		:= usedCodePointsToCheck,
+			searchString		:= usedEndCodePoints,
+			lengthStringToCheck	:= usedCodePointToCheckCount * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint),
+			lengthSearchString	:= usedEndCodePointCount * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint),
+			additionalText		:= THIS^.getDebugInfo('utf16endsWith'),
+			message				:= message
+		) 
+	)
+) THEN
+	__DELETE(usedCodePointsToCheck);
+	__DELETE(usedEndCodePoints);
+	RETURN;
+END_IF
+
+IF normalizeStrings THEN
+	normalizedUsedCodePointsToCheck := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthStringToCheckInWord * NORMALIZATION_FACTOR));
+	IF (normalizedUsedCodePointsToCheck = 0) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16endsWith'));
+		__DELETE(usedCodePointsToCheck);
+		__DELETE(usedEndCodePoints);
+		RETURN;
+	END_IF
+	normalizedUsedEndCodePoints := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthEndStringInWord * NORMALIZATION_FACTOR));
+	IF (normalizedUsedEndCodePoints = 0) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16endsWith'));
+		__DELETE(usedCodePointsToCheck);
+		__DELETE(usedEndCodePoints);
+		__DELETE(normalizedUsedCodePointsToCheck);	
+		RETURN;
+	END_IF
+
+	CNM_UnicodeUtilities.NormalizeCodepointsFormD(
+		codePoints := usedCodePointsToCheck,
+		codePointsCount := usedCodePointToCheckCount,
+		normalizedCodepoints := normalizedUsedCodePointsToCheck,
+		bufferSize := (lengthStringToCheckInWord * NORMALIZATION_FACTOR) * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint),
+		normalizedCodepointsCount => usedCodePointToCheckCount
+	);
+	__DELETE(usedCodePointsToCheck);
+	usedCodePointsToCheck := normalizedUsedCodePointsToCheck;
+	
+	CNM_UnicodeUtilities.NormalizeCodepointsFormD(
+		codePoints := usedEndCodePoints,
+		codePointsCount := usedEndCodePointCount,
+		normalizedCodepoints := normalizedUsedEndCodePoints,
+		bufferSize := (lengthEndStringInWord * NORMALIZATION_FACTOR) * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint),
+		normalizedCodepointsCount => usedEndCodePointCount
+	);
+	__DELETE(usedEndCodePoints);
+	usedEndCodePoints := normalizedUsedEndCodePoints;
+END_IF
+
+IF trim THEN
+	CNM_UnicodeUtilities.TrimRightCodepoints(
+		codepoints := usedCodePointsToCheck,
+		codepointCount := usedCodePointToCheckCount,
+		newCodepointCount => usedCodePointToCheckCount
+	);
+	CNM_UnicodeUtilities.TrimRightCodepoints(
+		codepoints := usedEndCodePoints,
+		codepointCount := usedEndCodePointCount,
+		newCodepointCount => usedEndCodePointCount
+	);
+END_IF
+
+IF (ignoreCases) THEN
+	CNM_UnicodeUtilities.GetUpperCaseForCodepoint(usedCodePointsToCheck, usedCodePointToCheckCount);
+	CNM_UnicodeUtilities.GetUpperCaseForCodepoint(usedEndCodePoints, usedEndCodePointCount);
+END_IF
+
+IF ((usedCodePointToCheckCount < usedEndCodePointCount) OR_ELSE
+	(Tc2_System.MEMCMP(
+		ADR(usedCodePointsToCheck[usedCodePointToCheckCount - usedEndCodePointCount]),
+		usedEndCodePoints, 
+		usedEndCodePointCount*SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)
+	) <> CNM_ReturnTypes.ComparationResult.EQUAL)
+) THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16endsWith'));
+END_IF;
+
+__DELETE(usedCodePointsToCheck);
+__DELETE(usedEndCodePoints);		
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="isEqualTo" Id="{ea9a7e2f-7e5f-4c2c-9dd4-a79fa3cafc88}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method for utf-16 strings checks if the current string ``stringToCheck`` is equal to the ``expected`` string
+
+**Attention:** 
+	All strings are handled as null terminated word streams.
+	For UTF-16 is end of the string 16#00_00
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isEqualTo
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:POINTER TO WORD;
+	(* ``stringToCheck`` must be equal to expected *)
+	expected		:POINTER TO WORD;
+	(* ``TRUE`` means ignore cases; ``FALSE`` means cases must be equal too *)
+	ignoreCases		:BOOL;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+	(*normalize both strings for check*)
+	normalizeStrings :BOOL := TRUE;
+END_VAR
+VAR
+	(* length of ``stringToCheck`` in characters *)
+	lengthStringToCheck				:UDINT;
+	(* length of ``stringToCheck`` in bytes *)
+	lengthStringToCheckInByte		:UDINT;
+	(* length of ``stringToCheck`` in words *)
+	lengthStringToCheckInWord		:UDINT;
+	(* length of ``expected`` in characters *)
+	lengthExpectedString			:UDINT;
+	(* length of ``expected`` in characters *)
+	lengthExpectedStringInByte		:UDINT;
+	(* length of ``expected`` in characters *)
+	lengthExpectedStringInWord		:UDINT;
+	(* string address we use to compare, if it's case sensitive it's equal to ``stringToCheck`` *)
+	usedStringToCheck				:POINTER TO WORD;
+	(* seacrch string address we use to compare, if it's case sensitive it's equal to ``expected`` *)
+	usedExpectedString				:POINTER TO WORD;
+	
+		(* DWORD array we use to check *)
+	usedCodePointsToCheck, normalizedUsedCodePointsToCheck :POINTER TO CNM_UnicodeUtilities.UnicodeCodePoint;
+	usedCodePointToCheckCount		:UDINT;
+	
+	(* DWORD array we use to compare *)
+	usedExpectedCodePoints, normalizedUsedExpectedCodePoints :POINTER TO CNM_UnicodeUtilities.UnicodeCodePoint;
+	usedExpectedCodePointCount		:UDINT;
+END_VAR
+VAR CONSTANT
+	(*After decomposition one codepoint can extend up to 4 codepoints*)
+	NORMALIZATION_FACTOR :UDINT := 4;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[lengthStringToCheckInWord := CNM_UnicodeUtilities.GetUtf16StringLength(stringToCheck);
+lengthExpectedStringInWord := CNM_UnicodeUtilities.GetUtf16StringLength(expected);
+
+IF ((lengthStringToCheckInWord <> lengthExpectedStringInWord) AND_THEN NOT normalizeStrings) THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16IsEqualTo'));
+	RETURN;
+END_IF
+
+usedCodePointsToCheck := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthStringToCheckInWord+1));
+IF (usedCodePointsToCheck = 0) THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16IsEqualTo, malloc failed'));
+	RETURN;
+END_IF
+usedExpectedCodePoints := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthExpectedStringInWord+1));
+IF (usedExpectedCodePoints = 0) THEN
+	__DELETE(usedCodePointsToCheck);
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16IsEqualTo, malloc failed'));
+	RETURN;
+END_IF
+
+(* convert ``stringToCheck`` to code points *)
+CNM_UnicodeUtilities.GetCodepointsFromUtf16String(
+	utf16StringAddress := stringToCheck, 
+	utf16StringWordCount := lengthStringToCheckInWord, 
+	codepointBuffer := usedCodePointsToCheck,
+	bufferSize := SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)*(lengthStringToCheckInWord+1), 
+	codePointCount => usedCodePointToCheckCount);
+
+(* convert ``searchString`` to code points *)
+CNM_UnicodeUtilities.GetCodepointsFromUtf16String(
+	utf16StringAddress 	:= expected, 
+	utf16StringWordCount := lengthExpectedStringInWord, 
+	codepointBuffer	:= usedExpectedCodePoints,
+	bufferSize :=  SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)*(lengthExpectedStringInWord+1),
+	codePointCount => usedExpectedCodePointCount);
+
+
+
+IF normalizeStrings THEN
+	normalizedUsedCodePointsToCheck := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthStringToCheckInWord*NORMALIZATION_FACTOR));
+	IF (normalizedUsedCodePointsToCheck = 0) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16IsEqualTo, malloc failed'));
+		__DELETE(usedCodePointsToCheck);
+		__DELETE(usedExpectedCodePoints);
+		RETURN;
+	END_IF
+	normalizedUsedExpectedCodePoints := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthExpectedStringInWord*NORMALIZATION_FACTOR));
+	IF (normalizedUsedExpectedCodePoints = 0) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16IsEqualTo, malloc failed'));
+		__DELETE(usedCodePointsToCheck);
+		__DELETE(usedExpectedCodePoints);
+		__DELETE(normalizedUsedCodePointsToCheck);	
+		RETURN;
+	END_IF
+
+	CNM_UnicodeUtilities.NormalizeCodepointsFormD(
+		codePoints := usedCodePointsToCheck,
+		codePointsCount := usedCodePointToCheckCount,
+		normalizedCodepoints := normalizedUsedCodePointsToCheck,
+		bufferSize := (lengthStringToCheckInWord * NORMALIZATION_FACTOR) * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint),
+		normalizedCodepointsCount => usedCodePointToCheckCount
+	);
+	__DELETE(usedCodePointsToCheck);
+	usedCodePointsToCheck := normalizedUsedCodePointsToCheck;
+	
+	CNM_UnicodeUtilities.NormalizeCodepointsFormD(
+		codePoints := usedExpectedCodePoints,
+		codePointsCount := usedExpectedCodePointCount,
+		normalizedCodepoints := normalizedUsedExpectedCodePoints,
+		bufferSize := (lengthExpectedStringInWord * NORMALIZATION_FACTOR) * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint),
+		normalizedCodepointsCount => usedExpectedCodePointCount
+	);
+	__DELETE(usedExpectedCodePoints);
+	usedExpectedCodePoints := normalizedUsedExpectedCodePoints;
+	IF (usedCodePointToCheckCount <> usedExpectedCodePointCount) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16IsEqualTo'));
+		__DELETE(usedCodePointsToCheck);
+		__DELETE(usedExpectedCodePoints);
+		RETURN;
+	END_IF
+END_IF
+
+IF (ignoreCases) THEN
+	CNM_UnicodeUtilities.GetUpperCaseForCodepoint(usedCodePointsToCheck, usedCodePointToCheckCount);
+	CNM_UnicodeUtilities.GetUpperCaseForCodepoint(usedExpectedCodePoints, usedExpectedCodePointCount);
+END_IF
+
+IF (Tc2_System.MEMCMP(
+		usedCodePointsToCheck,
+		usedExpectedCodePoints, 
+		usedExpectedCodePointCount*SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)
+	) <> CNM_ReturnTypes.ComparationResult.EQUAL
+) THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16IsEqualTo'));
+END_IF;
+
+__DELETE(usedCodePointsToCheck);
+__DELETE(usedExpectedCodePoints);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="isNotEqualTo" Id="{8e0c732a-1d04-4dae-9eac-f13ef61a3a73}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method for utf-16 strings checks if the current string ``stringToCheck`` is not equal to the ``unexpected`` string
+
+**Attention:** 
+	All strings are handled as null terminated word streams.
+	For UTF-16 is end of the string 16#00_00
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isNotEqualTo
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:POINTER TO WORD;
+	(* ``stringToCheck`` must be not equal to unexpected *)
+	unexpected		:POINTER TO WORD;
+	(* ``TRUE`` means ignore cases; ``FALSE`` means cases must be equal too *)
+	ignoreCases		:BOOL;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+	(*normalize both strings for check*)
+	normalizeStrings :BOOL := TRUE;
+END_VAR
+VAR
+	(* length of ``stringToCheck`` in characters *)
+	lengthStringToCheck				:UDINT;
+	(* length of ``stringToCheck`` in bytes *)
+	lengthStringToCheckInByte		:UDINT;
+	(* length of ``stringToCheck`` in words *)
+	lengthStringToCheckInWord		:UDINT;
+	(* length of ``expected`` in characters *)
+	lengthUnexpectedString			:UDINT;
+	(* length of ``expected`` in characters *)
+	lengthUnexpectedStringInByte	:UDINT;
+	(* length of ``expected`` in characters *)
+	lengthUnexpectedStringInWord	:UDINT;
+	(* string address we use to compare, if it's case sensitive it's equal to ``stringToCheck`` *)
+	usedStringToCheck				:POINTER TO WORD;
+	(* seacrch string address we use to compare, if it's case sensitive it's equal to ``expected`` *)
+	usedUnexpectedString			:POINTER TO WORD;
+	
+	(* DWORD array we use to check *)
+	usedCodePointsToCheck, normalizedUsedCodePointsToCheck :POINTER TO CNM_UnicodeUtilities.UnicodeCodePoint;
+	usedCodePointToCheckCount		:UDINT;
+	
+	(* DWORD array we use to compare *)
+	usedUnexpectedCodePoints, normalizedUsedUnexpectedCodePointCount :POINTER TO CNM_UnicodeUtilities.UnicodeCodePoint;
+	usedUnexpectedCodePointCount	:UDINT;
+END_VAR
+VAR CONSTANT
+	(*After decomposition one codepoint can extend up to 4 codepoints*)
+	NORMALIZATION_FACTOR :UDINT := 4;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CNM_UnicodeUtilities.GetUtf16StringLength(
+	stringToCheck,
+	wordCount => lengthStringToCheckInWord, 
+	characterCount => lengthStringToCheck
+);
+
+CNM_UnicodeUtilities.GetUtf16StringLength(
+	unexpected,
+	wordCount => lengthUnexpectedStringInWord,
+	characterCount => lengthUnexpectedString
+);
+
+
+RETURN ((
+		lengthStringToCheckInWord = 0 OR_ELSE lengthUnexpectedStringInWord = 0
+	) OR_ELSE (
+		(lengthStringToCheckInWord <> lengthUnexpectedStringInWord) AND_THEN (NOT normalizeStrings)
+	) 
+);
+	
+usedCodePointsToCheck := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthStringToCheckInWord+1));
+IF (usedCodePointsToCheck = 0) THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16IsNotEqualTo, malloc failed'));
+	RETURN;
+END_IF
+usedUnexpectedCodePoints := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthUnexpectedStringInWord+1));
+IF (usedUnexpectedCodePoints = 0) THEN
+	__DELETE(usedCodePointsToCheck);
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16IsNotEqualTo, malloc failed'));
+	RETURN;
+END_IF
+
+(* convert ``stringToCheck`` to code points *)
+CNM_UnicodeUtilities.GetCodepointsFromUtf16String(
+	utf16StringAddress := stringToCheck, 
+	utf16StringWordCount := lengthStringToCheckInWord, 
+	codepointBuffer := usedCodePointsToCheck,
+	bufferSize := SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)*(lengthStringToCheckInWord+1), 
+	codePointCount => usedCodePointToCheckCount);
+
+(* convert ``searchString`` to code points *)
+CNM_UnicodeUtilities.GetCodepointsFromUtf16String(
+	utf16StringAddress 	:= unexpected, 
+	utf16StringWordCount := lengthUnexpectedStringInWord, 
+	codepointBuffer	:= usedUnexpectedCodePoints,
+	bufferSize :=  SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)*(lengthUnexpectedStringInWord+1),
+	codePointCount => usedUnexpectedCodePointCount);
+
+IF normalizeStrings THEN
+	normalizedUsedCodePointsToCheck := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthStringToCheckInWord * NORMALIZATION_FACTOR));
+	IF (normalizedUsedCodePointsToCheck = 0) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16IsNotEqualTo'));
+		__DELETE(usedCodePointsToCheck);
+		__DELETE(usedUnexpectedCodePoints);
+		RETURN;
+	END_IF
+	normalizedUsedUnexpectedCodePointCount := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthUnexpectedStringInWord * NORMALIZATION_FACTOR));
+	IF (normalizedUsedUnexpectedCodePointCount = 0) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16IsNotEqualTo'));
+		__DELETE(usedCodePointsToCheck);
+		__DELETE(usedUnexpectedCodePoints);
+		__DELETE(normalizedUsedCodePointsToCheck);	
+		RETURN;
+	END_IF
+
+	CNM_UnicodeUtilities.NormalizeCodepointsFormD(
+		codePoints := usedCodePointsToCheck,
+		codePointsCount := usedCodePointToCheckCount,
+		normalizedCodepoints := normalizedUsedCodePointsToCheck,
+		bufferSize := (lengthStringToCheckInWord * NORMALIZATION_FACTOR) * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint),
+		normalizedCodepointsCount => usedCodePointToCheckCount
+	);
+	__DELETE(usedCodePointsToCheck);
+	usedCodePointsToCheck := normalizedUsedCodePointsToCheck;
+	
+	CNM_UnicodeUtilities.NormalizeCodepointsFormD(
+		codePoints := usedUnexpectedCodePoints,
+		codePointsCount := usedUnexpectedCodePointCount,
+		normalizedCodepoints := normalizedUsedUnexpectedCodePointCount,
+		bufferSize := (lengthUnexpectedStringInWord * NORMALIZATION_FACTOR) * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint),
+		normalizedCodepointsCount => usedUnexpectedCodePointCount
+	);
+	__DELETE(usedUnexpectedCodePoints);
+	usedUnexpectedCodePoints := normalizedUsedUnexpectedCodePointCount;
+	IF (usedCodePointToCheckCount <> usedUnexpectedCodePointCount) THEN
+		__DELETE(usedCodePointsToCheck);
+		__DELETE(usedUnexpectedCodePoints);
+		RETURN;
+	END_IF
+END_IF
+
+IF (ignoreCases) THEN
+	CNM_UnicodeUtilities.GetUpperCaseForCodepoint(usedCodePointsToCheck, usedCodePointToCheckCount);
+	CNM_UnicodeUtilities.GetUpperCaseForCodepoint(usedUnexpectedCodePoints, usedUnexpectedCodePointCount);
+END_IF
+
+IF (Tc2_System.MEMCMP(
+		usedCodePointsToCheck,
+		usedUnexpectedCodePoints, 
+		usedUnexpectedCodePointCount * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)
+	) = CNM_ReturnTypes.ComparationResult.EQUAL
+) THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16IsNotEqualTo'));
+END_IF;
+
+__DELETE(usedCodePointsToCheck);
+__DELETE(usedUnexpectedCodePoints);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="lengthIsBetween" Id="{78e86d7a-3338-4d87-a55a-aac689452ad1}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` is length
+is equal or grater than ``minLength`` and equal or less than ``maxLength``
+
+**Attention:** 
+	All strings are handled as null terminated word streams.
+	For UTF-16 is end of the string 16#00_00
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD lengthIsBetween
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:POINTER TO WORD;
+	(* lower limit of the string length *)
+	minLength		:UDINT;
+	(* upper limit of the string length *)
+	maxLength		:UDINT;
+	(* string length units of measurement *)
+	stringLengthUnit	:UnicodeStringLengthUnit;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+END_VAR
+VAR
+	(* length of ``stringToCheck`` *)
+	stringToCheckWordCount, stringToCheckCodePointCount, stringToCheckByteCount	:UDINT;
+	normalizedStringBuffer :POINTER TO WORD;
+	buffersize, normalizedLength :UDINT;
+	width :DINT;
+	visibleCharacters :UDINT := 0;
+END_VAR
+VAR CONSTANT
+	(*After decomposition one codepoint can extend up to 4 codepoints*)
+	NORMALIZATION_FACTOR :UDINT := 4;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF minLength > maxLength THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16lengthIsBetween'));
+	RETURN;
+END_IF
+
+CNM_UnicodeUtilities.GetUtf16StringLength(
+	stringToCheck,
+	wordCount => stringToCheckWordCount,
+	characterCount => stringToCheckCodePointCount
+);
+stringToCheckByteCount := 2 * stringToCheckWordCount;
+
+// check if string is empty
+IF (stringToCheckWordCount = 0) THEN
+	IF (minLength > 0) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16lengthIsBetween'));
+	END_IF
+	RETURN;
+END_IF
+
+CASE (stringLengthUnit) OF
+UnicodeStringLengthUnit.BYTES:
+	IF (stringToCheckByteCount < minLength OR_ELSE stringToCheckByteCount > maxLength) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16lengthIsBetween'));
+	END_IF
+
+UnicodeStringLengthUnit.CHARACTERS:
+	IF (stringToCheckCodePointCount < minLength OR_ELSE stringToCheckCodePointCount > maxLength) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16lengthIsBetween'));
+	END_IF	
+	
+UnicodeStringLengthUnit.CHARACTERS_NFC:
+	// string size cant increase with NFC
+	normalizedStringBuffer := __NEW(WORD, (stringToCheckWordCount+1));
+	IF normalizedStringBuffer = 0 THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsBetween, malloc failed'));
+		RETURN;
+	END_IF
+	buffersize := stringToCheckByteCount+SIZEOF(WORD); // stringsize + NULL terminator
+	
+	CNM_UnicodeUtilities.NormalizeUtf16String(
+		utf16StringBuffer := stringToCheck,
+		normalForm := CNM_UnicodeUtilities.NormalizationForm.NFC,
+		normalizedStringBuffer := normalizedStringBuffer,
+		bufferSize := buffersize,
+		normalizedStringLength => normalizedLength
+	);
+	
+	CNM_UnicodeUtilities.GetUtf16StringLength(
+		utf16StringAddress := normalizedStringBuffer,
+		characterCount => stringToCheckCodePointCount
+	);
+	
+	__DELETE(normalizedStringBuffer);
+	
+	IF (stringToCheckCodePointCount < minLength OR_ELSE stringToCheckCodePointCount > maxLength) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16lengthIsBetween'));
+	END_IF
+	
+UnicodeStringLengthUnit.CHARACTERS_NFD:
+	// string size can increase with NFD
+	normalizedStringBuffer := __NEW(WORD, (stringToCheckWordCount * NORMALIZATION_FACTOR + 1));
+	IF normalizedStringBuffer = 0 THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsBetween, malloc failed'));
+		RETURN;
+	END_IF
+	
+	// stringsize can increase for NFD + NULL terminator word
+	buffersize := stringToCheckByteCount * NORMALIZATION_FACTOR + SIZEOF(WORD); 
+	
+	CNM_UnicodeUtilities.NormalizeUtf16String(
+		utf16StringBuffer := stringToCheck,
+		normalForm := CNM_UnicodeUtilities.NormalizationForm.NFD,
+		normalizedStringBuffer := normalizedStringBuffer,
+		bufferSize := buffersize,
+		normalizedStringLength => normalizedLength
+	);
+	
+	CNM_UnicodeUtilities.GetUtf16StringLength(
+		utf16StringAddress := normalizedStringBuffer,
+		characterCount => stringToCheckCodePointCount
+	);
+	
+	__DELETE(normalizedStringBuffer);
+	
+	IF (stringToCheckCodePointCount < minLength OR_ELSE stringToCheckCodePointCount > maxLength) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16lengthIsBetween'));
+	END_IF
+	
+UnicodeStringLengthUnit.VISIBLE_CHARACTERS:
+	CNM_UnicodeUtilities.GetUtf16StringWidth( utf16StringBuffer := stringToCheck, visibleCharacters => visibleCharacters);
+	IF (visibleCharacters < minLength) OR_ELSE ( visibleCharacters > maxLength ) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16lengthIsBetween'));
+	END_IF
+	
+UnicodeStringLengthUnit.WIDTH:
+	width := CNM_UnicodeUtilities.GetUtf16StringWidth(stringToCheck);
+	IF ((
+			width < 0
+		) OR_ELSE (
+			TO_UDINT(width) < minLength
+		) OR_ELSE (
+			TO_UDINT(width) > maxLength
+		)
+	) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16lengthIsBetween'));
+	END_IF
+ELSE
+	; // do nothing
+END_CASE
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="lengthIsExact" Id="{b997ffb1-33c0-4e1f-bd8d-aca08094cf1e}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` is length
+is equal to ``expectedLength``
+
+**Attention:** 
+	All strings are handled as null terminated word streams.
+	For UTF-16 is end of the string 16#00_00
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD lengthIsExact
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:POINTER TO WORD;
+	(* expected length of ``stringToCheck`` *)
+	expectedLength	:UDINT;
+	(* string length units of measurement *)
+	stringLengthUnit	:UnicodeStringLengthUnit;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+END_VAR
+VAR
+	(* length of ``stringToCheck`` *)
+	stringToCheckWordCount, stringToCheckCodePointCount, stringToCheckByteCount	:UDINT;
+	normalizedStringBuffer :POINTER TO WORD;
+	buffersize, normalizedLength :UDINT;
+	width :DINT;
+	visibleCharacters :UDINT := 0;
+END_VAR
+VAR CONSTANT
+	(*After decomposition one codepoint can extend up to 4 codepoints*)
+	NORMALIZATION_FACTOR :UDINT := 4;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CNM_UnicodeUtilities.GetUtf16StringLength(
+	stringToCheck,
+	wordCount => stringToCheckWordCount,
+	characterCount => stringToCheckCodePointCount
+);
+stringToCheckByteCount := 2 * stringToCheckWordCount;
+
+// check if string is empty
+IF (stringToCheckWordCount = 0) THEN
+	IF (expectedLength <> 0) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsExact'));
+	END_IF
+	RETURN;
+END_IF
+
+CASE (stringLengthUnit) OF
+UnicodeStringLengthUnit.BYTES:
+	IF (stringToCheckByteCount <> expectedLength) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsExact'));
+	END_IF
+
+UnicodeStringLengthUnit.CHARACTERS:
+	IF (stringToCheckCodePointCount <> expectedLength) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsExact'));
+	END_IF	
+	
+UnicodeStringLengthUnit.CHARACTERS_NFC:
+	// string size cant increase with NFC
+	normalizedStringBuffer := __NEW(WORD, (stringToCheckWordCount+1));
+	IF normalizedStringBuffer = 0 THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsExact, malloc failed'));
+		RETURN;
+	END_IF
+	
+	buffersize := stringToCheckByteCount+SIZEOF(WORD);
+	
+	CNM_UnicodeUtilities.NormalizeUtf16String(
+		utf16StringBuffer := stringToCheck,
+		normalForm := CNM_UnicodeUtilities.NormalizationForm.NFC,
+		normalizedStringBuffer := normalizedStringBuffer,
+		bufferSize := buffersize,
+		normalizedStringLength => normalizedLength
+	);
+	
+	CNM_UnicodeUtilities.GetUtf16StringLength(
+		utf16StringAddress := normalizedStringBuffer,
+		characterCount => stringToCheckCodePointCount
+	);
+	
+	__DELETE(normalizedStringBuffer);
+	
+	IF (stringToCheckCodePointCount <> expectedLength) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsExact'));
+	END_IF
+	
+UnicodeStringLengthUnit.CHARACTERS_NFD:
+	// string size can increase with NFD
+	normalizedStringBuffer := __NEW(WORD, ( NORMALIZATION_FACTOR * stringToCheckWordCount + 1));
+	IF normalizedStringBuffer = 0 THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsBetween, malloc failed'));
+		RETURN;
+	END_IF
+	
+	// stringsize can increase for NFD + NULL terminator word
+	buffersize := stringToCheckByteCount * NORMALIZATION_FACTOR + SIZEOF(WORD); 
+	
+	CNM_UnicodeUtilities.NormalizeUtf16String(
+		utf16StringBuffer := stringToCheck,
+		normalForm := CNM_UnicodeUtilities.NormalizationForm.NFD,
+		normalizedStringBuffer := normalizedStringBuffer,
+		bufferSize := buffersize,
+		normalizedStringLength => normalizedLength
+	);
+	
+	CNM_UnicodeUtilities.GetUtf16StringLength(
+		utf16StringAddress := normalizedStringBuffer,
+		characterCount => stringToCheckCodePointCount
+	);
+	
+	__DELETE(normalizedStringBuffer);
+	
+	IF (stringToCheckCodePointCount <> expectedLength) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsExact'));
+	END_IF
+	
+UnicodeStringLengthUnit.VISIBLE_CHARACTERS:
+	CNM_UnicodeUtilities.GetUtf16StringWidth( utf16StringBuffer := stringToCheck, visibleCharacters => visibleCharacters);
+	IF (visibleCharacters <> expectedLength)THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16lengthIsExact'));
+	END_IF
+	
+UnicodeStringLengthUnit.WIDTH:
+	width := CNM_UnicodeUtilities.GetUtf16StringWidth(stringToCheck);
+	IF ((width < 0) OR_ELSE (TO_UDINT(width) <> expectedLength)) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsExact'));
+	END_IF
+ELSE
+	; // do nothing
+END_CASE
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="lengthIsMax" Id="{4c91eeff-9e95-4c2a-8e86-48846b3bbe59}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` is length
+is equal or less than to ``maxLength``
+
+**Attention:** 
+	All strings are handled as null terminated word streams.
+	For UTF-16 is end of the string 16#00_00
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD lengthIsMax
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:POINTER TO WORD;
+	(* upper limit of the length of ``stringToCheck`` *)
+	maxLength		:UDINT;
+	(* string length units of measurement *)
+	stringLengthUnit	:UnicodeStringLengthUnit;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+END_VAR
+VAR
+	(* length of ``stringToCheck`` *)
+	stringToCheckWordCount, stringToCheckCodePointCount, stringToCheckByteCount	:UDINT;
+	normalizedStringBuffer :POINTER TO WORD;
+	buffersize, normalizedLength :UDINT;
+	width :DINT;
+	visibleCharacters :UDINT := 0;
+END_VAR
+VAR CONSTANT
+	(*After decomposition one codepoint can extend up to 4 codepoints*)
+	NORMALIZATION_FACTOR :UDINT := 4;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CNM_UnicodeUtilities.GetUtf16StringLength(
+	stringToCheck,
+	wordCount => stringToCheckWordCount,
+	characterCount => stringToCheckCodePointCount
+);
+
+stringToCheckByteCount := 2 * stringToCheckWordCount;
+
+// check if string is empty
+RETURN (stringToCheckWordCount = 0);
+
+CASE (stringLengthUnit) OF
+UnicodeStringLengthUnit.BYTES:
+	IF (stringToCheckByteCount > maxLength ) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsMax'));
+	END_IF
+
+UnicodeStringLengthUnit.CHARACTERS:
+	IF (stringToCheckCodePointCount > maxLength) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsMax'));
+	END_IF	
+	
+UnicodeStringLengthUnit.CHARACTERS_NFC:
+	// string size cant increase with NFC
+	normalizedStringBuffer := __NEW(WORD, (stringToCheckWordCount+1));
+	IF normalizedStringBuffer = 0 THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsMax, malloc failed'));
+		RETURN;
+	END_IF
+	buffersize := stringToCheckByteCount+SIZEOF(WORD);
+	
+	CNM_UnicodeUtilities.NormalizeUtf16String(
+		utf16StringBuffer := stringToCheck,
+		normalForm := CNM_UnicodeUtilities.NormalizationForm.NFC,
+		normalizedStringBuffer := normalizedStringBuffer,
+		bufferSize := buffersize,
+		normalizedStringLength => normalizedLength
+	);
+	
+	CNM_UnicodeUtilities.GetUtf16StringLength(
+		utf16StringAddress := normalizedStringBuffer,
+		characterCount => stringToCheckCodePointCount
+	);
+	
+	__DELETE(normalizedStringBuffer);
+	
+	IF (stringToCheckCodePointCount > maxLength) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsMax'));
+	END_IF
+	
+UnicodeStringLengthUnit.CHARACTERS_NFD:
+	// string size can increase with NFD
+	normalizedStringBuffer := __NEW(WORD, ( NORMALIZATION_FACTOR * stringToCheckWordCount + 1));
+	IF normalizedStringBuffer = 0 THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsMax, malloc failed'));
+		RETURN;
+	END_IF
+	// stringsize can increase for NFD + NULL terminator word
+	buffersize := stringToCheckByteCount * NORMALIZATION_FACTOR + SIZEOF(WORD); 
+	
+	CNM_UnicodeUtilities.NormalizeUtf16String(
+		utf16StringBuffer := stringToCheck,
+		normalForm := CNM_UnicodeUtilities.NormalizationForm.NFD,
+		normalizedStringBuffer := normalizedStringBuffer,
+		bufferSize := buffersize,
+		normalizedStringLength => normalizedLength
+	);
+	
+	CNM_UnicodeUtilities.GetUtf16StringLength(
+		utf16StringAddress := normalizedStringBuffer,
+		characterCount => stringToCheckCodePointCount
+	);
+	
+	__DELETE(normalizedStringBuffer);
+	
+	IF (stringToCheckCodePointCount > maxLength) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsMax'));
+	END_IF
+	
+UnicodeStringLengthUnit.VISIBLE_CHARACTERS:
+	CNM_UnicodeUtilities.GetUtf16StringWidth( utf16StringBuffer := stringToCheck, visibleCharacters => visibleCharacters);
+	IF ( visibleCharacters > maxLength ) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16lengthIsMax'));
+	END_IF
+	
+UnicodeStringLengthUnit.WIDTH:
+	width := CNM_UnicodeUtilities.GetUtf16StringWidth(stringToCheck);
+	IF ((width < 0) OR_ELSE (TO_UDINT(width) > maxLength)) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsMax'));
+	END_IF
+ELSE
+	; // do nothing
+END_CASE
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="lengthIsMin" Id="{54159306-9fe3-44bb-81ca-e8dfc775b3aa}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` is length
+is equal or grater than to ``minLength``
+
+**Attention:** 
+	All strings are handled as null terminated word streams.
+	For UTF-16 is end of the string 16#00_00
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD lengthIsMin
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:POINTER TO WORD;
+	(* lower limit of the length of ``stringToCheck`` *)
+	minLength		:UDINT;
+	(* string length units of measurement *)
+	stringLengthUnit	:UnicodeStringLengthUnit;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+END_VAR
+VAR
+	(* length of ``stringToCheck`` *)
+	stringToCheckWordCount, stringToCheckCodePointCount, stringToCheckByteCount	:UDINT;
+	normalizedStringBuffer :POINTER TO WORD;
+	buffersize, normalizedLength :UDINT;
+	width :DINT;
+	visibleCharacters :UDINT := 0;
+END_VAR
+VAR CONSTANT
+	(*After decomposition one codepoint can extend up to 4 codepoints*)
+	NORMALIZATION_FACTOR :UDINT := 4;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CNM_UnicodeUtilities.GetUtf16StringLength(
+	stringToCheck,
+	wordCount => stringToCheckWordCount,
+	characterCount => stringToCheckCodePointCount
+);
+stringToCheckByteCount := 2 * stringToCheckWordCount;
+
+// check if string is empty
+IF (stringToCheckWordCount = 0) THEN
+	IF (minLength > 0) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16lengthIsBetween'));
+	END_IF
+	RETURN;
+END_IF
+
+CASE (stringLengthUnit) OF
+UnicodeStringLengthUnit.BYTES:
+	IF (stringToCheckByteCount < minLength ) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsMin'));
+	END_IF
+
+UnicodeStringLengthUnit.CHARACTERS:
+	IF (stringToCheckCodePointCount < minLength ) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsMin'));
+	END_IF	
+	
+UnicodeStringLengthUnit.CHARACTERS_NFC:
+	// string size cant increase with NFC
+	normalizedStringBuffer := __NEW(WORD, (stringToCheckWordCount+1));
+	IF normalizedStringBuffer = 0 THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsMin, malloc failed'));
+		RETURN;
+	END_IF
+	buffersize := stringToCheckByteCount+SIZEOF(WORD);
+	
+	CNM_UnicodeUtilities.NormalizeUtf16String(
+		utf16StringBuffer := stringToCheck,
+		normalForm := CNM_UnicodeUtilities.NormalizationForm.NFC,
+		normalizedStringBuffer := normalizedStringBuffer,
+		bufferSize := buffersize,
+		normalizedStringLength => normalizedLength
+	);
+	
+	CNM_UnicodeUtilities.GetUtf16StringLength(
+		utf16StringAddress := normalizedStringBuffer,
+		characterCount => stringToCheckCodePointCount
+	);
+	
+	__DELETE(normalizedStringBuffer);
+	
+	IF (stringToCheckCodePointCount < minLength) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsMin'));
+	END_IF
+	
+UnicodeStringLengthUnit.CHARACTERS_NFD:
+	// string size can increase with NFD
+	normalizedStringBuffer := __NEW(WORD, (NORMALIZATION_FACTOR *stringToCheckWordCount + 1));
+	IF normalizedStringBuffer = 0 THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsMin, malloc failed'));
+		RETURN;
+	END_IF
+	
+	// stringsize can increase for NFD + NULL terminator word
+	buffersize := stringToCheckByteCount * NORMALIZATION_FACTOR + SIZEOF(WORD); 
+	
+	CNM_UnicodeUtilities.NormalizeUtf16String(
+		utf16StringBuffer := stringToCheck,
+		normalForm := CNM_UnicodeUtilities.NormalizationForm.NFD,
+		normalizedStringBuffer := normalizedStringBuffer,
+		bufferSize := buffersize,
+		normalizedStringLength => normalizedLength
+	);
+	
+	CNM_UnicodeUtilities.GetUtf16StringLength(
+		utf16StringAddress := normalizedStringBuffer,
+		characterCount => stringToCheckCodePointCount
+	);
+	
+	__DELETE(normalizedStringBuffer);
+	
+	IF (stringToCheckCodePointCount < minLength) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsMin'));
+	END_IF
+	
+UnicodeStringLengthUnit.VISIBLE_CHARACTERS:
+	CNM_UnicodeUtilities.GetUtf16StringWidth( utf16StringBuffer := stringToCheck, visibleCharacters => visibleCharacters);
+	IF (visibleCharacters < minLength) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16lengthIsMin'));
+	END_IF
+	
+UnicodeStringLengthUnit.WIDTH:
+	width := CNM_UnicodeUtilities.GetUtf16StringWidth(stringToCheck);
+	IF ((width < 0) OR_ELSE (TO_UDINT(width) < minLength)) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16LengthIsMin'));
+	END_IF
+ELSE
+	; // do nothing
+END_CASE
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="startsWith" Id="{a809b0b1-4771-4c2d-b992-d7521fb8baec}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if the current string ``stringToCheck`` starts with ``start``
+
+**Attention:** 
+	All strings are handled as null terminated byte streams.
+	For UTF-16 is end of the string 16#00_00
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD startsWith
+VAR_INPUT
+	(* current string to check *)
+	stringToCheck	:POINTER TO WORD;
+	(* expected start of ``stringToCheck`` *)
+	start			:POINTER TO WORD;
+	(* ``TRUE`` means ignore cases; ``FALSE`` means cases must be equal too *)
+	ignoreCases		:BOOL;
+	(* ``TRUE`` means truncation of spaces on the left side *)
+	trim			:BOOL;
+	(* message if the assertion is false *)
+	message			:AssertMessage;
+	(*normalize both strings for check*)
+	normalizeStrings :BOOL := TRUE;
+END_VAR
+VAR
+	(* length of ``stringToCheck`` in characters *)
+	lengthStringToCheck			:UDINT;
+	(* length of ``stringToCheck`` in words *)
+	lengthStringToCheckInWord	:UDINT;
+	(* length of ``start`` in characters *)
+	lengthOfStart				:UDINT;
+	(* length of ``start`` in words *)
+	lengthOfStartInWord			:UDINT;
+	(* string address we use to compare, if it's case sensitive it's equal to ``stringToCheck`` *)
+	usedStringToCheck			:POINTER TO WORD;
+	(* seacrch string address we use to compare, if it's case sensitive it's equal to ``start`` *)
+	usedStartString				:POINTER TO WORD;
+END_VAR
+VAR
+	(* DWORD array we use to check *)
+	usedCodePointsToCheck, normalizedUsedCodePointsToCheck :POINTER TO CNM_UnicodeUtilities.UnicodeCodePoint;
+	usedCodePointToCheckCount	:UDINT;
+	
+	(* DWORD array we use to compare *)
+	usedStartCodePoints, normalizedUsedStartCodePoints :POINTER TO CNM_UnicodeUtilities.UnicodeCodePoint;
+	usedStartCodePointCount		:UDINT;
+END_VAR
+VAR CONSTANT
+	(*After decomposition one codepoint can extend up to 4 codepoints*)
+	NORMALIZATION_FACTOR :UDINT := 4;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CNM_UnicodeUtilities.GetUtf16StringLength(
+	utf16StringAddress := stringToCheck,
+	wordCount => lengthStringToCheckInWord
+);
+ 
+CNM_UnicodeUtilities.GetUtf16StringLength(
+	utf16StringAddress := start,
+	wordCount => lengthOfStartInWord
+);
+
+usedCodePointsToCheck := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthStringToCheckInWord+1));
+IF (usedCodePointsToCheck = 0) THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16StartsWith, malloc failed'));
+	RETURN;
+END_IF
+
+usedStartCodePoints := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthOfStartInWord+1));
+IF (usedStartCodePoints = 0) THEN
+	__DELETE(usedCodePointsToCheck);
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16StartsWith, malloc failed'));
+	RETURN;
+END_IF
+
+(* convert ``stringToCheck`` to code points *)
+CNM_UnicodeUtilities.GetCodepointsFromUtf16String(
+	utf16StringAddress := stringToCheck, 
+	utf16StringWordCount := lengthStringToCheckInWord, 
+	codepointBuffer := usedCodePointsToCheck,
+	bufferSize := SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)*(lengthStringToCheckInWord+1), 
+	codePointCount => usedCodePointToCheckCount);
+
+(* convert ``searchString`` to code points *)
+CNM_UnicodeUtilities.GetCodepointsFromUtf16String(
+	utf16StringAddress 	:= start, 
+	utf16StringWordCount := lengthOfStartInWord, 
+	codepointBuffer	:= usedStartCodePoints,
+	bufferSize :=  SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)*(lengthOfStartInWord+1),
+	codePointCount => usedStartCodePointCount
+);
+
+IF (((
+			NOT normalizeStrings 
+		) OR_ELSE ( 
+			(lengthOfStartInWord = 0) OR_ELSE (lengthStringToCheckInWord = 0)
+		)
+	) AND_THEN (
+		NOT THIS^.isContainsCheckNecessary(
+			stringToCheck		:= usedCodePointsToCheck,
+			searchString		:= usedStartCodePoints,
+			lengthStringToCheck	:= usedCodePointToCheckCount * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint),
+			lengthSearchString	:= usedStartCodePointCount * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint),
+			additionalText		:= THIS^.getDebugInfo('utf16StartsWith'),
+			message				:= message
+		)
+	)
+) THEN
+	__DELETE(usedCodePointsToCheck);
+	__DELETE(usedStartCodePoints);
+	RETURN;
+END_IF
+
+IF normalizeStrings THEN
+	normalizedUsedCodePointsToCheck := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthStringToCheckInWord * NORMALIZATION_FACTOR));
+	IF (normalizedUsedCodePointsToCheck = 0) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16StartsWith, malloc failed'));
+		__DELETE(usedCodePointsToCheck);
+		__DELETE(usedStartCodePoints);
+		RETURN;
+	END_IF
+	
+	normalizedUsedStartCodePoints := __NEW(CNM_UnicodeUtilities.UnicodeCodePoint, (lengthOfStartInWord*NORMALIZATION_FACTOR));
+	IF (normalizedUsedStartCodePoints = 0) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16StartsWith, malloc failed'));
+		__DELETE(usedCodePointsToCheck);
+		__DELETE(usedStartCodePoints);
+		__DELETE(normalizedUsedCodePointsToCheck);	
+		RETURN;
+	END_IF
+
+	CNM_UnicodeUtilities.NormalizeCodepointsFormD(
+		codePoints := usedCodePointsToCheck,
+		codePointsCount := usedCodePointToCheckCount,
+		normalizedCodepoints := normalizedUsedCodePointsToCheck,
+		bufferSize := (lengthStringToCheckInWord * NORMALIZATION_FACTOR) * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint),
+		normalizedCodepointsCount => usedCodePointToCheckCount
+	);
+	__DELETE(usedCodePointsToCheck);
+	usedCodePointsToCheck := normalizedUsedCodePointsToCheck;
+	
+	CNM_UnicodeUtilities.NormalizeCodepointsFormD(
+		codePoints := usedStartCodePoints,
+		codePointsCount := usedStartCodePointCount,
+		normalizedCodepoints := normalizedUsedStartCodePoints,
+		bufferSize := (lengthOfStartInWord * NORMALIZATION_FACTOR) * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint),
+		normalizedCodepointsCount => usedStartCodePointCount
+	);
+	__DELETE(usedStartCodePoints);
+	usedStartCodePoints := normalizedUsedStartCodePoints;
+END_IF
+
+IF trim THEN
+	CNM_UnicodeUtilities.TrimLeftCodepoints(
+		codepoints := usedCodePointsToCheck,
+		codepointCount := usedCodePointToCheckCount,
+		newCodepointCount => usedCodePointToCheckCount
+	);
+	CNM_UnicodeUtilities.TrimLeftCodepoints(
+		codepoints := usedStartCodePoints,
+		codepointCount := usedStartCodePointCount,
+		newCodepointCount => usedStartCodePointCount
+	);
+END_IF
+
+
+IF (ignoreCases) THEN
+	CNM_UnicodeUtilities.GetUpperCaseForCodepoint(usedCodePointsToCheck, usedCodePointToCheckCount);
+	CNM_UnicodeUtilities.GetUpperCaseForCodepoint(usedStartCodePoints, usedStartCodePointCount);
+END_IF
+
+IF (Tc2_System.MEMCMP(
+		usedCodePointsToCheck,
+		usedStartCodePoints, 
+		usedStartCodePointCount * SIZEOF(CNM_UnicodeUtilities.UnicodeCodePoint)
+	) <> CNM_ReturnTypes.ComparationResult.EQUAL
+) THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('utf16StartsWith'));
+END_IF;
+
+__DELETE(usedCodePointsToCheck);
+__DELETE(usedStartCodePoints);	
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="Utf16StringPointerAssertions">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Utf16StringPointerAssertions.className.Get">
+      <LineId Id="1" Count="1" />
+    </LineIds>
+    <LineIds Name="Utf16StringPointerAssertions.contains">
+      <LineId Id="1" Count="12" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="126" Count="1" />
+      <LineId Id="129" Count="0" />
+      <LineId Id="14" Count="8" />
+      <LineId Id="24" Count="6" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="31" Count="13" />
+      <LineId Id="131" Count="0" />
+      <LineId Id="45" Count="7" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="54" Count="9" />
+      <LineId Id="133" Count="0" />
+      <LineId Id="64" Count="33" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="99" Count="21" />
+    </LineIds>
+    <LineIds Name="Utf16StringPointerAssertions.containsNo">
+      <LineId Id="1" Count="3" />
+      <LineId Id="6" Count="4" />
+      <LineId Id="126" Count="0" />
+      <LineId Id="121" Count="0" />
+      <LineId Id="128" Count="0" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="129" Count="3" />
+      <LineId Id="14" Count="8" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="26" Count="4" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="31" Count="32" />
+      <LineId Id="127" Count="0" />
+      <LineId Id="64" Count="34" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="99" Count="21" />
+    </LineIds>
+    <LineIds Name="Utf16StringPointerAssertions.endsWith">
+      <LineId Id="1" Count="3" />
+      <LineId Id="6" Count="4" />
+      <LineId Id="12" Count="5" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="18" Count="21" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="126" Count="0" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="127" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="42" Count="7" />
+      <LineId Id="137" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="122" Count="1" />
+      <LineId Id="51" Count="46" />
+      <LineId Id="130" Count="3" />
+      <LineId Id="129" Count="0" />
+      <LineId Id="98" Count="7" />
+      <LineId Id="128" Count="0" />
+      <LineId Id="106" Count="10" />
+    </LineIds>
+    <LineIds Name="Utf16StringPointerAssertions.isEqualTo">
+      <LineId Id="1" Count="98" />
+    </LineIds>
+    <LineIds Name="Utf16StringPointerAssertions.isNotEqualTo">
+      <LineId Id="1" Count="0" />
+      <LineId Id="103" Count="4" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="108" Count="3" />
+      <LineId Id="3" Count="1" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="112" Count="4" />
+      <LineId Id="12" Count="27" />
+      <LineId Id="42" Count="60" />
+    </LineIds>
+    <LineIds Name="Utf16StringPointerAssertions.lengthIsBetween">
+      <LineId Id="1" Count="5" />
+      <LineId Id="93" Count="3" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="86" Count="6" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="8" Count="13" />
+      <LineId Id="98" Count="2" />
+      <LineId Id="102" Count="0" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="23" Count="23" />
+      <LineId Id="104" Count="2" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="107" Count="1" />
+      <LineId Id="47" Count="22" />
+      <LineId Id="80" Count="2" />
+      <LineId Id="70" Count="3" />
+      <LineId Id="109" Count="6" />
+      <LineId Id="77" Count="1" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="116" Count="0" />
+    </LineIds>
+    <LineIds Name="Utf16StringPointerAssertions.lengthIsExact">
+      <LineId Id="1" Count="0" />
+      <LineId Id="86" Count="3" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="79" Count="5" />
+      <LineId Id="3" Count="15" />
+      <LineId Id="91" Count="2" />
+      <LineId Id="90" Count="0" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="19" Count="23" />
+      <LineId Id="97" Count="2" />
+      <LineId Id="96" Count="0" />
+      <LineId Id="100" Count="0" />
+      <LineId Id="95" Count="0" />
+      <LineId Id="43" Count="21" />
+      <LineId Id="74" Count="2" />
+      <LineId Id="65" Count="6" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="72" Count="1" />
+    </LineIds>
+    <LineIds Name="Utf16StringPointerAssertions.lengthIsMax">
+      <LineId Id="1" Count="0" />
+      <LineId Id="87" Count="4" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="81" Count="1" />
+      <LineId Id="3" Count="14" />
+      <LineId Id="93" Count="2" />
+      <LineId Id="92" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="19" Count="22" />
+      <LineId Id="98" Count="2" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="96" Count="0" />
+      <LineId Id="43" Count="20" />
+      <LineId Id="74" Count="2" />
+      <LineId Id="64" Count="6" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="71" Count="1" />
+    </LineIds>
+    <LineIds Name="Utf16StringPointerAssertions.lengthIsMin">
+      <LineId Id="1" Count="0" />
+      <LineId Id="87" Count="3" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="81" Count="5" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="3" Count="14" />
+      <LineId Id="92" Count="2" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="19" Count="22" />
+      <LineId Id="96" Count="2" />
+      <LineId Id="95" Count="0" />
+      <LineId Id="99" Count="1" />
+      <LineId Id="42" Count="21" />
+      <LineId Id="74" Count="2" />
+      <LineId Id="64" Count="6" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="71" Count="1" />
+    </LineIds>
+    <LineIds Name="Utf16StringPointerAssertions.startsWith">
+      <LineId Id="1" Count="3" />
+      <LineId Id="6" Count="4" />
+      <LineId Id="12" Count="5" />
+      <LineId Id="133" Count="0" />
+      <LineId Id="18" Count="21" />
+      <LineId Id="137" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="131" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="43" Count="7" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="128" Count="1" />
+      <LineId Id="52" Count="10" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="63" Count="35" />
+      <LineId Id="120" Count="3" />
+      <LineId Id="119" Count="0" />
+      <LineId Id="99" Count="19" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

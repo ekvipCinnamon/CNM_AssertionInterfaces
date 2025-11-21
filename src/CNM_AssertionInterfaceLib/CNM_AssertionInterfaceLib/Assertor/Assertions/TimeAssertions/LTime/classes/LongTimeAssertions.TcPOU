@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="LongTimeAssertions" Id="{b2dffb11-d7c3-4f48-a098-511f1dfa695f}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
-short summary
-=================
-This class implements the interface :ref:`I64BitTimeAssertions`. 
+## Short summary
+This class implements the interface `I64BitTimeAssertions`. 
 It provides the assert statements for the data type ``LTIME``
 
 .. <legal notes>
@@ -20,13 +19,12 @@ legal notes
 
 .. </legal notes>
 
-methods and properties
-=========================
+==
 
 *)
 
 {attribute 'reflection'}
-FUNCTION_BLOCK INTERNAL LongTimeAssertions EXTENDS AbstactAssertion IMPLEMENTS I64BitTimeAssertions
+FUNCTION_BLOCK INTERNAL LongTimeAssertions EXTENDS AbstractAssertion IMPLEMENTS I64BitTimeAssertions
 VAR CONSTANT
 	(* maximum value for the data type ``LTIME`` *)
 	MAX_TIME	:LTIME := TO_LTIME(16#FFFF_FFFF_FFFF_FFFF);
@@ -37,8 +35,7 @@ END_VAR]]></Declaration>
     <Property Name="className" Id="{a7a60e8e-a881-4459-87f8-4d07907353b2}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This abstract property returns the class name of the concrete object, 
 It's for debugging purpose
 
@@ -56,13 +53,13 @@ legal notes
 
 *)
 
-PROPERTY className :ClassName]]></Declaration>
+PROPERTY className :CNM_AbstractObject.ClassName]]></Declaration>
       <Get Name="Get" Id="{2d5466ae-3b32-4ca1-8840-e510a2134017}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[className := 'CNM_AssertionInterfaceLib.LongTimeAssertions';
+          <ST><![CDATA[className := 'CNM_Assertor.LongTimeAssertions';
 ]]></ST>
         </Implementation>
       </Get>
@@ -70,8 +67,7 @@ END_VAR
     <Method Name="getTimePassed" Id="{98cacde6-c133-41f0-a513-7f1463cae644}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This method returns the passed time since the timestamp was created
 
 .. <legal notes>
@@ -86,8 +82,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 :return: passed time since ``startTime``
 
 *)
@@ -115,8 +110,7 @@ END_IF
     <Method Name="timeHasExpired" Id="{6891eb87-d5b4-488e-bf83-9d469864b96e}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks whether time has elapsed since the timestamp time
 
 .. <legal notes>
@@ -131,8 +125,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -164,8 +157,7 @@ END_IF
     <Method Name="timeHasNotExpired" Id="{da85888b-78c7-4d71-80e8-8a55ba4d9390}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks that the time since the timestamp time has not yet elapsed
 
 .. <legal notes>
@@ -180,8 +172,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -213,8 +204,7 @@ END_IF
     <Method Name="valueIsEqualTo" Id="{50e44fd4-63ac-4bb7-a07e-ae12f49aed51}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is equal to the expected value
 
 .. <legal notes>
@@ -229,8 +219,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -257,8 +246,7 @@ END_IF
     <Method Name="valueIsGreaterThan" Id="{aa0a2c06-f32c-419f-8ebe-46fa6928017c}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than the less value
 
 .. <legal notes>
@@ -273,8 +261,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -301,11 +288,10 @@ END_IF
     <Method Name="valueIsInRangeOf" Id="{6bbce859-0dae-4859-8d9f-68a3dbabe567}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is inside a limit
 
-.. attention:: 
+**Attention:** 
 	limits are included: ``valueIsInRangeOf(t#3ms,t#3ms ,t#3ms)`` is a true assertion
 
 .. <legal notes>
@@ -320,8 +306,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -354,8 +339,7 @@ END_IF
     <Method Name="valueIsLessThan" Id="{13e6d15c-a90d-43e0-8be0-e06fb427ab23}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is less than the greater value
 
 .. <legal notes>
@@ -370,8 +354,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -398,8 +381,7 @@ END_IF
     <Method Name="valueIsMax" Id="{e1954234-e88d-495e-aebb-adf539b494bb}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is less than or equal to the maximum value
 
 .. <legal notes>
@@ -414,8 +396,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -442,8 +423,7 @@ END_IF
     <Method Name="valueIsMin" Id="{e234b0d6-fff0-447a-9b24-0cfdbca2add1}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is greater than or equal to the minimum value
 
 .. <legal notes>
@@ -458,8 +438,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -486,8 +465,7 @@ END_IF
     <Method Name="valueIsNotEqualTo" Id="{75c749a8-5a23-45bd-b6b5-80fbd9ad34fc}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if the current value is not equal to the unexpected value
 
 .. <legal notes>
@@ -502,8 +480,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 

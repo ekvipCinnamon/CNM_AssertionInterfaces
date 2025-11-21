@@ -1,0 +1,3577 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <POU Name="UTF16StringAssertionTests" Id="{82201dc5-df55-43be-a0bc-100bf8c95ead}" SpecialFunc="None">
+    <Declaration><![CDATA[
+(*
+short summary
+==================
+This class tests all methods of UTF-16 string assertions
+with various combinations of inputs as ASCII characters and checks expected 
+outputs are satisfied or not
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+methods and properties
+======================
+
+*)
+
+
+FUNCTION_BLOCK UTF16StringAssertionTests EXTENDS AbstractAssertorTest
+VAR
+	
+END_VAR
+VAR CONSTANT
+	(* prefix to unify the test names *)
+	TEST_NAME_PREFIX :STRING := 'assert.string.utf16.';
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[THIS^.runIsEmpty();
+THIS^.runIsNotEmpty();
+THIS^.runContains();
+THIS^.runContainsNo();
+THIS^.runEndsWith();
+THIS^.runStartsWith();
+THIS^.runIsEqualTo();
+THIS^.runIsNotEqualTo();
+THIS^.runLengthIsBetween();
+THIS^.runLengthIsExact();
+THIS^.runLengthIsMax();
+THIS^.runLengthIsMin();
+]]></ST>
+    </Implementation>
+    <Folder Name="contains" Id="{5d9db644-487d-43b4-b9b8-fcc78a123292}">
+      <Folder Name="ignoreCase" Id="{978f89b6-938a-4b27-8a09-f13836d64a97}" />
+    </Folder>
+    <Folder Name="containsNo" Id="{2644a1ec-db15-466b-ad9d-d9a437d56c40}">
+      <Folder Name="ignoreCase" Id="{5aec3585-acb7-40c1-8d64-13e85ab92bb1}" />
+    </Folder>
+    <Folder Name="endsWith" Id="{6fd5736e-bafb-4259-9d4e-b54a234491db}">
+      <Folder Name="ignoreCase" Id="{cfc53f5a-71a7-429f-9b40-a91bc3005eed}" />
+      <Folder Name="trim" Id="{0d9d5ca5-6192-4331-9036-99d0196c72ef}" />
+    </Folder>
+    <Folder Name="internal" Id="{17456506-0c41-40bb-a70c-def70cdf6104}" />
+    <Folder Name="isEmpty" Id="{c9dec112-dc4f-42d2-b303-cd272de58cdb}" />
+    <Folder Name="isEqualTo" Id="{4f87a4ac-25f8-4f82-ac4a-652455628180}">
+      <Folder Name="ignoreCase" Id="{78d94f68-8f44-4cef-be1e-64d6336a3bab}" />
+    </Folder>
+    <Folder Name="isNotEmpty" Id="{7226309d-eb1d-4af0-b386-bfd167c6d3c2}" />
+    <Folder Name="isNotEqualTo" Id="{0f47cdec-927d-44c8-b78d-70e803a3f08f}">
+      <Folder Name="ignoreCase" Id="{26b69050-3e96-4831-b120-adc0c4c7b554}" />
+    </Folder>
+    <Folder Name="lengthIsBetween" Id="{431f138c-803b-4e8c-9cde-d11b24565566}" />
+    <Folder Name="lengthIsExact" Id="{9964b371-46e8-48f8-8fa3-7f3c5736ec07}" />
+    <Folder Name="lengthIsMax" Id="{1298be38-372c-4fd2-9833-0d82ac0d553f}" />
+    <Folder Name="lengthIsMin" Id="{c99d2f5a-d07b-4510-b80d-626b9d04dcce}" />
+    <Folder Name="startsWith" Id="{4aaa4940-9ab8-46f8-9786-cc382c4d9e95}">
+      <Folder Name="ignoreCase" Id="{e33ca805-9d2a-4ee9-9dd3-06a8d0ba4c7b}" />
+      <Folder Name="trim" Id="{92a26a2d-da99-4a51-9ebc-35ff15f2448d}" />
+    </Folder>
+    <Method Name="getTestNameFor" Id="{899358c6-73d8-4432-8a27-7d2d1e5322e1}" FolderPath="internal\">
+      <Declaration><![CDATA[(*
+
+short summary
+==================
+This test method is a helper function to create a unified test name
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+parameters
+==========
+
+*)
+
+METHOD PROTECTED getTestNameFor :Tc2_System.T_MaxString
+VAR_INPUT
+	(* name of the method to test, to create a unified test name *)
+	nameOfMethodToTest	:Tc2_System.T_MaxString;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[getTestNameFor := Tc2_Standard.CONCAT(THIS^.TEST_NAME_PREFIX, nameOfMethodToTest);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runContains" Id="{7ef8c896-bd51-4dc1-9ebd-e7bedeabf834}" FolderPath="contains\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.contains``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runContains : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('contains')));
+
+THIS^.testContains(
+	stringToTest := "",
+	expectedString := ""
+);
+THIS^.testContains(
+	stringToTest := "not empty",
+	expectedString := ""
+);
+THIS^.testContains(
+	stringToTest := "",
+	expectedString := "not empty"
+);
+THIS^.testContains(
+	stringToTest := "not empty",
+	expectedString := "not empty"
+);
+THIS^.testContains(
+	stringToTest := "{|}~",
+	expectedString := "3649213469328"
+);
+THIS^.testContains(
+	stringToTest := "1one!",
+	expectedString := "1"
+);
+THIS^.testContains(
+	stringToTest := "1one!",
+	expectedString := "one"
+);
+THIS^.testContains(
+	stringToTest := "1one!",
+	expectedString := "!"
+);
+THIS^.testContains(
+	stringToTest := "$0040$n$t$$$'$"",
+	expectedString := "$n$t"
+);
+THIS^.testContains(
+	stringToTest := "frontmiddleback",
+	expectedString := "back"
+);
+THIS^.testContains(
+	stringToTest := "frontmiddleback",
+	expectedString := "frontmiddlebackfront"
+);
+THIS^.testContains(
+	stringToTest := "backfrontmiddle",
+	expectedString := "backmiddle"
+);
+THIS^.testContains(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedString := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y"
+);
+THIS^.testContains(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedString := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)x"
+);
+
+THIS^.testContainsIgnoreCase(
+	stringToTest := "UPPERCASE",
+	expectedString := "CASE"
+);
+THIS^.testContainsIgnoreCase(
+	stringToTest := "lowercase",
+	expectedString := "case"
+);
+THIS^.testContainsIgnoreCase(
+	stringToTest := "UPPERCASE",
+	expectedString := "case"
+);
+THIS^.testContainsIgnoreCase(
+	stringToTest := "lowercase",
+	expectedString := "CASE"
+);
+THIS^.testContainsIgnoreCase(
+	stringToTest := "lower",
+	expectedString := "UPPER"
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runContainsNo" Id="{cc28c9e7-68ab-4467-9bab-2b5066e53764}" FolderPath="containsNo\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.containsNo``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runContainsNo : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('containsNo')));
+
+THIS^.testContainsNo(
+	stringToTest := "",
+	expectedString := ""
+);
+THIS^.testContainsNo(
+	stringToTest := "not empty",
+	expectedString := ""
+);
+THIS^.testContainsNo(
+	stringToTest := "",
+	expectedString := "not empty"
+);
+THIS^.testContainsNo(
+	stringToTest := "not empty",
+	expectedString := "not empty"
+);
+THIS^.testContainsNo(
+	stringToTest := "{|}~",
+	expectedString := "3649213469328"
+);
+THIS^.testContainsNo(
+	stringToTest := "1one!",
+	expectedString := "1"
+);
+THIS^.testContainsNo(
+	stringToTest := "1one!",
+	expectedString := "one"
+);
+THIS^.testContainsNo(
+	stringToTest := "1one!",
+	expectedString := "!"
+);
+THIS^.testContainsNo(
+	stringToTest := "$0040$n$t$$$'$"",
+	expectedString := "$n$t"
+);
+THIS^.testContainsNo(
+	stringToTest := "frontmiddleback",
+	expectedString := "back"
+);
+THIS^.testContainsNo(
+	stringToTest := "frontmiddleback",
+	expectedString := "frontmiddlebackfront"
+);
+THIS^.testContainsNo(
+	stringToTest := "backfrontmiddle",
+	expectedString := "backmiddle"
+);
+THIS^.testContainsNo(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedString := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y"
+);
+THIS^.testContainsNo(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedString := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)x"
+);
+
+THIS^.testContainsNoIgnoreCase(
+	stringToTest := "UPPERCASE",
+	expectedString := "CASE"
+);
+THIS^.testContainsNoIgnoreCase(
+	stringToTest := "lowercase",
+	expectedString := "case"
+);
+THIS^.testContainsNoIgnoreCase(
+	stringToTest := "UPPERCASE",
+	expectedString := "case"
+);
+THIS^.testContainsNoIgnoreCase(
+	stringToTest := "lowercase",
+	expectedString := "CASE"
+);
+THIS^.testContainsNoIgnoreCase(
+	stringToTest := "lower",
+	expectedString := "UPPER"
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runEndsWith" Id="{b06cc59c-b7b6-4f24-af19-68ef8d47354a}" FolderPath="endsWith\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.endsWith``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runEndsWith : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('endsWith')));
+
+////////////////Crashing TESTS///////////////
+(* 
+crashes if:
+	- end <> ''
+		-> ERROR in lib
+*)
+////////////////////////////////////////////
+
+THIS^.testEndsWith(
+	stringToTest := "",
+	expectedString := ""
+);
+THIS^.testEndsWith(
+	stringToTest := "",
+	expectedString := "not empty"
+);
+THIS^.testEndsWith(
+	stringToTest := "not empty",
+	expectedString := ""
+);
+THIS^.testEndsWith(
+	stringToTest := "not empty",
+	expectedString := "not empty"
+);
+THIS^.testEndsWith(
+	stringToTest := "{|}~",
+	expectedString := "3649213469328"
+);
+THIS^.testEndsWith(
+	stringToTest := "1one!",
+	expectedString := "1"
+);
+THIS^.testEndsWith(
+	stringToTest := "1one!",
+	expectedString := "one"
+);
+THIS^.testEndsWith(
+	stringToTest := "1one!",
+	expectedString := "!"
+);
+THIS^.testEndsWith(
+	stringToTest := "$0040$n$t$$$'$"",
+	expectedString := "$n$t"
+);
+THIS^.testEndsWith(
+	stringToTest := "$0040$$$'$"$n$t",
+	expectedString := "$n$t"
+);
+THIS^.testEndsWith(
+	stringToTest := "frontmiddleback",
+	expectedString := "back"
+);
+THIS^.testEndsWith(
+	stringToTest := "frontmiddleback",
+	expectedString := "frontmiddlebackfront"
+);
+THIS^.testEndsWith(
+	stringToTest := "backfrontmiddle",
+	expectedString := "backmiddle"
+);
+THIS^.testEndsWith(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedString := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y"
+);
+THIS^.testEndsWith(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedString := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)x"
+);
+
+THIS^.testEndsWithIgnoreCase(
+	stringToTest := "UPPERCASE",
+	expectedString := "CASE"
+);
+THIS^.testEndsWithIgnoreCase(
+	stringToTest := "lowercase",
+	expectedString := "case"
+);
+THIS^.testEndsWithIgnoreCase(
+	stringToTest := "UPPERCASE",
+	expectedString := "case"
+);
+THIS^.testEndsWithIgnoreCase(
+	stringToTest := "lowercase",
+	expectedString := "CASE"
+);
+THIS^.testEndsWithIgnoreCase(
+	stringToTest := "lower",
+	expectedString := "UPPER"
+);
+
+THIS^.testEndsWithTrim(
+	stringToTest := "frontmiddleback$t",
+	expectedString := "back"
+);
+THIS^.testEndsWithTrim(
+	stringToTest := "frontmiddleback",
+	expectedString := "back$t"
+);
+THIS^.testEndsWithTrim(
+	stringToTest := "frontmiddleback$0020",
+	expectedString := "back"
+);
+THIS^.testEndsWithTrim(
+	stringToTest := "frontmiddleback",
+	expectedString := "back$0020"
+);
+THIS^.testEndsWithTrim(
+	stringToTest := "frontmiddleback$t$n$r$p$l",
+	expectedString := "back$r$t$n$l$p$0020"
+);
+THIS^.testEndsWithTrim(
+	stringToTest := "frontmiddleback$t$n$r$p$l",
+	expectedString := "back$t$n$r$p$l$0020"
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runIsEmpty" Id="{3daf2a5f-f07d-4bdf-ab4a-90b525c43e45}" FolderPath="isEmpty\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.IsEmpty``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runIsEmpty : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('IsEmpty')));
+
+THIS^.testIsEmpty(
+	stringToTest := ""
+);
+THIS^.testIsEmpty(
+	stringToTest := "not empty"
+);
+THIS^.testIsEmpty(
+	stringToTest := "{|}~"
+);
+THIS^.testIsEmpty(
+	stringToTest := "3649213469328"
+);
+THIS^.testIsEmpty(
+	stringToTest := "1one!"
+);
+THIS^.testIsEmpty(
+	stringToTest := "$0040$n$t$$$'$""
+);
+THIS^.testIsEmpty(
+	stringToTest := "$n$t"
+);
+THIS^.testIsEmpty(
+	stringToTest := "frontmiddleback"
+);
+THIS^.testIsEmpty(
+	stringToTest := "backfrontmiddle"
+);
+THIS^.testIsEmpty(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y"
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runIsEqualTo" Id="{27ab0b63-c151-4c3d-b133-ae5f3fe85a40}" FolderPath="isEqualTo\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.isEqualTo``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runIsEqualTo : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('isEqualTo')));
+
+THIS^.testisEqualTo(
+	stringToTest := "",
+	expectedString := ""
+);
+THIS^.testisEqualTo(
+	stringToTest := "not empty",
+	expectedString := ""
+);
+THIS^.testisEqualTo(
+	stringToTest := "",
+	expectedString := "not empty"
+);
+THIS^.testisEqualTo(
+	stringToTest := "not empty",
+	expectedString := "not"
+);
+THIS^.testisEqualTo(
+	stringToTest := "not empty",
+	expectedString := "not empty"
+);
+THIS^.testisEqualTo(
+	stringToTest := "{|}~",
+	expectedString := "3649213469328"
+);
+THIS^.testisEqualTo(
+	stringToTest := "1one!",
+	expectedString := "1one"
+);
+THIS^.testisEqualTo(
+	stringToTest := "1one!",
+	expectedString := "1one!"
+);
+
+THIS^.testisEqualTo(
+	stringToTest := "$0040$n$t$$$'$"",
+	expectedString := "$n$t"
+);
+THIS^.testisEqualTo(
+	stringToTest := "$0040$n$t$$$'$"",
+	expectedString := "$0040$n$t$$$'$""
+);
+THIS^.testisEqualTo(
+	stringToTest := "frontmiddleback",
+	expectedString := "back"
+);
+THIS^.testisEqualTo(
+	stringToTest := "frontmiddleback",
+	expectedString := "frontmiddlebackfront"
+);
+THIS^.testisEqualTo(
+	stringToTest := "backfrontmiddle",
+	expectedString := "backmiddle"
+);
+THIS^.testisEqualTo(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedString := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y"
+);
+THIS^.testisEqualTo(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedString := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)x"
+);
+
+THIS^.testisEqualToIgnoreCase(
+	stringToTest := "UPPERCASE",
+	expectedString := "UPPERCASE"
+);
+THIS^.testisEqualToIgnoreCase(
+	stringToTest := "lowercase",
+	expectedString := "lowercase"
+);
+THIS^.testisEqualToIgnoreCase(
+	stringToTest := "UPPERCASE",
+	expectedString := "lowercase"
+);
+THIS^.testisEqualToIgnoreCase(
+	stringToTest := "lowercase",
+	expectedString := "UPPERCASE"
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runIsNotEmpty" Id="{9b76a988-3ffa-4cc0-a530-78c179efc1c9}" FolderPath="isNotEmpty\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.IsNotEmpty``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runIsNotEmpty : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('IsNotEmpty')));
+
+THIS^.testIsNotEmpty(
+	stringToTest := ""
+);
+THIS^.testIsNotEmpty(
+	stringToTest := "not empty"
+);
+THIS^.testIsNotEmpty(
+	stringToTest := "{|}~"
+);
+THIS^.testIsNotEmpty(
+	stringToTest := "3649213469328"
+);
+THIS^.testIsNotEmpty(
+	stringToTest := "1one!"
+);
+THIS^.testIsNotEmpty(
+	stringToTest := "$0040$n$t$$$'$""
+);
+THIS^.testIsNotEmpty(
+	stringToTest := "$n$t"
+);
+THIS^.testIsNotEmpty(
+	stringToTest := "frontmiddleback"
+);
+THIS^.testIsNotEmpty(
+	stringToTest := "backfrontmiddle"
+);
+THIS^.testIsNotEmpty(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y"
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runIsNotEqualTo" Id="{79e47ff4-6164-4425-8f25-cbd5af412487}" FolderPath="isNotEqualTo\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.isNotEqualTo``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runIsNotEqualTo : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('isNotEqualTo')));
+
+THIS^.testisNotEqualTo(
+	stringToTest := "",
+	expectedString := ""
+);
+THIS^.testisNotEqualTo(
+	stringToTest := "not empty",
+	expectedString := ""
+);
+THIS^.testisNotEqualTo(
+	stringToTest := "",
+	expectedString := "not empty"
+);
+THIS^.testisNotEqualTo(
+	stringToTest := "not empty",
+	expectedString := "not"
+);
+THIS^.testisNotEqualTo(
+	stringToTest := "not empty",
+	expectedString := "not empty"
+);
+THIS^.testisNotEqualTo(
+	stringToTest := "{|}~",
+	expectedString := "3649213469328"
+);
+THIS^.testisNotEqualTo(
+	stringToTest := "1one!",
+	expectedString := "1one"
+);
+THIS^.testisNotEqualTo(
+	stringToTest := "1one!",
+	expectedString := "1one!"
+);
+
+THIS^.testisNotEqualTo(
+	stringToTest := "$0040$n$t$$$'$"",
+	expectedString := "$n$t"
+);
+THIS^.testisNotEqualTo(
+	stringToTest := "$0040$n$t$$$'$"",
+	expectedString := "$0040$n$t$$$'$""
+);
+THIS^.testisNotEqualTo(
+	stringToTest := "frontmiddleback",
+	expectedString := "back"
+);
+THIS^.testisNotEqualTo(
+	stringToTest := "frontmiddleback",
+	expectedString := "frontmiddlebackfront"
+);
+THIS^.testisNotEqualTo(
+	stringToTest := "backfrontmiddle",
+	expectedString := "backmiddle"
+);
+THIS^.testisNotEqualTo(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedString := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y"
+);
+THIS^.testisNotEqualTo(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedString := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)x"
+);
+
+THIS^.testisNotEqualToIgnoreCase(
+	stringToTest := "UPPERCASE",
+	expectedString := "UPPERCASE"
+);
+THIS^.testisNotEqualToIgnoreCase(
+	stringToTest := "lowercase",
+	expectedString := "lowercase"
+);
+THIS^.testisNotEqualToIgnoreCase(
+	stringToTest := "UPPERCASE",
+	expectedString := "lowercase"
+);
+THIS^.testisNotEqualToIgnoreCase(
+	stringToTest := "lowercase",
+	expectedString := "UPPERCASE"
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runLengthIsBetween" Id="{111e4c12-84f2-41d9-835e-9c89de015a3b}" FolderPath="lengthIsBetween\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.lengthIsBetween``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runLengthIsBetween : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('lengthIsBetween')));
+
+THIS^.testLengthIsBetween(
+	stringToTest := "",
+	maxLength := 3,
+	minLength := 0
+);
+THIS^.testLengthIsBetween(
+	stringToTest := "",
+	maxLength := 3,
+	minLength := 1
+);
+THIS^.testLengthIsBetween(
+	stringToTest := "not empty",
+	maxLength := 9,
+	minLength := 0
+);
+THIS^.testLengthIsBetween(
+	stringToTest := "not empty",
+	maxLength := 3,
+	minLength := 3
+);
+THIS^.testLengthIsBetween(
+	stringToTest := "{|}~",
+	maxLength := 3,
+	minLength := 3
+);
+THIS^.testLengthIsBetween(
+	stringToTest := "{|}~",
+	maxLength := 3,
+	minLength := 4
+);
+THIS^.testLengthIsBetween(
+	stringToTest := "1one!",
+	maxLength := 5,
+	minLength := 4
+);
+THIS^.testLengthIsBetween(
+	stringToTest := "1one!",
+	maxLength := 4,
+	minLength := 3
+);
+THIS^.testLengthIsBetween(
+	stringToTest := "$0040$n$t$$$'$"",
+	maxLength := 6,
+	minLength := 3
+);
+THIS^.testLengthIsBetween(
+	stringToTest := "$0040$n$t$$$'$"",
+	maxLength := 10,
+	minLength := 7
+);
+THIS^.testLengthIsBetween(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	maxLength := 255,
+	minLength := 7
+);
+THIS^.testLengthIsBetween(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	maxLength := 254,
+	minLength := 7
+);
+THIS^.testLengthIsBetween(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	maxLength := 255,
+	minLength := 255
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runLengthIsExact" Id="{afe882a3-2121-4cfa-8284-f8996562caac}" FolderPath="lengthIsExact\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.lengthIsExact``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runLengthIsExact : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('lengthIsExact')));
+
+THIS^.testLengthIsExact(
+	stringToTest := "",
+	expectedLength := 0
+);
+THIS^.testLengthIsExact(
+	stringToTest := "",
+	expectedLength := 1
+);
+THIS^.testLengthIsExact(
+	stringToTest := "not empty",
+	expectedLength := 9
+);
+THIS^.testLengthIsExact(
+	stringToTest := "not empty",
+	expectedLength := 8
+);
+THIS^.testLengthIsExact(
+	stringToTest := "not empty",
+	expectedLength := 10
+);
+THIS^.testLengthIsExact(
+	stringToTest := "{|}~",
+	expectedLength := 4
+);
+THIS^.testLengthIsExact(
+	stringToTest := "{|}~",
+	expectedLength := 40
+);
+THIS^.testLengthIsExact(
+	stringToTest := "1one!",
+	expectedLength := 5
+);
+THIS^.testLengthIsExact(
+	stringToTest := "1one!",
+	expectedLength := 6
+);
+THIS^.testLengthIsExact(
+	stringToTest := "$0040$n$t$$$'$"",
+	expectedLength := 6
+);
+THIS^.testLengthIsExact(
+	stringToTest := "$0040$n$t$$$'$"",
+	expectedLength := 7
+);
+THIS^.testLengthIsExact(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedLength := 255
+);
+THIS^.testLengthIsExact(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedLength := 254
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runLengthIsMax" Id="{4305b7b8-290e-4e9e-ad00-6e79c1d0f25a}" FolderPath="lengthIsMax\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.lengthIsMax``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runLengthIsMax : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('lengthIsMax')));
+
+THIS^.testLengthIsMax(
+	stringToTest := "",
+	expectedLength := 0
+);
+THIS^.testLengthIsMax(
+	stringToTest := "",
+	expectedLength := 1
+);
+THIS^.testLengthIsMax(
+	stringToTest := "not empty",
+	expectedLength := 9
+);
+THIS^.testLengthIsMax(
+	stringToTest := "not empty",
+	expectedLength := 8
+);
+THIS^.testLengthIsMax(
+	stringToTest := "not empty",
+	expectedLength := 10
+);
+THIS^.testLengthIsMax(
+	stringToTest := "{|}~",
+	expectedLength := 4
+);
+THIS^.testLengthIsMax(
+	stringToTest := "{|}~",
+	expectedLength := 40
+);
+THIS^.testLengthIsMax(
+	stringToTest := "{|}~",
+	expectedLength := 3
+);
+THIS^.testLengthIsMax(
+	stringToTest := "1one!",
+	expectedLength := 5
+);
+THIS^.testLengthIsMax(
+	stringToTest := "1one!",
+	expectedLength := 4
+);
+THIS^.testLengthIsMax(
+	stringToTest := "$0040$n$t$$$'$"",
+	expectedLength := 6
+);
+THIS^.testLengthIsMax(
+	stringToTest := "$0040$n$t$$$'$"",
+	expectedLength := 5
+);
+THIS^.testLengthIsMax(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedLength := 255
+);
+THIS^.testLengthIsMax(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedLength := 254
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runLengthIsMin" Id="{9f8ea97b-2967-4770-b1c1-b1f108ccb635}" FolderPath="lengthIsMin\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.lengthIsMin``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runLengthIsMin : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('lengthIsMin')));
+
+THIS^.testLengthIsMin(
+	stringToTest := "",
+	expectedLength := 0
+);
+THIS^.testLengthIsMin(
+	stringToTest := "",
+	expectedLength := 1
+);
+THIS^.testLengthIsMin(
+	stringToTest := "not empty",
+	expectedLength := 9
+);
+THIS^.testLengthIsMin(
+	stringToTest := "not empty",
+	expectedLength := 8
+);
+THIS^.testLengthIsMin(
+	stringToTest := "not empty",
+	expectedLength := 10
+);
+THIS^.testLengthIsMin(
+	stringToTest := "{|}~",
+	expectedLength := 4
+);
+THIS^.testLengthIsMin(
+	stringToTest := "{|}~",
+	expectedLength := 40
+);
+THIS^.testLengthIsMin(
+	stringToTest := "{|}~",
+	expectedLength := 3
+);
+THIS^.testLengthIsMin(
+	stringToTest := "1one!",
+	expectedLength := 5
+);
+THIS^.testLengthIsMin(
+	stringToTest := "1one!",
+	expectedLength := 6
+);
+THIS^.testLengthIsMin(
+	stringToTest := "$0040$n$t$$$'$"",
+	expectedLength := 6
+);
+THIS^.testLengthIsMin(
+	stringToTest := "$0040$n$t$$$'$"",
+	expectedLength := 7
+);
+THIS^.testLengthIsMin(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedLength := 255
+);
+THIS^.testLengthIsMin(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedLength := 254
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="runStartsWith" Id="{9c7e2077-0522-4600-b2fc-b1adfccfaadc}" FolderPath="startsWith\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.startsWith``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD runStartsWith : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (NOT TcUnit.TEST_ORDERED(THIS^.getTestNameFor('startsWith')));
+
+////////////////FAILING TESTS///////////////
+(* 
+-> SEE: ISSUE: #4 (https://ekv-app-git-p01.ekvip.de/CNMTC3/cnm4026/cnm4026-assertion-interface-lib/-/issues/4)
+*)
+////////////////////////////////////////////
+
+THIS^.testStartsWith(
+	stringToTest := "",
+	expectedString := ""
+);
+THIS^.testStartsWith(
+	stringToTest := "not empty",
+	expectedString := ""
+);
+THIS^.testStartsWith(
+	stringToTest := "",
+	expectedString := "not empty"
+);
+THIS^.testStartsWith(
+	stringToTest := "not empty",
+	expectedString := "not empty"
+);
+THIS^.testStartsWith(
+	stringToTest := "{|}~",
+	expectedString := "3649213469328"
+);
+THIS^.testStartsWith(
+	stringToTest := "1one!",
+	expectedString := "1"
+);
+THIS^.testStartsWith(
+	stringToTest := "1one!",
+	expectedString := "one"
+);
+THIS^.testStartsWith(
+	stringToTest := "1one!",
+	expectedString := "!"
+);
+THIS^.testStartsWith(
+	stringToTest := "$0040$n$t$$$'$"",
+	expectedString := "$n$t"
+);
+THIS^.testStartsWith(
+	stringToTest := "$n$t$0040$$$'$"",
+	expectedString := "$n$t"
+);
+THIS^.testStartsWith(
+	stringToTest := "frontmiddleback",
+	expectedString := "front"
+);
+THIS^.testStartsWith(
+	stringToTest := "frontmiddleback",
+	expectedString := "frontmiddlebackfront"
+);
+THIS^.testStartsWith(
+	stringToTest := "backfrontmiddle",
+	expectedString := "backmiddle"
+);
+THIS^.testStartsWith(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedString := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y"
+);
+THIS^.testStartsWith(
+	stringToTest := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)y",
+	expectedString := "J;%_iTxQSk?6GfWewt}yMKh1)VXqPA@P1YQ:{EAg:8VJ,/FM;j)xJ[[AvYp/}}SzEgtfYS,1K0.5VtA+VJrB(p#55h2z##mw#F)Y@P6Jz9G@6vb=x#E!cYk(Svr@S*KiPJr1VZ6AjrNback4G=vBJd.E:=,k3!wmuGDe#ZKMD#Vx%?M_0&L0#vT]J,+)ZvU{w%8X0=:XzthmT0VG0QrwpXXCWpFxu6[b!c.BunYYfLQi.,?ut?-{jrC1phTHL)x"
+);
+
+THIS^.testStartsWithIgnoreCase(
+	stringToTest := "UPPERCASE",
+	expectedString := "UPPER"
+);
+THIS^.testStartsWithIgnoreCase(
+	stringToTest := "lowercase",
+	expectedString := "lower"
+);
+THIS^.testStartsWithIgnoreCase(
+	stringToTest := "UPPERCASE",
+	expectedString := "upper"
+);
+THIS^.testStartsWithIgnoreCase(
+	stringToTest := "lowercase",
+	expectedString := "LOWER"
+);
+THIS^.testStartsWithIgnoreCase(
+	stringToTest := "lower",
+	expectedString := "UPPER"
+);
+
+THIS^.testStartsWithTrim(
+	stringToTest := "$tfrontmiddleback",
+	expectedString := "front"
+);
+THIS^.testStartsWithTrim(
+	stringToTest := "frontmiddleback",
+	expectedString := "$tfront"
+);
+THIS^.testStartsWithTrim(
+	stringToTest := "$0020frontmiddleback",
+	expectedString := "front"
+);
+THIS^.testStartsWithTrim(
+	stringToTest := "frontmiddleback",
+	expectedString := "$0020front"
+);
+THIS^.testStartsWithTrim(
+	stringToTest := "$t$n$r$p$lfrontmiddleback",
+	expectedString := "$0020$r$t$n$l$pfront"
+);
+THIS^.testStartsWithTrim(
+	stringToTest := "$t$n$r$p$lfrontmiddleback",
+	expectedString := "$0020$t$n$r$p$lfront"
+);
+
+TcUnit.TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testContains" Id="{a36054e7-82c2-4663-8a02-861b201893fb}" FolderPath="contains\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.contains``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testContains : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``searchString`` *)
+	expectedString 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString	:Tc2_System.T_MaxString;
+	(* WString value of ´´searchString´´ as string *)
+	expectedStringAsString	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := ((
+		Tc2_Standard.WFIND(
+			stringToTest,
+			expectedString
+		) = 0
+	) AND (
+		Tc2_Standard.WLEN(
+			expectedString
+		) <> 0
+	)
+);
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' searchString is $'%s$' assertion must be TRUE', 
+	'stringToCheck is $'%s$' searchString is $'%s$' assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(expectedStringAsString), ADR(expectedString),SIZEOF(expectedStringAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+IF (
+		Tc2_Standard.WLEN(expectedString) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	expectedStringAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedStringAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.contains(
+	stringToCheck := stringToTest,
+	searchString := expectedString,
+	ignoreCases := FALSE,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testContainsIgnoreCase" Id="{1d9908c4-3233-4b72-bde8-845b0ceb5274}" FolderPath="contains\ignoreCase\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.contains``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testContainsIgnoreCase : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``searchString`` *)
+	expectedString 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* contains ´´stringToTest´´ in upper case *)
+	upperStringToTest		:WSTRING(Tc2_System.MAX_STRING_LENGTH) := stringToTest;
+	(* contains ´´expectedString´´ in upper case *)
+	upperExpectedString		:WSTRING(Tc2_System.MAX_STRING_LENGTH) := expectedString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* WString value of ´´searchString´´ as string *)
+	expectedStringAsString 	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+// both Strings to upper case
+CNM_UnicodeUtilities.GetUpperCaseUtf16(ADR(upperStringToTest));
+CNM_UnicodeUtilities.GetUpperCaseUtf16(ADR(upperExpectedString));
+
+assertionIsWrong := ((
+		Tc2_Standard.WFIND(
+			upperStringToTest,
+			upperExpectedString
+		) = 0
+	) AND (
+		Tc2_Standard.WLEN(
+			upperExpectedString
+		) <> 0
+	)
+);
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' searchString is $'%s$' assertion must be TRUE', 
+	'stringToCheck is $'%s$' searchString is $'%s$' assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(expectedStringAsString), ADR(expectedString),SIZEOF(expectedStringAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+IF (
+		Tc2_Standard.WLEN(expectedString) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	expectedStringAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedStringAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.contains(
+	stringToCheck := stringToTest,
+	searchString := expectedString,
+	ignoreCases := TRUE,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testContainsNo" Id="{132b1971-ba69-485b-803c-5584eb473cb9}" FolderPath="containsNo\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.containsNo``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testContainsNo : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``searchString`` *)
+	expectedString 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* WString value of ´´searchString´´ as string *)
+	expectedStringAsString 	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := ((
+		Tc2_Standard.WFIND(
+			stringToTest,
+			expectedString
+		) > 0
+	) OR (
+		WLEN(
+			expectedString
+		) = 0
+	)
+);
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' searchString is $'%s$' assertion must be TRUE', 
+	'stringToCheck is $'%s$' searchString is $'%s$' assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(expectedStringAsString), ADR(expectedString),SIZEOF(expectedStringAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+IF (
+		Tc2_Standard.WLEN(expectedString) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	expectedStringAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedStringAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.containsNo(
+	stringToCheck := stringToTest,
+	searchString := expectedString,
+	ignoreCases := FALSE,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testContainsNoIgnoreCase" Id="{e0808785-5609-4fe8-af72-c3930547a66e}" FolderPath="containsNo\ignoreCase\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.containsNo``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testContainsNoIgnoreCase : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``searchString`` *)
+	expectedString 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* contains ´´stringToTest´´ in upper case *)
+	upperStringToTest		:WSTRING(Tc2_System.MAX_STRING_LENGTH) := stringToTest;
+	(* contains ´´expectedString´´ in upper case *)
+	upperExpectedString		:WSTRING(Tc2_System.MAX_STRING_LENGTH) := expectedString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* WString value of ´´searchString´´ as string *)
+	expectedStringAsString	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+// both Strings to upper case
+CNM_UnicodeUtilities.GetUpperCaseUtf16(ADR(upperStringToTest));
+CNM_UnicodeUtilities.GetUpperCaseUtf16(ADR(upperExpectedString));
+
+assertionIsWrong := ((
+		Tc2_Standard.WFIND(
+			upperStringToTest,
+			upperExpectedString
+		) > 0
+	) OR (
+		WLEN(
+			upperExpectedString
+		) = 0
+	)
+);
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' searchString is $'%s$' assertion must be TRUE', 
+	'stringToCheck is $'%s$' searchString is $'%s$' assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(expectedStringAsString), ADR(expectedString),SIZEOF(expectedStringAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+IF (
+		Tc2_Standard.WLEN(expectedString) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	expectedStringAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedStringAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.containsNo(
+	stringToCheck := stringToTest,
+	searchString := expectedString,
+	ignoreCases := TRUE,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testEndsWith" Id="{d691bb54-9f78-4061-8958-7f74c5eca4d1}" FolderPath="endsWith\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.endsWith``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testEndsWith : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``end`` *)
+	expectedString 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* WString value of ´´end´´ as string *)
+	expectedStringAsString 	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := ((
+		Tc2_Standard.WFIND(
+			WRIGHT(
+				stringToTest,
+				Tc2_Standard.WLEN(expectedString)
+			),
+			expectedString
+		) <> 1
+	) AND (
+		Tc2_Standard.WLEN(
+			expectedString
+		) <> 0
+	)
+);
+
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' end is $'%s$' assertion must be TRUE', 
+	'stringToCheck is $'%s$' end is $'%s$' assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(expectedStringAsString), ADR(expectedString),SIZEOF(expectedStringAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+IF (
+		Tc2_Standard.WLEN(expectedString) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	expectedStringAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedStringAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.endsWith(
+	stringToCheck := stringToTest,
+	end := expectedString,
+	ignoreCases := FALSE,
+	trim := FALSE,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testEndsWithIgnoreCase" Id="{ebe0e9a9-924f-40d9-b9b9-fbe417434328}" FolderPath="endsWith\ignoreCase\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.endsWith``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testEndsWithIgnoreCase : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``end`` *)
+	expectedString 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* contains ´´stringToTest´´ in upper case *)
+	upperStringToTest		:WSTRING(Tc2_System.MAX_STRING_LENGTH) := stringToTest;
+	(* contains ´´expectedString´´ in upper case *)
+	upperExpectedString		:WSTRING(Tc2_System.MAX_STRING_LENGTH) := expectedString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* WString value of ´´end´´ as string *)
+	expectedStringAsString 	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+// both Strings to upper case
+CNM_UnicodeUtilities.GetUpperCaseUtf16(ADR(upperStringToTest));
+CNM_UnicodeUtilities.GetUpperCaseUtf16(ADR(upperExpectedString));
+
+assertionIsWrong := ((
+		Tc2_Standard.WFIND(
+			WRIGHT(
+				upperStringToTest,
+				Tc2_Standard.WLEN(upperExpectedString)
+			),
+			upperExpectedString
+		) <> 1
+	) AND (
+		Tc2_Standard.WLEN(
+			upperExpectedString
+		) <> 0
+	)
+);
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' end is $'%s$' assertion must be TRUE', 
+	'stringToCheck is $'%s$' end is $'%s$' assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(expectedStringAsString), ADR(expectedString),SIZEOF(expectedStringAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+IF (
+		Tc2_Standard.WLEN(expectedString) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	expectedStringAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedStringAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.endsWith(
+	stringToCheck := stringToTest,
+	end := expectedString,
+	ignoreCases := TRUE,
+	trim := FALSE,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testEndsWithTrim" Id="{9bea64c5-a39e-48d5-baad-c6bdd245a99b}" FolderPath="endsWith\trim\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.endsWith``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testEndsWithTrim : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``end`` *)
+	expectedString 		:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* contains trimed ´´stringToTest´´ *)
+	trimedStringToTest		:WSTRING(Tc2_System.MAX_STRING_LENGTH) := stringToTest;
+	(* contains trimed ´´expectedString´´ *)
+	trimedExpectedString	:WSTRING(Tc2_System.MAX_STRING_LENGTH) := expectedString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* WString value of ´´end´´ as string *)
+	expectedStringAsString 	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+// trim the right of both strings
+CNM_UnicodeUtilities.TrimRightUtf16String(ADR(trimedStringToTest));
+CNM_UnicodeUtilities.TrimRightUtf16String(ADR(trimedExpectedString));
+
+assertionIsWrong := ((
+		Tc2_Standard.WFIND(
+			WRIGHT(
+				trimedStringToTest,
+				Tc2_Standard.WLEN(trimedExpectedString)
+			),
+			trimedExpectedString
+		) <> 1
+	) AND (
+		Tc2_Standard.WLEN(
+			trimedExpectedString
+		) <> 0
+	)
+);
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' end is $'%s$' assertion must be TRUE', 
+	'stringToCheck is $'%s$' end is $'%s$' assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(expectedStringAsString), ADR(expectedString),SIZEOF(expectedStringAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+IF (
+		Tc2_Standard.WLEN(expectedString) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	expectedStringAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedStringAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.endsWith(
+	stringToCheck := stringToTest,
+	end := expectedString,
+	ignoreCases := FALSE,
+	trim := TRUE,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testIsEmpty" Id="{e6137900-8f3a-4900-a168-db679640bb86}" FolderPath="isEmpty\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.isEmpty``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testisEmpty : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	stringToTest	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong :=  Tc2_Standard.WLEN(stringToTest) > 0;
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' assertion must be TRUE', 
+	'stringToCheck is $'%s$' assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.isEmpty(
+	stringToCheck := stringToTest,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testIsEqualTo" Id="{bb067b6e-f326-4fb5-9674-beecf51f8418}" FolderPath="isEqualTo\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.isEqualTo``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testIsEqualTo : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``expected`` *)
+	expectedString 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* WString value of ´´expected´´ as string *)
+	expectedStringAsString 	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := ((
+		Tc2_Standard.WLEN(
+			stringToTest
+		) <> Tc2_Standard.WLEN(expectedString)
+	) OR (
+		Tc2_Standard.WFIND(
+			stringToTest,
+			expectedString
+		) <> 1
+	)
+);
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' expected is $'%s$' assertion must be TRUE', 
+	'stringToCheck is $'%s$' expected is $'%s$' assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(expectedStringAsString), ADR(expectedString),SIZEOF(expectedStringAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+IF (
+		Tc2_Standard.WLEN(expectedString) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	expectedStringAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedStringAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.isEqualTo(
+	stringToCheck := stringToTest,
+	expected := expectedString,
+	ignoreCases := FALSE,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testIsEqualToIgnoreCase" Id="{18d0d325-496c-4fee-a7dd-340177a6d7e7}" FolderPath="isEqualTo\ignoreCase\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.isEqualTo``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testIsEqualToIgnoreCase : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``expected`` *)
+	expectedString 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* contains ´´stringToTest´´ in upper case *)
+	upperStringToTest		:WSTRING(Tc2_System.MAX_STRING_LENGTH) := stringToTest;
+	(* contains ´´expectedString´´ in upper case *)
+	upperExpectedString		:WSTRING(Tc2_System.MAX_STRING_LENGTH) := expectedString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* WString value of ´´expected´´ as string *)
+	expectedStringAsString 	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+// both Strings to upper case
+CNM_UnicodeUtilities.GetUpperCaseUtf16(ADR(upperStringToTest));
+CNM_UnicodeUtilities.GetUpperCaseUtf16(ADR(upperExpectedString));
+
+assertionIsWrong := ((
+		Tc2_Standard.WLEN(
+			upperStringToTest
+		) <> Tc2_Standard.WLEN(upperExpectedString)
+	) OR (
+		Tc2_Standard.WFIND(
+			upperStringToTest,
+			upperExpectedString
+		) <> 1
+	)
+);
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' expected is $'%s$' assertion must be TRUE', 
+	'stringToCheck is $'%s$' expected is $'%s$' assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(expectedStringAsString), ADR(expectedString),SIZEOF(expectedStringAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+IF (
+		Tc2_Standard.WLEN(expectedString) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	expectedStringAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedStringAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.isEqualTo(
+	stringToCheck := stringToTest,
+	expected := expectedString,
+	ignoreCases := TRUE,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testIsNotEmpty" Id="{79ee6506-edb9-47f7-be27-3cef3375eaa1}" FolderPath="isNotEmpty\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.isNotEmpty``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testIsNotEmpty : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	stringToTest	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong :=  Tc2_Standard.WLEN(stringToTest) = 0;
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' assertion must be TRUE', 
+	'stringToCheck is $'%s$' assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.isNotEmpty(
+	stringToCheck := stringToTest,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testIsNotEqualTo" Id="{4a8e24ef-4027-498a-978c-69fc1bce234b}" FolderPath="isNotEqualTo\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.isNotEqualTo``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testIsNotEqualTo : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``unexpected`` *)
+	expectedString 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* WString value of ´´unexpected´´ as string *)
+	expectedStringAsString 	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := ((
+		Tc2_Standard.WLEN(
+			stringToTest
+		) = Tc2_Standard.WLEN(expectedString)
+	) AND (
+		Tc2_Standard.WFIND(
+			stringToTest,
+			expectedString
+		) = 1
+	)
+);
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' unexpected is $'%s$' assertion must be TRUE', 
+	'stringToCheck is $'%s$' unexpected is $'%s$' assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(expectedStringAsString), ADR(expectedString),SIZEOF(expectedStringAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+IF (
+		Tc2_Standard.WLEN(expectedString) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	expectedStringAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedStringAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.isNotEqualTo(
+	stringToCheck := stringToTest,
+	unexpected := expectedString,
+	ignoreCases := FALSE,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testIsNotEqualToIgnoreCase" Id="{fe188ec9-9a57-4bfd-ab38-feb21276d67a}" FolderPath="isNotEqualTo\ignoreCase\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.isNotEqualTo``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testIsNotEqualToIgnoreCase : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``unexpected`` *)
+	expectedString 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* contains ´´stringToTest´´ in upper case *)
+	upperStringToTest		:WSTRING(Tc2_System.MAX_STRING_LENGTH) := stringToTest;
+	(* contains ´´expectedString´´ in upper case *)
+	upperExpectedString		:WSTRING(Tc2_System.MAX_STRING_LENGTH) := expectedString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* WString value of ´´unexpected´´ as string *)
+	expectedStringAsString 	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+// both Strings to upper case
+CNM_UnicodeUtilities.GetUpperCaseUtf16(ADR(upperStringToTest));
+CNM_UnicodeUtilities.GetUpperCaseUtf16(ADR(upperExpectedString));
+
+assertionIsWrong := ((
+		Tc2_Standard.WLEN(
+			upperStringToTest
+		) = Tc2_Standard.WLEN(upperExpectedString)
+) AND (
+		Tc2_Standard.WFIND(
+			upperStringToTest,
+			upperExpectedString
+		) = 1
+	)
+);
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' unexpected is $'%s$' assertion must be TRUE', 
+	'stringToCheck is $'%s$' unexpected is $'%s$' assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(expectedStringAsString), ADR(expectedString),SIZEOF(expectedStringAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+IF (
+		Tc2_Standard.WLEN(expectedString) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	expectedStringAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedStringAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.isNotEqualTo(
+	stringToCheck := stringToTest,
+	unexpected := expectedString,
+	ignoreCases := TRUE,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testLengthIsBetween" Id="{f62fd7b1-c9a8-4f1c-8d1f-5bfd509a4a29}" FolderPath="lengthIsBetween\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.lengthIsBetween``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testLengthIsBetween : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``maxLength`` *)
+	maxLength 		:USINT;
+	(* for the test it's the parameter ``minLength`` *)
+	minLength 		:USINT;
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := ((
+		Tc2_Standard.WLEN(
+			stringToTest
+		) < minLength
+	) OR (
+		Tc2_Standard.WLEN(
+				stringToTest
+		) > maxLength
+	)
+);
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' with maxLength %u and minLength %u assertion must be TRUE', 
+	'stringToCheck is $'%s$' with maxLength %u and minLength %u assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(maxLength),
+	arg3 := THIS^.anyToArg(minLength)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.lengthIsBetween(
+	stringToCheck := stringToTest,
+	maxLength := maxLength,
+	minLength := minLength,
+	stringLengthUnit := 1,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testLengthIsExact" Id="{c2c9aa6f-fb5b-4eb8-852e-f839ac61becf}" FolderPath="lengthIsExact\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.lengthIsExact``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testLengthIsExact : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``expectedLength`` *)
+	expectedLength 	:USINT;
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := Tc2_Standard.WLEN(stringToTest) <> expectedLength;
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' expectedLength is %u assertion must be TRUE', 
+	'stringToCheck is $'%s$' expectedLength is %u assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedLength)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.lengthIsExact(
+	stringToCheck := stringToTest,
+	expectedLength := expectedLength,
+	stringLengthUnit := 1,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testLengthIsMax" Id="{343d3276-ac14-4fe1-84fc-f2d15afe4558}" FolderPath="lengthIsMax\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.lengthIsMax``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testLengthIsMax : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``maxLength`` *)
+	expectedLength 	:USINT;
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := Tc2_Standard.WLEN(stringToTest) > expectedLength;
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' maxLength is %u assertion must be TRUE', 
+	'stringToCheck is $'%s$' maxLength is %u assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedLength)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.lengthIsMax(
+	stringToCheck := stringToTest,
+	maxLength := expectedLength,
+	stringLengthUnit := 1,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testLengthIsMin" Id="{e92002e5-e2ff-48fe-9eeb-c6d9b5e9b01c}" FolderPath="lengthIsMin\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.lengthIsMin``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testLengthIsMin : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	{attribute 'TcEncoding' := 'UTF-8'}
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``minLength`` *)
+	expectedLength 	:USINT;
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := Tc2_Standard.WLEN(stringToTest) < expectedLength;
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' minLength is %u assertion must be TRUE', 
+	'stringToCheck is $'%s$' minLength is %u assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedLength)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.lengthIsMin(
+	stringToCheck := stringToTest,
+	minLength := expectedLength,
+	stringLengthUnit := 1,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testStartsWith" Id="{2e2c0012-b3f8-41cc-94fe-14a5fcdb182f}" FolderPath="startsWith\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.startsWith``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testStartsWith : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	{attribute 'TcEncoding' := 'UTF-8'}
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``end`` *)
+	{attribute 'TcEncoding' := 'UTF-8'}
+	expectedString 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* WString value of ´´unexpected´´ as string *)
+	expectedStringAsString 	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+assertionIsWrong := ((
+		Tc2_Standard.WFIND(
+			stringToTest,
+			expectedString
+		) <> 1
+	) AND (
+		Tc2_Standard.WLEN(expectedString
+		) <> 0
+	)
+);
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' end is $'%s$' assertion must be TRUE', 
+	'stringToCheck is $'%s$' end is $'%s$' assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(expectedStringAsString), ADR(expectedString),SIZEOF(expectedStringAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+IF (
+		Tc2_Standard.WLEN(expectedString) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	expectedStringAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedStringAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.startsWith(
+	stringToCheck := stringToTest,
+	start := expectedString,
+	ignoreCases := FALSE,
+	trim := FALSE,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testStartsWithIgnoreCase" Id="{9051c180-ff89-4f18-89ef-79081503d93a}" FolderPath="startsWith\ignoreCase\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.startsWith``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testStartsWithIgnoreCase : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	{attribute 'TcEncoding' := 'UTF-8'}
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``end`` *)
+	{attribute 'TcEncoding' := 'UTF-8'}
+	expectedString 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* contains ´´stringToTest´´ in upper case *)
+	upperStringToTest		:WSTRING(Tc2_System.MAX_STRING_LENGTH) := stringToTest;
+	(* contains ´´expectedString´´ in upper case *)
+	upperExpectedString		:WSTRING(Tc2_System.MAX_STRING_LENGTH) := expectedString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* WString value of ´´unexpected´´ as string *)
+	expectedStringAsString 	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+// both Strings to upper case
+CNM_UnicodeUtilities.GetUpperCaseUtf16(ADR(upperStringToTest));
+CNM_UnicodeUtilities.GetUpperCaseutf16(ADR(upperExpectedString));
+
+assertionIsWrong := ((
+		Tc2_Standard.WFIND(
+			upperStringToTest,
+			upperExpectedString
+		) <> 1
+	) AND (
+		Tc2_Standard.WLEN(
+			upperExpectedString
+		) <> 0
+	)
+);
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' end is $'%s$' assertion must be TRUE', 
+	'stringToCheck is $'%s$' end is $'%s$' assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(expectedStringAsString), ADR(expectedString),SIZEOF(expectedStringAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+IF (
+		Tc2_Standard.WLEN(expectedString) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	expectedStringAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedStringAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.startsWith(
+	stringToCheck := stringToTest,
+	start := expectedString,
+	ignoreCases := TRUE,
+	trim := FALSE,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="testStartsWithTrim" Id="{8eec3bd3-f5c8-4d78-bede-6f36d2548ad7}" FolderPath="startsWith\trim\">
+      <Declaration><![CDATA[(*
+short summary
+==================
+This test method tests ``assert.string.utf16.startsWith``
+method of CNM_AssertionInterfaceLib library with various inputs
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+*)
+
+
+METHOD testStartsWithTrim : BOOL
+VAR_INPUT
+	(* for the test it's the parameter ``stringToCheck`` *)
+	{attribute 'TcEncoding' := 'UTF-8'}
+	stringToTest 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+	(* for the test it's the parameter ``end`` *)
+	{attribute 'TcEncoding' := 'UTF-8'}
+	expectedString 	:WSTRING(Tc2_System.MAX_STRING_LENGTH);
+END_VAR
+VAR 
+	(* just the expectation if the assertion to test must be worng or true *)
+	assertionIsWrong		:BOOL;
+	(* contains the format string for the test message *)
+	message					:Tc2_System.T_MaxString;
+	(* contains trimed ´´stringToTest´´ *)
+	trimedStringToTest		:WSTRING(Tc2_System.MAX_STRING_LENGTH) := stringToTest;
+	(* contains trimed ´´expectedString´´ *)
+	trimedExpectedString	:WSTRING(Tc2_System.MAX_STRING_LENGTH) := expectedString;
+	(* WString value of ´´stringToCheck´´ as string *)
+	stringToTestAsString 	:Tc2_System.T_MaxString;
+	(* WString value of ´´unexpected´´ as string *)
+	expectedStringAsString 	:Tc2_System.T_MaxString;
+	(* TwinCAT printf with the test message *)
+	messageStringBuilder	:Tc2_Utilities.FB_FormatString;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.assertorContainer.resetAssertor();
+
+// trim the left of both strings
+CNM_UnicodeUtilities.TrimLeftUtf16String(ADR(trimedStringToTest));
+CNM_UnicodeUtilities.TrimLeftUtf16String(ADR(trimedExpectedString));
+
+assertionIsWrong := ((
+		Tc2_Standard.WFIND(
+			trimedStringToTest,
+			trimedExpectedString
+		) <> 1
+	) AND (
+		Tc2_Standard.WLEN(
+			trimedExpectedString
+		) <> 0
+	)
+);
+
+message := SEL(
+	assertionIsWrong,
+	'stringToCheck is $'%s$' end is $'%s$' assertion must be TRUE', 
+	'stringToCheck is $'%s$' end is $'%s$' assertion must be FALSE'
+);
+
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(stringToTestAsString), ADR(stringToTest), SIZEOF(stringToTestAsString));
+Tc2_Utilities.WSTRING_TO_STRING2(ADR(expectedStringAsString), ADR(expectedString),SIZEOF(expectedStringAsString));
+
+IF (
+		Tc2_Standard.WLEN(stringTOTest) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	stringToTestAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+IF (
+		Tc2_Standard.WLEN(expectedString) = TO_UINT(Tc2_System.MAX_STRING_LENGTH)
+) THEN
+	expectedStringAsString := 'String with Tc2_System.MAX_STRING_LENGTH characters';
+END_IF
+
+messageStringBuilder(
+	sFormat := message,
+	arg1 := THIS^.anyToArg(stringToTestAsString),
+	arg2 := THIS^.anyToArg(expectedStringAsString)
+);
+
+
+THIS^.assertorContainer.assertor.assert.strings.utf16.startsWith(
+	stringToCheck := stringToTest,
+	start := expectedString,
+	ignoreCases := FALSE,
+	trim := TRUE,
+	message			:= ''
+);
+
+THIS^.AssertEquals_BOOL(
+	Expected 	:= assertionIsWrong,
+	Actual 		:= THIS^.assertorContainer.wasAssertionWrong,
+	Message 	:= messageStringBuilder.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="UTF16StringAssertionTests">
+      <LineId Id="1" Count="11" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.getTestNameFor">
+      <LineId Id="1" Count="1" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.runContains">
+      <LineId Id="1" Count="78" />
+      <LineId Id="82" Count="2" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.runContainsNo">
+      <LineId Id="1" Count="78" />
+      <LineId Id="81" Count="2" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.runEndsWith">
+      <LineId Id="1" Count="107" />
+      <LineId Id="117" Count="3" />
+      <LineId Id="124" Count="2" />
+      <LineId Id="121" Count="2" />
+      <LineId Id="127" Count="0" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.runIsEmpty">
+      <LineId Id="1" Count="31" />
+      <LineId Id="34" Count="1" />
+      <LineId Id="37" Count="0" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.runIsEqualTo">
+      <LineId Id="1" Count="79" />
+      <LineId Id="82" Count="2" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.runIsNotEmpty">
+      <LineId Id="1" Count="31" />
+      <LineId Id="34" Count="1" />
+      <LineId Id="37" Count="0" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.runIsNotEqualTo">
+      <LineId Id="1" Count="79" />
+      <LineId Id="82" Count="2" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.runLengthIsBetween">
+      <LineId Id="1" Count="0" />
+      <LineId Id="10" Count="65" />
+      <LineId Id="78" Count="2" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.runLengthIsExact">
+      <LineId Id="1" Count="0" />
+      <LineId Id="10" Count="52" />
+      <LineId Id="64" Count="2" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.runLengthIsMax">
+      <LineId Id="1" Count="0" />
+      <LineId Id="10" Count="20" />
+      <LineId Id="35" Count="35" />
+      <LineId Id="72" Count="2" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.runLengthIsMin">
+      <LineId Id="1" Count="57" />
+      <LineId Id="60" Count="2" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.runStartsWith">
+      <LineId Id="119" Count="0" />
+      <LineId Id="250" Count="0" />
+      <LineId Id="252" Count="2" />
+      <LineId Id="256" Count="0" />
+      <LineId Id="251" Count="0" />
+      <LineId Id="120" Count="40" />
+      <LineId Id="169" Count="40" />
+      <LineId Id="214" Count="24" />
+      <LineId Id="249" Count="0" />
+      <LineId Id="115" Count="0" />
+      <LineId Id="257" Count="0" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testContains">
+      <LineId Id="1" Count="2" />
+      <LineId Id="53" Count="9" />
+      <LineId Id="4" Count="5" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="13" Count="1" />
+      <LineId Id="44" Count="8" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="22" Count="20" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testContainsIgnoreCase">
+      <LineId Id="1" Count="6" />
+      <LineId Id="66" Count="9" />
+      <LineId Id="8" Count="5" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="47" Count="3" />
+      <LineId Id="62" Count="1" />
+      <LineId Id="51" Count="2" />
+      <LineId Id="64" Count="1" />
+      <LineId Id="54" Count="1" />
+      <LineId Id="57" Count="4" />
+      <LineId Id="31" Count="15" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testContainsNo">
+      <LineId Id="1" Count="2" />
+      <LineId Id="68" Count="9" />
+      <LineId Id="4" Count="5" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="43" Count="2" />
+      <LineId Id="59" Count="8" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="53" Count="5" />
+      <LineId Id="28" Count="14" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testContainsNoIgnoreCase">
+      <LineId Id="1" Count="6" />
+      <LineId Id="71" Count="9" />
+      <LineId Id="8" Count="5" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="46" Count="2" />
+      <LineId Id="62" Count="8" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="56" Count="4" />
+      <LineId Id="31" Count="14" />
+      <LineId Id="61" Count="0" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testEndsWith">
+      <LineId Id="1" Count="1" />
+      <LineId Id="80" Count="12" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="4" Count="6" />
+      <LineId Id="12" Count="3" />
+      <LineId Id="45" Count="8" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="23" Count="21" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testEndsWithIgnoreCase">
+      <LineId Id="1" Count="6" />
+      <LineId Id="58" Count="12" />
+      <LineId Id="8" Count="5" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="49" Count="8" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="26" Count="20" />
+      <LineId Id="48" Count="0" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testEndsWithTrim">
+      <LineId Id="1" Count="3" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="6" Count="1" />
+      <LineId Id="58" Count="12" />
+      <LineId Id="8" Count="5" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="49" Count="8" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="26" Count="20" />
+      <LineId Id="48" Count="0" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testIsEmpty">
+      <LineId Id="1" Count="2" />
+      <LineId Id="5" Count="5" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="38" Count="4" />
+      <LineId Id="19" Count="17" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testIsEqualTo">
+      <LineId Id="1" Count="2" />
+      <LineId Id="53" Count="9" />
+      <LineId Id="4" Count="5" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="13" Count="1" />
+      <LineId Id="44" Count="8" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="22" Count="20" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testIsEqualToIgnoreCase">
+      <LineId Id="1" Count="6" />
+      <LineId Id="58" Count="9" />
+      <LineId Id="8" Count="5" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="49" Count="8" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="26" Count="5" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="33" Count="13" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testIsNotEmpty">
+      <LineId Id="1" Count="2" />
+      <LineId Id="5" Count="6" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="36" Count="4" />
+      <LineId Id="17" Count="17" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testIsNotEqualTo">
+      <LineId Id="1" Count="2" />
+      <LineId Id="53" Count="9" />
+      <LineId Id="4" Count="5" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="13" Count="1" />
+      <LineId Id="44" Count="8" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="22" Count="20" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testIsNotEqualToIgnoreCase">
+      <LineId Id="1" Count="6" />
+      <LineId Id="59" Count="9" />
+      <LineId Id="8" Count="5" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="50" Count="8" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="26" Count="20" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testLengthIsBetween">
+      <LineId Id="1" Count="2" />
+      <LineId Id="45" Count="8" />
+      <LineId Id="4" Count="5" />
+      <LineId Id="11" Count="2" />
+      <LineId Id="40" Count="4" />
+      <LineId Id="17" Count="22" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testLengthIsExact">
+      <LineId Id="1" Count="8" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="39" Count="4" />
+      <LineId Id="17" Count="20" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testLengthIsMax">
+      <LineId Id="1" Count="8" />
+      <LineId Id="11" Count="2" />
+      <LineId Id="38" Count="4" />
+      <LineId Id="17" Count="20" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testLengthIsMin">
+      <LineId Id="1" Count="8" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="39" Count="4" />
+      <LineId Id="17" Count="20" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testStartsWith">
+      <LineId Id="1" Count="2" />
+      <LineId Id="58" Count="8" />
+      <LineId Id="4" Count="5" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="34" Count="1" />
+      <LineId Id="49" Count="8" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="43" Count="4" />
+      <LineId Id="16" Count="16" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testStartsWithIgnoreCase">
+      <LineId Id="1" Count="6" />
+      <LineId Id="62" Count="9" />
+      <LineId Id="8" Count="5" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="53" Count="8" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="46" Count="4" />
+      <LineId Id="20" Count="15" />
+      <LineId Id="52" Count="0" />
+    </LineIds>
+    <LineIds Name="UTF16StringAssertionTests.testStartsWithTrim">
+      <LineId Id="1" Count="4" />
+      <LineId Id="7" Count="1" />
+      <LineId Id="63" Count="9" />
+      <LineId Id="9" Count="5" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="38" Count="1" />
+      <LineId Id="54" Count="8" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="47" Count="4" />
+      <LineId Id="21" Count="15" />
+      <LineId Id="53" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

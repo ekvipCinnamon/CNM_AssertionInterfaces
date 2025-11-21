@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="PointerAssertions" Id="{26a0ce92-84f1-468d-9fe1-b917e2dfc179}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This class provides assert statements for pointers  
 
 .. <legal notes>
@@ -19,13 +18,12 @@ legal notes
 
 .. </legal notes>
 
-methods and properties
-=======================
+
 
 *)
 
 {attribute 'reflection'}
-FUNCTION_BLOCK PointerAssertions EXTENDS AbstactAssertion IMPLEMENTS IPointerAssertions
+FUNCTION_BLOCK PointerAssertions EXTENDS AbstractAssertion IMPLEMENTS IPointerAssertions
 VAR
 END_VAR
 ]]></Declaration>
@@ -35,8 +33,7 @@ END_VAR
     <Property Name="className" Id="{3b83cf82-b6aa-426d-98fd-a94474afac43}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This abstract property returns the class name of the concrete object, 
 It's for debugging purpose
 
@@ -60,17 +57,96 @@ PROPERTY className :CNM_AbstractObject.ClassName]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[className := 'CNM_AssertionInterfaceLib.PointerAssertions';
+          <ST><![CDATA[className := 'CNM_Assertor.PointerAssertions';
 ]]></ST>
         </Implementation>
       </Get>
     </Property>
+    <Method Name="isAligned" Id="{1049eedc-4d69-47ab-8f5c-cbf4b77c6ab7}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if pointer is aligned with register size.
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2025 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isAligned
+VAR_INPUT
+	(* memory address *)
+	address		:PVOID;
+	(* message if the assertion is false *)
+	message		:AssertMessage;
+END_VAR
+VAR CONSTANT
+	SIZE :PVOID := SIZEOF(__XWORD);
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (address MOD SIZE > 0) THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('isAligned'));
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="isDwordAligned" Id="{88ef15a2-62dd-4f6f-9697-be3bc959c47e}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if pointer is aligned with DWord size.
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2025 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isDwordAligned
+VAR_INPUT
+	(* memory address *)
+	address		:PVOID;
+	(* message if the assertion is false *)
+	message		:AssertMessage;
+END_VAR
+VAR CONSTANT
+	SIZE :PVOID := SIZEOF(DWORD);
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (address MOD SIZE > 0) THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('isAligned'));
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="isEqualTo" Id="{4a623468-b8c5-43af-af3a-ae6295531a4d}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-This assertion method checks if ``address1`` and ``address2`` refer to the same object
+## Short summary
+This assertion method checks if ``address1`` and ``address2`` refer to the same address
 
 .. <legal notes>
 
@@ -84,8 +160,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -106,12 +181,51 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
+    <Method Name="isLwordAligned" Id="{9237bee0-2b96-4636-a6f3-1f054d045f39}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if pointer is aligned with Lword size.
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2025 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isLwordAligned
+VAR_INPUT
+	(* memory address *)
+	address		:PVOID;
+	(* message if the assertion is false *)
+	message		:AssertMessage;
+END_VAR
+VAR CONSTANT
+	SIZE :PVOID := SIZEOF(LWORD);
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (address MOD SIZE > 0) THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('isAligned'));
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="isNotEqualTo" Id="{54c4cb28-3f80-45df-ab44-82d97f69320a}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
-This assertion method checks if ``address1`` and ``address2`` refer not to the same object
+## Short summary
+This assertion method checks if ``address1`` and ``address2`` refer not to the same address
 
 .. <legal notes>
 
@@ -125,8 +239,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -150,8 +263,7 @@ END_IF
     <Method Name="isNotNull" Id="{cd96bfa3-4cfb-41b2-b219-9b0c0a444683}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer is not null
 
 .. <legal notes>
@@ -166,8 +278,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -186,11 +297,63 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
+    <Method Name="isNotOverlapping" Id="{41d2f5c9-34a5-4156-ac03-97141240756a}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if memory areas are overlapping
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isNotOverlapping
+VAR_INPUT
+	(* memory address *)
+	address1	:PVOID;
+	(* memory address *)
+	address2	:PVOID;
+	(*the size of the memory area identified by address1*)
+	sizeInBytes1		:UDINT;
+	(*the size of the memory area identified by address2*)
+	sizeInBytes2		:UDINT;
+	(* message if the assertion is false *)
+	message		:AssertMessage;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF 	(( 
+		address1 = address2
+	) OR_ELSE(
+		//address1 + sizeInBytes1 < address1 is to protect overflows caused by the calculation address1 + sizeInBytes1
+		(address1 < address2) AND_THEN ((address1 + sizeInBytes1 < address1) OR_ELSE ((address1 + sizeInBytes1) >= address2))
+	) OR_ELSE (
+		//address2 + sizeInBytes2 < address2 is to protect overflows caused by the calculation address2 + sizeInBytes2
+		(address1 > address2) AND_THEN (((address2 + sizeInBytes2 < address2) OR_ELSE ((address2 + sizeInBytes2) >= address1)))
+	)
+) THEN
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('isNotOverlapping'));
+END_IF
+
+ ]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="isNull" Id="{544670de-ebfc-4740-85f3-1d121f65c90b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer is null
 
 .. <legal notes>
@@ -205,8 +368,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -225,16 +387,64 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
+    <Method Name="isOverlapping" Id="{c9eb8344-714a-4db7-9fae-856fe8a9cf66}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if memory areas are overlapping
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2022 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isOverlapping
+VAR_INPUT
+	(* memory address *)
+	address1	:PVOID;
+	(* memory address *)
+	address2	:PVOID;
+	(*the size of the memory area identified by address1*)
+	sizeInBytes1		:UDINT;
+	(*the size of the memory area identified by address2*)
+	sizeInBytes2		:UDINT;
+	(* message if the assertion is false *)
+	message		:AssertMessage;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN(address1 = address2);
+IF ((
+		(address1 < address2) AND_THEN ((address1 + sizeInBytes1) < address2)
+	) OR_ELSE (
+		(address1 > address2) AND_THEN ((address2 + sizeInBytes2) < address1)
+	)
+) THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('isOverlapping'));
+END_IF;
+	]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="isValid" Id="{4d85afcc-514f-4d0b-8ec9-b6734eb2854b}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer is valid.
 That means the pointer and size are not zero,
 the pointer is in a valid area.
 
-.. attention:: 
+**Attention:** 
 	Validity of the pointer will be proofed for 32 bit systems only.
 	For other systems it's an optimistic estimate.
 
@@ -250,8 +460,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -267,11 +476,9 @@ END_VAR
 VAR
 	{attribute 'displaymode':='hex'}
 	stackAddress	:__XWORD;
-	{IF hasvalue(RegisterSize, '32')}
 	testPointer		:POINTER TO BYTE := NULL;
 	testByte		:BYTE;
 	exc				: __SYSTEM.ExceptionCode;
-	{END_IF}
 END_VAR
 VAR CONSTANT
 	{attribute 'displaymode':='hex'}
@@ -283,41 +490,73 @@ VAR CONSTANT
 	MAX_STACK_SIZE :__XWORD := 16#0040_0000;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF (address = NULL) THEN
+        <ST><![CDATA[stackAddress := ADR(stackAddress);
+IF (
+	(address = NULL) 
+	OR_ELSE (sizeInBytes = NULL)
+	//check for overflow
+	OR_ELSE (address + sizeInBytes < address)
+	OR_ELSE (
+		(Tc2_System.F_CheckMemoryArea(pData := address, nSize := sizeInBytes) = Tc2_System.E_TcMemoryArea.Unknown)
+		AND_THEN (address < ABS(stackAddress - MAX_STACK_SIZE))
+	)
+) THEN
 	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('isValid'));
-ELSIF (sizeInBytes <= NULL) THEN
-	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('isValid'));
-ELSIF (Tc2_System.F_CheckMemoryArea(pData := address, nSize := sizeInBytes) = Tc2_System.E_TcMemoryArea.Unknown) THEN
-	stackAddress := ADR(stackAddress);
-	IF (address < ABS(stackAddress - MAX_STACK_SIZE)) THEN
-		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('isValid'));
-	ELSE;
-		{IF hasvalue(RegisterSize, '32')}
-		testPointer := address;
-		{END_IF}
-	END_IF	
-ELSE;
-	{IF hasvalue(RegisterSize, '32')}
+ELSE
 	testPointer := address;
-	{END_IF}
+	__TRY
+		testByte := testPointer^;
+	__CATCH(exc)
+		THIS^.assertionWasWrong(message, THIS^.getDebugInfo('isValid'));
+	__ENDTRY
 END_IF
 
-{IF hasvalue(RegisterSize, '32')}
-RETURN (testPointer = NULL);
-__TRY
-	testByte := testPointer^;
-__CATCH(exc)
-	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('isValid'));
-__ENDTRY
-{END_IF}
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="isWordAligned" Id="{e7f88df0-f47b-468e-8785-347773d51856}">
+      <Declaration><![CDATA[(*
+
+## Short summary
+This assertion method checks if pointer is aligned with word size.
+
+.. <legal notes>
+
+legal notes
+=================
+| SPDX-FileCopyrightText: © 2025 ekvip automation GmbH <info@ekvip.de>
+| SPDX-License-Identifier: Apache-2.0
+| For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+.. </legal notes>
+
+
+
+*)
+
+METHOD isWordAligned
+VAR_INPUT
+	(* memory address *)
+	address		:PVOID;
+	(* message if the assertion is false *)
+	message		:AssertMessage;
+END_VAR
+VAR CONSTANT
+	SIZE :PVOID := SIZEOF(WORD);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (address MOD SIZE > 0) THEN
+	THIS^.assertionWasWrong(message, THIS^.getDebugInfo('isAligned'));
+END_IF
 ]]></ST>
       </Implementation>
     </Method>
     <Method Name="memoryAreaIsCnc" Id="{37f1e5c3-6d9b-406b-8449-a9977bd4d8c0}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer refers to cnc area
 
 .. <legal notes>
@@ -332,8 +571,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -362,8 +600,7 @@ END_IF
     <Method Name="memoryAreaIsDynamic" Id="{079c9284-01fe-40fe-b00c-97291b8dc55f}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer refers to dynamic area
 
 .. <legal notes>
@@ -378,8 +615,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -408,8 +644,7 @@ END_IF
     <Method Name="memoryAreaIsNotCnc" Id="{20bbc746-04de-48d9-b522-d9702a64d96a}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer refers not to cnc area
 
 .. <legal notes>
@@ -424,8 +659,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -454,8 +688,7 @@ END_IF
     <Method Name="memoryAreaIsNotDynamic" Id="{0395fb6f-7304-47d0-82a8-761411f58114}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer refers not to dynamic area
 
 .. <legal notes>
@@ -470,8 +703,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -500,8 +732,7 @@ END_IF
     <Method Name="memoryAreaIsNotStatic" Id="{329f55cf-3ab2-4189-8598-9d554de84359}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer refers not to static area
 
 .. <legal notes>
@@ -516,8 +747,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -546,8 +776,7 @@ END_IF
     <Method Name="memoryAreaIsNotUnkown" Id="{95ccdc3f-cf8c-43ab-9fe0-2ac0cc87ccad}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer is not at memory area unknown
 
 .. <legal notes>
@@ -562,8 +791,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -592,8 +820,7 @@ END_IF
     <Method Name="memoryAreaIsStatic" Id="{7d735cd4-b968-41b3-87f1-2705a698bbd1}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer refers to static area
 
 .. <legal notes>
@@ -608,8 +835,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -638,8 +864,7 @@ END_IF
     <Method Name="memoryAreaIsUnkown" Id="{3731cdf9-9711-436d-97e4-2c40d31deba7}">
       <Declaration><![CDATA[(*
 
-short summary
-=================
+## Short summary
 This assertion method checks if pointer refers not to an unknown area
 
 .. <legal notes>
@@ -654,8 +879,7 @@ legal notes
 
 .. </legal notes>
 
-parameters
-=================
+
 
 *)
 
@@ -688,11 +912,20 @@ END_IF
       <LineId Id="5" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
+    <LineIds Name="PointerAssertions.isAligned">
+      <LineId Id="1" Count="3" />
+    </LineIds>
+    <LineIds Name="PointerAssertions.isDwordAligned">
+      <LineId Id="1" Count="3" />
+    </LineIds>
     <LineIds Name="PointerAssertions.isEqualTo">
       <LineId Id="34" Count="0" />
       <LineId Id="38" Count="0" />
       <LineId Id="36" Count="0" />
       <LineId Id="39" Count="0" />
+    </LineIds>
+    <LineIds Name="PointerAssertions.isLwordAligned">
+      <LineId Id="1" Count="3" />
     </LineIds>
     <LineIds Name="PointerAssertions.isNotEqualTo">
       <LineId Id="35" Count="1" />
@@ -705,38 +938,37 @@ END_IF
       <LineId Id="34" Count="0" />
       <LineId Id="36" Count="0" />
     </LineIds>
+    <LineIds Name="PointerAssertions.isNotOverlapping">
+      <LineId Id="1" Count="13" />
+    </LineIds>
     <LineIds Name="PointerAssertions.isNull">
       <LineId Id="33" Count="1" />
       <LineId Id="32" Count="0" />
       <LineId Id="35" Count="0" />
     </LineIds>
+    <LineIds Name="PointerAssertions.isOverlapping">
+      <LineId Id="1" Count="9" />
+    </LineIds>
     <LineIds Name="PointerAssertions.isValid">
-      <LineId Id="37" Count="0" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="40" Count="0" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="42" Count="0" />
-      <LineId Id="132" Count="0" />
-      <LineId Id="137" Count="0" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="140" Count="0" />
-      <LineId Id="169" Count="0" />
-      <LineId Id="141" Count="0" />
-      <LineId Id="170" Count="0" />
-      <LineId Id="138" Count="0" />
-      <LineId Id="142" Count="0" />
-      <LineId Id="171" Count="0" />
-      <LineId Id="143" Count="0" />
       <LineId Id="172" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="179" Count="0" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="188" Count="0" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="174" Count="0" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="175" Count="1" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="142" Count="1" />
+      <LineId Id="183" Count="4" />
       <LineId Id="39" Count="0" />
-      <LineId Id="154" Count="0" />
-      <LineId Id="145" Count="0" />
-      <LineId Id="166" Count="0" />
-      <LineId Id="148" Count="1" />
-      <LineId Id="151" Count="1" />
-      <LineId Id="150" Count="0" />
       <LineId Id="146" Count="0" />
       <LineId Id="91" Count="0" />
+    </LineIds>
+    <LineIds Name="PointerAssertions.isWordAligned">
+      <LineId Id="1" Count="3" />
     </LineIds>
     <LineIds Name="PointerAssertions.memoryAreaIsCnc">
       <LineId Id="35" Count="6" />
